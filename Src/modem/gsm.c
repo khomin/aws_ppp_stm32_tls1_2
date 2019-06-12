@@ -32,7 +32,6 @@ extern sGsmUartParcer uartParcerStruct;
 extern bool pppIsOpen;
 
 sGsmSettings gsmSettings = {0, "internet", "gdata", "gdata"};
-
 sConnectSettings connectSettings = {{"193.193.165.166", "111", 20332}};
 
 void vGsmTask( void * pvParameters );
@@ -52,69 +51,92 @@ void vGsmTask( void * pvParameters ) {
 	while((gsmState.initLLR != true) && (gsmState.initLLR2 != true)) {};
 
 	while(1) {
+		//
+		// if gsm is ready
+		// then the task does nothing in the pause
+		// otherwise begin initialization
+		//
 		if(gsmState.init == false) {
+			//
+			// if one of the stages returns an error
+			// then it all starts with the first step
+			//
 			if(gsmLLR_PowerUp() != eOk) {
 				gsmLLR_ModuleLost();
 				continue;
 			}
-			// если модуль перестал отвечать
+			// if the module stops responding
 			if(gsmState.notRespond == true) {
-				DBGInfo("GSM: INIT Module lost");
+				DBGInfo("GSM: init -module lost");
 				gsmLLR_ModuleLost();
 				continue;
 			}
-			// готовность модуля
-			if(gsmLLR_ATAT() != eOk) {
+			// check module is ready
+			if(GsmLLR_ATAT() != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
-			// настройки ответа
-			if(gsmLLR_FlowControl() != eOk) {
+			// disable power warnings
+			if(GsmLLR_WarningOff() != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
-//			// читаем IMEI
-//			if(gsmLLR_GetIMEI(aIMEI) != eOk) {
-//				gsmState.notRespond = true;
-//				continue;
-//			}
-//			DBGInfo("GSM: module IMEI=%s", aIMEI);
-//			// читаем imsi
-//			if(gsmLLR_GetIMSI(aIMSI) != eOk) {
-//				gsmState.notRespond = true;
-//				continue;
-//			}
-//			DBGInfo("GSM: module IMSI=%s", aIMSI);
-//			// Версия Software
-//			if(gsmLLR_GetModuleSoftWareVersion(aVerionSoftware) != eOk) {
-//				gsmState.notRespond = true;
-//				continue;
-//			}
-			// вывод сообщения о регистрации сети (URC)
-			if(gsmLLR_AtCREG() != eOk) {
+			// set type reply
+			if(GsmLLR_FlowControl() != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
-			DBGInfo("GSM: CREG OK");
-			// attach gprs
-//			vTaskDelay(DELAY_REPLY_INIT/portTICK_RATE_MS);
-//			if(gsmLLR_AttachGPRS() != eOk) {
-//				DBGInfo("GSM: get time ERROR, -RELOAD");
-//				gsmState.notRespond = true;
-//				continue;
-//			}
-			//start ppp
-			DBGInfo("GSM: INIT PPPP");
-			if(gsmLLR_StartPPP(&gsmSettings) == eOk) {
-				DBGInfo("GSM: INIT PPPP - PPP RUN");
-				xQueueReset(uartParcerStruct.uart.rxQueue);
-				uartParcerStruct.ppp.pppModeEnable = true;
-				uartParcerStruct.uart.receiveState = true;
-				gsmState.init = true;
+			// get IMEI
+			if(GsmLLR_GetIMEI(aIMEI) != eOk) {
+				gsmState.notRespond = true;
+				continue;
+			}
+			DBGInfo("GSM: module IMEI=%s", aIMEI);
+			// get IMSI
+			if(GsmLLR_GetIMSI(aIMSI) != eOk) {
+				gsmState.notRespond = true;
+				continue;
+			}
+			DBGInfo("GSM: module IMSI=%s", aIMSI);
+			// get software version
+			if(GsmLLR_GetModuleSoftWareVersion(aVerionSoftware) != eOk) {
+				gsmState.notRespond = true;
+				continue;
+			}
+			// set the type of registration message
+			if(GsmLLR_AtCREG() != eOk) {
+				gsmState.notRespond = true;
+				continue;
+			}
+			DBGInfo("GSM: creg -OK");
+
+			// get csq
+			if(GsmLLR_UpdateCSQ(&gsmCsqValue) != eOk) {
+				DBGInfo("GSM: get CSQ ERROR, -RELOAD");
+				gsmState.notRespond = true;
+				continue;
 			} else {
-				DBGInfo("GSM: INIT PPPP - PPP ERROR!!!");
-				gsmState.notRespond = true;
-				continue;
+				DBGInfo("GSM: csq value %d", gsmCsqValue);
+
+				// get phone number
+				if(GsmLLR_GetSimCardNum(aSimCardNumber) != eOk) {
+					gsmState.notRespond = true;
+					continue;
+				}
+
+				// start ppp
+				DBGInfo("GSM: init PPP...");
+				if(gsmLLR_StartPPP(&gsmSettings) == eOk) {
+					DBGInfo("GSM: init PPP -ready");
+					xQueueReset(uartParcerStruct.uart.rxQueue);
+					uartParcerStruct.ppp.pppModeEnable = true;
+					uartParcerStruct.uart.receiveState = true;
+					gsmState.init = true;
+				} else {
+					DBGInfo("GSM: init PPP -ERROR");
+					gsmState.notRespond = true;
+					continue;
+				}
 			}
 		}
 

@@ -97,7 +97,6 @@ bool gsmLLR_PeriperalInit(void) {
 }
 
 bool gsmLLR_SemaphoreInit(void) {
-	//Мьютекс для блокировки использования GSM драйвера
 	xGsmLockMutex = xSemaphoreCreateMutex();
 	return true;
 }
@@ -105,7 +104,7 @@ bool gsmLLR_SemaphoreInit(void) {
 bool gsmLLR_GetMutex(void) {
 	if(xSemaphoreTake(xGsmLockMutex, portMAX_DELAY) == pdPASS) {
 		return true;
-	}else{
+	} else {
 		return false;
 	}
 }
@@ -116,9 +115,8 @@ bool gsmLLR_GiveMutex(void) {
 }
 
 /**************************************************/
-/* 						питание и сброс											*/
+/* 				power and reset					  */
 /**************************************************/
-/* Включение питания */
 eRetComm gsmLLR_PowerUp(void) {
 	uint8_t attemp = 0;
 	DBGInfo("GSM: power up begin");
@@ -155,7 +153,7 @@ eRetComm gsmLLR_PowerDown(void) {
 // модуль не отвечает, попытка перезагрузить
 void gsmLLR_ModuleLost(void) {
 	gsmState.init = false;
-	DBGInfo("GSM: Module lost, -RESET");
+	DBGInfo("GSM: module  -reset");
 	gsmLLR_Reset();
 	gsmState.notRespond = false;
 }
@@ -165,17 +163,14 @@ xSemaphoreHandle * gsmLLR_GetRxSemphorePoint(uint8_t num) {
 }
 
 eRetComm gsmLLR_Reset(void) {
-	DBGInfo("GSM: reset bebin");
 	HAL_GPIO_WritePin(GSM_RESET_GPIO_Port, GSM_RESET_Pin, SET);
 	vTaskDelay(1000/portTICK_RATE_MS);
 	HAL_GPIO_WritePin(GSM_RESET_GPIO_Port, GSM_RESET_Pin, RESET);
 	vTaskDelay(5000/portTICK_RATE_MS);
-	DBGInfo("GSM: reset done");
 	return eOk;
 }
 
 eRetComm gsmLLR_WarningOff(void) {
-	DBGInfo("WarningOff");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -187,7 +182,6 @@ eRetComm gsmLLR_WarningOff(void) {
 }
 
 eRetComm gsmLLR_ATAT(void) {
-	DBGInfo("GsmLLR_ATAT");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -198,7 +192,6 @@ eRetComm gsmLLR_ATAT(void) {
 }
 
 eRetComm gsmLLR_StartPPP(sGsmSettings *pProperty) {
-	DBGInfo("StartPPP");
 	sResultCommand resultCommand;
 	uint8_t *pData = NULL;
 	if(gsmLLR_GetMutex() == true) {
@@ -260,7 +253,6 @@ eRetComm gsmLLR_StartPPP(sGsmSettings *pProperty) {
 }
 
 eRetComm gsmLLR_FlowControl(void) {
-	DBGInfo("GsmLLR_FlowControl");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -277,7 +269,6 @@ uint8_t gsmLLR_GetCSQ(void) {
 }
 
 eRetComm gsmLLR_UpdateCSQ(uint8_t *value) {
-	DBGInfo("GsmLLR_UpdateCSQ");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -288,7 +279,6 @@ eRetComm gsmLLR_UpdateCSQ(uint8_t *value) {
 }
 
 eRetComm gsmLLR_GetIMEI(char *strImei) {
-	DBGInfo("GsmLLR_GetIMEI");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -302,7 +292,6 @@ eRetComm gsmLLR_GetIMEI(char *strImei) {
 }
 
 eRetComm gsmLLR_GetIMSI(char *strImsi) {
-	DBGInfo("GsmLLR_GetIMSI");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -316,7 +305,6 @@ eRetComm gsmLLR_GetIMSI(char *strImsi) {
 }
 
 eRetComm gsmLLR_GetModuleSoftWareVersion(char *strSoftwareVersion) {
-	DBGInfo("GsmLLR_GetModuleSoftWareVersion");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -330,7 +318,6 @@ eRetComm gsmLLR_GetModuleSoftWareVersion(char *strSoftwareVersion) {
 }
 
 eRetComm gsmLLR_AtCREG(void) {
-	DBGInfo("GsmLLR_AtCREG");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -355,7 +342,6 @@ eRetComm gsmLLR_SmsUrcEnable(void) {
 
 /* Чтение номера симкарты */
 eRetComm gsmLLR_GetSimCardNum(char *pNumber) {
-	DBGInfo("GsmLLR_GetSimCardNum");
 	eRetComm ret;
 	char* p_start = NULL;
 	sResultCommand resultCommand;
@@ -374,7 +360,6 @@ eRetComm gsmLLR_GetSimCardNum(char *pNumber) {
 
 /* Выбор режима SMS: _PDU или _TEXT_SMS */
 eRetComm gsmLLR_SmsModeSelect(eSmsMode mode) {
-	DBGInfo("GsmLLR_SmsModeSelect");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -386,7 +371,6 @@ eRetComm gsmLLR_SmsModeSelect(eSmsMode mode) {
 
 /* Включение gprs для устаревшего оборудования оператора */
 eRetComm gsmLLR_EnabledOldGprsProtocol(void) {
-	DBGInfo("comOldGprsProtocol");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -397,7 +381,6 @@ eRetComm gsmLLR_EnabledOldGprsProtocol(void) {
 }
 
 eRetComm gsmLLR_SmsClearAll(void) {
-	DBGInfo("GsmLLR_SmsClearAll");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -408,7 +391,6 @@ eRetComm gsmLLR_SmsClearAll(void) {
 }
 
 eRetComm gsmLLR_GetTime(void) {
-	DBGInfo("GsmLLR_GetTime"); //
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -423,7 +405,6 @@ eRetComm gsmLLR_GetTime(void) {
 }
 
 eRetComm gsmLLR_AttachGPRS(void) {
-	DBGInfo("GsmLLR_AttachGPRS"); //
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -434,7 +415,6 @@ eRetComm gsmLLR_AttachGPRS(void) {
 }
 
 eRetComm gsmLLR_SendSMS(uint8_t *pData, uint16_t size, uint8_t *strTelNumber) {
-	DBGInfo("GsmLLR_SendSMS");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -461,7 +441,6 @@ eRetComm gsmLLR_SendSMS(uint8_t *pData, uint16_t size, uint8_t *strTelNumber) {
 /* Чтение номера последнего непрочитанного SMS сообщения
 	eNothing - ничего, eOk - есть, eError - ошибка чтения */
 eRetComm gsmLLR_SmsGetLastMessage(char *pMessage, char *pNumber) {
-	DBGInfo("GsmLLR_SmsGetLastMessage");
 	eRetComm ret;
 	sResultCommand resultCommand;
 	if(gsmLLR_GetMutex() == true) {
@@ -552,14 +531,14 @@ eRetComm gsmLLR_TcpSend(uint8_t serviceNum, uint8_t *pData, uint16_t sendSize) {
 			// если размер данных больше, чем может сразу отправить модем
 			if(sendSize > GSM_PACKET_MAX_SIZE) { // разбиваем
 				packetSize = GSM_PACKET_MAX_SIZE;
-			}else{
+			} else {
 				packetSize = sendSize;
 			}
 			// передача данных
 			if(gsmPPP_SendData(serviceNum, &pData[packetPos], packetSize) == eOk) {
 				DBGInfo("GSMSEND: SEND OK, packSize %d", packetSize);
 				ret = eOk;
-			}else{
+			} else {
 				DBGInfo("GSMSEND: ERROR SEND");
 				ret = eError;
 				break;
@@ -584,7 +563,7 @@ int gsmLLR_TcpReadData(uint8_t serviceNum, uint8_t **ppData, uint16_t buffSize) 
 	uint16_t retLen = 0;
 	if(serviceNum > SERVERS_COUNT) {
 		retLen = 0;
-	}else { // копируем в буфер протокола
+	} else { // копируем в буфер протокола
 		retLen = gsmPPP_ReadRxData(serviceNum, ppData);
 	}
 	return retLen;
@@ -676,7 +655,7 @@ eRetComm getParameter(uint8_t paramNum, char *pStartChar, char *strInput, char *
 	if(pStartChar == NULL) {
 		// если символ начала не определен, начинаем с первого символа
 		p = strInput;
-	}else {
+	} else {
 		p = strchr(strInput, *pStartChar);	
 	}
 	// не нашли
