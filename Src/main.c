@@ -418,8 +418,12 @@ void Error_Handler(void)
 }
 
 void vApplicationStackOverflowHook( TaskHandle_t xTask,
-		signed char *pcTaskName ){
+		signed char *pcTaskName ) {
 	DBGInfo("STACK OVERFLOW in task %s!!!!!!", pcTaskName);
+}
+
+void vApplicationMallocFailedHook(void) {
+	DBGInfo("STACK vApplicationMallocFailedHook !!!!!!");
 }
 
 

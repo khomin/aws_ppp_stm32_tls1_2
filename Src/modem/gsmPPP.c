@@ -69,9 +69,9 @@ void gsmPPP_Tsk(void *pvParamter);
 
 bool gsmPPP_Init(void) {
 	osThreadAttr_t attributes = {
-			.name = "fpgaTask",
+			.name = "gsmPPP_Tsk",
 			.priority = (osPriority_t) osPriorityNormal,
-			.stack_size = 1024
+			.stack_size = 2048
 	};
 	osThreadNew(gsmPPP_Tsk, NULL, &attributes);
 	return true;
@@ -108,107 +108,107 @@ static u32_t output_cb(ppp_pcb *pcb, u8_t *data, u32_t len, void *ctx) {
 
 /* PPP status callback example */
 static void status_cb(ppp_pcb *pcb, int err_code, void *ctx) {
-  struct netif *pppif = ppp_netif(pcb);
-  LWIP_UNUSED_ARG(ctx);
-
-  switch(err_code) {
-    case PPPERR_NONE: {
-#if LWIP_DNS
-      const ip_addr_t *ns;
-#endif /* LWIP_DNS */
-      DBGInfo("PPP: status_cb: Connected");
-#if PPP_IPV4_SUPPORT
-      DBGInfo("PPP: our_ipaddr  = %s", ipaddr_ntoa(&pppif->ip_addr));
-      DBGInfo("PPP: his_ipaddr  = %s", ipaddr_ntoa(&pppif->gw));
-      DBGInfo("PPP: netmask     = %s", ipaddr_ntoa(&pppif->netmask));
-#if LWIP_DNS
-      ns = dns_getserver(0);
-      DBGInfo("PPP: dns1        = %s", ipaddr_ntoa(ns));
-      ns = dns_getserver(1);
-      DBGInfo("PPP: dns2        = %s", ipaddr_ntoa(ns));
-#endif /* LWIP_DNS */
-#endif /* PPP_IPV4_SUPPORT */
-#if PPP_IPV6_SUPPORT
-      DBGInfo("PPP: our6_ipaddr = %s", ip6addr_ntoa(netif_ip6_addr(pppif, 0)));
-#endif /* PPP_IPV6_SUPPORT */
-      break;
-    }
-    case PPPERR_PARAM: {
-    	DBGInfo("PPP: status_cb: Invalid parameter");
-      break;
-    }
-    case PPPERR_OPEN: {
-    	DBGInfo("PPP: status_cb: Unable to open PPP session");
-		pppState = ppp_ready_work;
-      break;
-    }
-    case PPPERR_DEVICE: {
-    	DBGInfo("PPP: status_cb: Invalid I/O device for PPP");
-      break;
-    }
-    case PPPERR_ALLOC: {
-    	DBGInfo("PPP: status_cb: Unable to allocate resources");
-      break;
-    }
-    case PPPERR_USER: {
-      DBGInfo("PPP: status_cb: User interrupt");
-      break;
-    }
-    case PPPERR_CONNECT: {
-      DBGInfo("PPP: status_cb: Connection lost");
-      break;
-    }
-    case PPPERR_AUTHFAIL: {
-      DBGInfo("PPP: status_cb: Failed authentication challenge");
-      break;
-    }
-    case PPPERR_PROTOCOL: {
-      DBGInfo("PPP: status_cb: Failed to meet protocol");
-      break;
-    }
-    case PPPERR_PEERDEAD: {
-      DBGInfo("PPP: status_cb: Connection timeout");
-      break;
-    }
-    case PPPERR_IDLETIMEOUT: {
-      DBGInfo("PPP: status_cb: Idle Timeout");
-      break;
-    }
-    case PPPERR_CONNECTTIME: {
-      DBGInfo("PPP: status_cb: Max connect time reached");
-      break;
-    }
-    case PPPERR_LOOPBACK: {
-      DBGInfo("PPP: status_cb: Loopback detected");
-      break;
-    }
-    default: {
-      DBGInfo("PPP: status_cb: Unknown error code %d", err_code);
-      break;
-    }
-  }
-
-/*
- * This should be in the switch case, this is put outside of the switch
- * case for example readability.
- */
-
-  if (err_code == PPPERR_NONE) {
-    return;
-  }
-
-  /* ppp_close() was previously called, don't reconnect */
-  if (err_code == PPPERR_USER) {
-    /* ppp_free(); -- can be called here */
-    return;
-  }
-
-  /*
-   * Try to reconnect in 30 seconds, if you need a modem chatscript you have
-   * to do a much better signaling here ;-)
-   */
-  ppp_connect(pcb, 30);
-  /* OR ppp_listen(pcb); */
+//  struct netif *pppif = ppp_netif(pcb);
+//  LWIP_UNUSED_ARG(ctx);
+//
+//  switch(err_code) {
+//    case PPPERR_NONE: {
+//#if LWIP_DNS
+//      const ip_addr_t *ns;
+//#endif /* LWIP_DNS */
+//      DBGInfo("PPP: status_cb: Connected");
+//#if PPP_IPV4_SUPPORT
+//      DBGInfo("PPP: our_ipaddr  = %s", ipaddr_ntoa(&pppif->ip_addr));
+//      DBGInfo("PPP: his_ipaddr  = %s", ipaddr_ntoa(&pppif->gw));
+//      DBGInfo("PPP: netmask     = %s", ipaddr_ntoa(&pppif->netmask));
+//#if LWIP_DNS
+//      ns = dns_getserver(0);
+//      DBGInfo("PPP: dns1        = %s", ipaddr_ntoa(ns));
+//      ns = dns_getserver(1);
+//      DBGInfo("PPP: dns2        = %s", ipaddr_ntoa(ns));
+//#endif /* LWIP_DNS */
+//#endif /* PPP_IPV4_SUPPORT */
+//#if PPP_IPV6_SUPPORT
+//      DBGInfo("PPP: our6_ipaddr = %s", ip6addr_ntoa(netif_ip6_addr(pppif, 0)));
+//#endif /* PPP_IPV6_SUPPORT */
+//      break;
+//    }
+//    case PPPERR_PARAM: {
+//    	DBGInfo("PPP: status_cb: Invalid parameter");
+//      break;
+//    }
+//    case PPPERR_OPEN: {
+//    	DBGInfo("PPP: status_cb: Unable to open PPP session");
+//		pppState = ppp_ready_work;
+//      break;
+//    }
+//    case PPPERR_DEVICE: {
+//    	DBGInfo("PPP: status_cb: Invalid I/O device for PPP");
+//      break;
+//    }
+//    case PPPERR_ALLOC: {
+//    	DBGInfo("PPP: status_cb: Unable to allocate resources");
+//      break;
+//    }
+//    case PPPERR_USER: {
+//      DBGInfo("PPP: status_cb: User interrupt");
+//      break;
+//    }
+//    case PPPERR_CONNECT: {
+//      DBGInfo("PPP: status_cb: Connection lost");
+//      break;
+//    }
+//    case PPPERR_AUTHFAIL: {
+//      DBGInfo("PPP: status_cb: Failed authentication challenge");
+//      break;
+//    }
+//    case PPPERR_PROTOCOL: {
+//      DBGInfo("PPP: status_cb: Failed to meet protocol");
+//      break;
+//    }
+//    case PPPERR_PEERDEAD: {
+//      DBGInfo("PPP: status_cb: Connection timeout");
+//      break;
+//    }
+//    case PPPERR_IDLETIMEOUT: {
+//      DBGInfo("PPP: status_cb: Idle Timeout");
+//      break;
+//    }
+//    case PPPERR_CONNECTTIME: {
+//      DBGInfo("PPP: status_cb: Max connect time reached");
+//      break;
+//    }
+//    case PPPERR_LOOPBACK: {
+//      DBGInfo("PPP: status_cb: Loopback detected");
+//      break;
+//    }
+//    default: {
+//      DBGInfo("PPP: status_cb: Unknown error code %d", err_code);
+//      break;
+//    }
+//  }
+//
+///*
+// * This should be in the switch case, this is put outside of the switch
+// * case for example readability.
+// */
+//
+//  if (err_code == PPPERR_NONE) {
+//    return;
+//  }
+//
+//  /* ppp_close() was previously called, don't reconnect */
+//  if (err_code == PPPERR_USER) {
+//    /* ppp_free(); -- can be called here */
+//    return;
+//  }
+//
+//  /*
+//   * Try to reconnect in 30 seconds, if you need a modem chatscript you have
+//   * to do a much better signaling here ;-)
+//   */
+//  ppp_connect(pcb, 30);
+//  /* OR ppp_listen(pcb); */
 }
 
 static  void ctx_cb_callback(void *p) {}
@@ -219,7 +219,7 @@ void gsmPPP_Tsk(void *pvParamter) {
 	const osThreadAttr_t attr = {
 			.name = "pppRxData",
 			.priority = (osPriority_t) osPriorityBelowNormal2,
-			.stack_size = 512
+			.stack_size = 1024
 	};
 	osThreadNew(gsmPPP_rawInput, NULL, &attr);
 
@@ -249,22 +249,22 @@ void gsmPPP_Tsk(void *pvParamter) {
 //					lwip_stats.link.err = 0;
 					pppState = ppp_wait_for_connect;
 				} else {
-					DBGInfo("PPP: ppp_connect -ERROR");
-					ppp_close(ppp, 0);
-					pppState = ppp_not_inited;
-					uartParcerStruct.ppp.pppModeEnable = false;
-					gsmState.init = false;
-					gsmState.notRespond = true;
+//					DBGInfo("PPP: ppp_connect -ERROR");
+//					ppp_close(ppp, 0);
+//					pppState = ppp_not_inited;
+//					uartParcerStruct.ppp.pppModeEnable = false;
+//					gsmState.init = false;
+//					gsmState.notRespond = true;
 				}
 			}
 		}
 
-		if(pppState == ppp_ready_work) {
-			DBGInfo("PPP: connect start...");
-			gsmPPP_Connect(0, connectSettings[0].srvAddr, connectSettings[0].srvPort);
-			DBGInfo("PPP: connect start -end");
-			vTaskDelay(5000/portTICK_RATE_MS);
-		}
+//		if(pppState == ppp_ready_work) {
+//			DBGInfo("PPP: connect start...");
+//			gsmPPP_Connect(0, connectSettings[0].srvAddr, connectSettings[0].srvPort);
+//			DBGInfo("PPP: connect start -end");
+//			vTaskDelay(5000/portTICK_RATE_MS);
+//		}
 
 		vTaskDelay(1000/portTICK_RATE_MS);
 	}

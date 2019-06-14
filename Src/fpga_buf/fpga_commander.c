@@ -7,7 +7,7 @@
 #include "fpga_buf/fpga_commander.h"
 #include "fpga_buf.h"
 #include <stm32f4xx_it.h>
-#include "cmsis_os2.h"
+#include "FreeRTOS.h"
 #include "debug_print.h"
 #include "string.h"
 
@@ -36,9 +36,9 @@ void fpgaTask(void *argument) {
 	for(;;) {
 		// detect new data uart
 		if(isActiveUart) {
-			osDelay(500);
+			vTaskDelay(500/portTICK_RATE_MS);
 			isActiveUart = false;
-			osDelay(500);
+			vTaskDelay(500/portTICK_RATE_MS);
 			if(!isActiveUart) {
 				if(fpga_temp_buff_count != 0) {
 					DBGLog("FPGA: new data, size %d", fpga_temp_buff_count);
@@ -50,7 +50,7 @@ void fpgaTask(void *argument) {
 			}
 		}
 
-		osDelay(500);
+		vTaskDelay(500/portTICK_RATE_MS);
 	}
 	/* USER CODE END 5 */
 }
