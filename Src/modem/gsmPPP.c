@@ -47,7 +47,6 @@ sConnectionPppStruct connectionPppStruct = {0};
 static ePppState pppState = ppp_not_inited;
 
 extern struct stats_ lwip_stats;
-static void lwipStack_Init(void);
 static void tcpip_init_done(void * arg);
 static void status_cb(ppp_pcb *pcb, int err_code, void *ctx);
 
@@ -102,114 +101,115 @@ static u32_t output_cb(ppp_pcb *pcb, u8_t *data, u32_t len, void *ctx) {
 
 /* PPP status callback example */
 static void status_cb(ppp_pcb *pcb, int err_code, void *ctx) {
-//  struct netif *pppif = ppp_netif(pcb);
-//  LWIP_UNUSED_ARG(ctx);
-//
-//  switch(err_code) {
-//    case PPPERR_NONE: {
-//#if LWIP_DNS
-//      const ip_addr_t *ns;
-//#endif /* LWIP_DNS */
-//      DBGInfo("PPP: status_cb: Connected");
-//#if PPP_IPV4_SUPPORT
-//      DBGInfo("PPP: our_ipaddr  = %s", ipaddr_ntoa(&pppif->ip_addr));
-//      DBGInfo("PPP: his_ipaddr  = %s", ipaddr_ntoa(&pppif->gw));
-//      DBGInfo("PPP: netmask     = %s", ipaddr_ntoa(&pppif->netmask));
-//#if LWIP_DNS
-//      ns = dns_getserver(0);
-//      DBGInfo("PPP: dns1        = %s", ipaddr_ntoa(ns));
-//      ns = dns_getserver(1);
-//      DBGInfo("PPP: dns2        = %s", ipaddr_ntoa(ns));
-//#endif /* LWIP_DNS */
-//#endif /* PPP_IPV4_SUPPORT */
-//#if PPP_IPV6_SUPPORT
-//      DBGInfo("PPP: our6_ipaddr = %s", ip6addr_ntoa(netif_ip6_addr(pppif, 0)));
-//#endif /* PPP_IPV6_SUPPORT */
-//      break;
-//    }
-//    case PPPERR_PARAM: {
-//    	DBGInfo("PPP: status_cb: Invalid parameter");
-//      break;
-//    }
-//    case PPPERR_OPEN: {
-//    	DBGInfo("PPP: status_cb: Unable to open PPP session");
-//		pppState = ppp_ready_work;
-//      break;
-//    }
-//    case PPPERR_DEVICE: {
-//    	DBGInfo("PPP: status_cb: Invalid I/O device for PPP");
-//      break;
-//    }
-//    case PPPERR_ALLOC: {
-//    	DBGInfo("PPP: status_cb: Unable to allocate resources");
-//      break;
-//    }
-//    case PPPERR_USER: {
-//      DBGInfo("PPP: status_cb: User interrupt");
-//      break;
-//    }
-//    case PPPERR_CONNECT: {
-//      DBGInfo("PPP: status_cb: Connection lost");
-//      pppState = ppp_ready_work;
-//      break;
-//    }
-//    case PPPERR_AUTHFAIL: {
-//      DBGInfo("PPP: status_cb: Failed authentication challenge");
-//      break;
-//    }
-//    case PPPERR_PROTOCOL: {
-//      DBGInfo("PPP: status_cb: Failed to meet protocol");
-//      break;
-//    }
-//    case PPPERR_PEERDEAD: {
-//      DBGInfo("PPP: status_cb: Connection timeout");
-//      break;
-//    }
-//    case PPPERR_IDLETIMEOUT: {
-//      DBGInfo("PPP: status_cb: Idle Timeout");
-//      break;
-//    }
-//    case PPPERR_CONNECTTIME: {
-//      DBGInfo("PPP: status_cb: Max connect time reached");
-//      break;
-//    }
-//    case PPPERR_LOOPBACK: {
-//      DBGInfo("PPP: status_cb: Loopback detected");
-//      break;
-//    }
-//    default: {
-//      DBGInfo("PPP: status_cb: Unknown error code %d", err_code);
-//      break;
-//    }
-//  }
-//
-///*
-// * This should be in the switch case, this is put outside of the switch
-// * case for example readability.
-// */
-//
-//  if (err_code == PPPERR_NONE) {
-//    return;
-//  }
-//
-//  /* ppp_close() was previously called, don't reconnect */
-//  if (err_code == PPPERR_USER) {
-//    /* ppp_free(); -- can be called here */
-//    return;
-//  }
-//
-//  /*
-//   * Try to reconnect in 30 seconds, if you need a modem chatscript you have
-//   * to do a much better signaling here ;-)
-//   */
-//  ppp_connect(pcb, 30);
-//  /* OR ppp_listen(pcb); */
+  struct netif *pppif = ppp_netif(pcb);
+  LWIP_UNUSED_ARG(ctx);
+
+	pppState = ppp_not_inited;
+
+  switch(err_code) {
+    case PPPERR_NONE: {
+#if LWIP_DNS
+      const ip_addr_t *ns;
+#endif /* LWIP_DNS */
+      DBGInfo("PPP: status_cb: Connected");
+      pppState = ppp_ready_work;
+#if PPP_IPV4_SUPPORT
+      DBGInfo("PPP: our_ipaddr  = %s", ipaddr_ntoa(&pppif->ip_addr));
+      DBGInfo("PPP: his_ipaddr  = %s", ipaddr_ntoa(&pppif->gw));
+      DBGInfo("PPP: netmask     = %s", ipaddr_ntoa(&pppif->netmask));
+#if LWIP_DNS
+      ns = dns_getserver(0);
+      DBGInfo("PPP: dns1        = %s", ipaddr_ntoa(ns));
+      ns = dns_getserver(1);
+      DBGInfo("PPP: dns2        = %s", ipaddr_ntoa(ns));
+#endif /* LWIP_DNS */
+#endif /* PPP_IPV4_SUPPORT */
+#if PPP_IPV6_SUPPORT
+      DBGInfo("PPP: our6_ipaddr = %s", ip6addr_ntoa(netif_ip6_addr(pppif, 0)));
+#endif /* PPP_IPV6_SUPPORT */
+      break;
+    }
+    case PPPERR_PARAM: {
+    	DBGInfo("PPP: status_cb: Invalid parameter");
+      break;
+    }
+    case PPPERR_OPEN: {
+    	DBGInfo("PPP: status_cb: Unable to open PPP session");
+		pppState = ppp_ready_work;
+      break;
+    }
+    case PPPERR_DEVICE: {
+    	DBGInfo("PPP: status_cb: Invalid I/O device for PPP");
+      break;
+    }
+    case PPPERR_ALLOC: {
+    	DBGInfo("PPP: status_cb: Unable to allocate resources");
+      break;
+    }
+    case PPPERR_USER: {
+      DBGInfo("PPP: status_cb: User interrupt");
+      break;
+    }
+    case PPPERR_CONNECT: {
+      DBGInfo("PPP: status_cb: Connection lost");
+      break;
+    }
+    case PPPERR_AUTHFAIL: {
+      DBGInfo("PPP: status_cb: Failed authentication challenge");
+      break;
+    }
+    case PPPERR_PROTOCOL: {
+      DBGInfo("PPP: status_cb: Failed to meet protocol");
+      break;
+    }
+    case PPPERR_PEERDEAD: {
+      DBGInfo("PPP: status_cb: Connection timeout");
+      break;
+    }
+    case PPPERR_IDLETIMEOUT: {
+      DBGInfo("PPP: status_cb: Idle Timeout");
+      break;
+    }
+    case PPPERR_CONNECTTIME: {
+      DBGInfo("PPP: status_cb: Max connect time reached");
+      break;
+    }
+    case PPPERR_LOOPBACK: {
+      DBGInfo("PPP: status_cb: Loopback detected");
+      break;
+    }
+    default: {
+      DBGInfo("PPP: status_cb: Unknown error code %d", err_code);
+      break;
+    }
+  }
+
+/*
+ * This should be in the switch case, this is put outside of the switch
+ * case for example readability.
+ */
+
+  if (err_code == PPPERR_NONE) {
+    return;
+  }
+  if (err_code == PPPERR_USER) {
+    /* ppp_free(); -- can be called here */
+    return;
+  }
+
+  /*
+   * Try to reconnect in 30 seconds, if you need a modem chatscript you have
+   * to do a much better signaling here ;-)
+   */
+  ppp_connect(pcb, 30);
+  /* OR ppp_listen(pcb); */
 }
 
 static  void ctx_cb_callback(void *p) {}
 
 void gsmPPP_Tsk(void *pvParamter) {
-	lwipStack_Init();
+	uint8_t setup = 0;
+	tcpip_init(tcpip_init_done, &setup);
 
 	xTaskCreate(gsmPPP_rawInput, "pppRxData", 1024, 0, tskIDLE_PRIORITY+4, NULL);
 
@@ -232,26 +232,27 @@ void gsmPPP_Tsk(void *pvParamter) {
 	for(;;) {
 		if(uartParcerStruct.ppp.pppModeEnable == true) {
 			if((pppState != ppp_wait_for_connect) && (pppState != ppp_ready_work)) {
+				pppState = ppp_wait_for_connect;
+
 				if(ppp_connect(ppp, 0) == ERR_OK) {
 					DBGInfo("PPP inited - OK");
-					pppState = ppp_wait_for_connect;
 				} else {
-//					DBGInfo("PPP: ppp_connect -ERROR");
-//					ppp_close(ppp, 0);
-//					pppState = ppp_not_inited;
-//					uartParcerStruct.ppp.pppModeEnable = false;
-//					gsmState.init = false;
-//					gsmState.notRespond = true;
+					DBGInfo("PPP: ppp_connect -ERROR");
+					ppp_close(ppp, 0);
+					pppState = ppp_not_inited;
+					uartParcerStruct.ppp.pppModeEnable = false;
+					gsmState.init = false;
+					gsmState.notRespond = true;
 				}
 			}
 		}
 
-//		if(pppState == ppp_ready_work) {
-//			DBGInfo("PPP: connect start...");
-//			gsmPPP_Connect(0, connectSettings[0].srvAddr, connectSettings[0].srvPort);
-//			DBGInfo("PPP: connect start -end");
-//			vTaskDelay(5000/portTICK_RATE_MS);
-//		}
+		if(pppState == ppp_ready_work) {
+			DBGInfo("PPP: connect start...");
+			gsmPPP_Connect(0, connectSettings[0].srvAddr, connectSettings[0].srvPort);
+			DBGInfo("PPP: connect start -end");
+			vTaskDelay(5000/portTICK_RATE_MS);
+		}
 
 		vTaskDelay(1000/portTICK_RATE_MS);
 	}
@@ -264,19 +265,18 @@ void gsmPPP_rawInput(void *pvParamter) {
 	vTaskDelay(1000/portTICK_RATE_MS);
 	while(1) {
 		if(uartParcerStruct.ppp.pppModeEnable) {
-			while(xQueueReceive(uartParcerStruct.uart.rxQueue, &tbuf[tbuf_len], 1/portTICK_RATE_MS) == pdTRUE) {
+			while(xQueueReceive(uartParcerStruct.uart.rxQueue, &tbuf[tbuf_len], 5/portTICK_PERIOD_MS) == pdTRUE) {
 				tbuf_len++;
-				if(tbuf_len >= sizeof(tbuf)-1){
+				if((tbuf_len-1) >=  sizeof(tbuf)) {
 					break;
 				}
 			}
 			if(tbuf_len) {
-				DBGInfo("PPP: input_raw %s", tbuf);
 				pppos_input(ppp, tbuf, tbuf_len);
 				tbuf_len = 0;
 			}
 		} else {
-			vTaskDelay(200/portTICK_RATE_MS);
+			vTaskDelay(10/portTICK_RATE_MS);
 		}
 	}
 }
@@ -305,32 +305,32 @@ void gsmPPP_wtdControl() {
 }
 
 bool gsmPPP_Connect(uint8_t numConnect, char *pDestAddr, uint16_t port) {
-//	ip_addr_t resolved;
-//	bool useDns = false;
-//	uint8_t ipCut[4] = {0};
-//
-//	if(pppState == ppp_ready_work) {
-//		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
-//		return false;
-//	}
-//	sscanf(pDestAddr, "%u.%u.%u.%u", &ipCut[0], &ipCut[1], &ipCut[2], &ipCut[3]);
-//
-//	if((ipCut[0]!=0)&&(ipCut[1]!=0)&&(ipCut[2]!=0)&&(ipCut[3]!=0)) {
-//		IP4_ADDR(&connectionPppStruct.ipRemoteAddr[numConnect], ipCut[0],ipCut[1],ipCut[2],ipCut[3]);
-//		useDns = false;
-//		DBGInfo("GSMPPP: connect... without dns [%d.%d.%d.%d|%d]", ipCut[0], ipCut[1], ipCut[2], ipCut[3], port);
-//	} else{
-//		useDns = true;
-//		DBGInfo("GSMPPP: connect... use dns %s", pDestAddr);
-//	}
-//
-//	if(connectionPppStruct.connected[numConnect] == false) {
-//		if(connectionPppStruct.tcpClient[numConnect] == NULL) {
-//			connectionPppStruct.tcpClient[numConnect] = tcp_new();
-//		}
-//		tcp_recv(connectionPppStruct.tcpClient[numConnect], server_recv);
-//
-//		if(useDns == true) {
+	ip_addr_t resolved;
+	bool useDns = false;
+	uint8_t ipCut[4] = {0};
+
+	if(pppState != ppp_ready_work) {
+		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
+		return false;
+	}
+	sscanf(pDestAddr, "%u.%u.%u.%u", &ipCut[0], &ipCut[1], &ipCut[2], &ipCut[3]);
+
+	if((ipCut[0]!=0)&&(ipCut[1]!=0)&&(ipCut[2]!=0)&&(ipCut[3]!=0)) {
+		IP4_ADDR(&connectionPppStruct.ipRemoteAddr[numConnect], ipCut[0],ipCut[1],ipCut[2],ipCut[3]);
+		useDns = false;
+		DBGInfo("GSMPPP: connect... without dns [%d.%d.%d.%d|%d]", ipCut[0], ipCut[1], ipCut[2], ipCut[3], port);
+	} else{
+		useDns = true;
+		DBGInfo("GSMPPP: connect... use dns %s", pDestAddr);
+	}
+
+	if(connectionPppStruct.connected[numConnect] == false) {
+		if(connectionPppStruct.tcpClient[numConnect] == NULL) {
+			connectionPppStruct.tcpClient[numConnect] = tcp_new();
+		}
+		tcp_recv(connectionPppStruct.tcpClient[numConnect], server_recv);
+
+		if(useDns == true) {
 //			switch(dns_gethostbyname(pDestAddr, &resolved, dns_server_event_is_found, &numConnect)) {
 //			case ERR_OK: // numeric or cached, returned in resolved
 //				connectionPppStruct.ipRemoteAddr[numConnect].addr = resolved.addr;
@@ -344,32 +344,32 @@ bool gsmPPP_Connect(uint8_t numConnect, char *pDestAddr, uint16_t port) {
 //				} else { }
 //				break;
 //			}
-//		}
-//
-//		tcp_connect(connectionPppStruct.tcpClient[numConnect], &connectionPppStruct.ipRemoteAddr[numConnect], port, &tcp_connected_cb);
-//
-//		if(xSemaphoreTake(connectionPppStruct.semphr[numConnect], 10000/portTICK_PERIOD_MS) == pdTRUE) {
-//			connectionPppStruct.connected[numConnect] = true;
-//			DBGInfo("GSMPPP: connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
-//			return true;
-//		} else {
-//			DBGInfo("GSMPPP: connectTimeout-ERROR");
-//			return false;
-//		}
-//	} else {
-//		if(gsmLLR_ConnectServiceStatus(numConnect) == eOk) {
-//			DBGInfo("GSMPPP: CONNECT-already connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
-//			return true;
-//		} else {
-//			DBGInfo("GSMPPP: CONNECT CLOSE!!!");
-//			return false;
-//		}
-//	}
+		}
+
+		tcp_connect(connectionPppStruct.tcpClient[numConnect], &connectionPppStruct.ipRemoteAddr[numConnect], port, &tcp_connected_cb);
+
+		if(xSemaphoreTake(connectionPppStruct.semphr[numConnect], 10000/portTICK_PERIOD_MS) == pdTRUE) {
+			connectionPppStruct.connected[numConnect] = true;
+			DBGInfo("GSMPPP: connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
+			return true;
+		} else {
+			DBGInfo("GSMPPP: connectTimeout-ERROR");
+			return false;
+		}
+	} else {
+		if(gsmLLR_ConnectServiceStatus(numConnect) == eOk) {
+			DBGInfo("GSMPPP: CONNECT-already connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
+			return true;
+		} else {
+			DBGInfo("GSMPPP: CONNECT CLOSE!!!");
+			return false;
+		}
+	}
 	return false;
 }
 
 bool gsmPPP_Disconnect(uint8_t numConnect) {
-	if(pppState == ppp_ready_work) {
+	if(pppState != ppp_ready_work) {
 		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
 		return false;
 	}
@@ -382,7 +382,7 @@ bool gsmPPP_Disconnect(uint8_t numConnect) {
 }
 
 bool gsmPPP_ConnectStatus(uint8_t numConnect) {
-	if(pppState == ppp_ready_work) {
+	if(pppState != ppp_ready_work) {
 		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
 		return false;
 	}
@@ -393,7 +393,7 @@ bool gsmPPP_ConnectStatus(uint8_t numConnect) {
 }
 
 bool gsmPPP_SendData(uint8_t numConnect, uint8_t *pData, uint16_t len) {
-	if(pppState == ppp_ready_work) {
+	if(pppState != ppp_ready_work) {
 		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
 		return false;
 	}
@@ -409,7 +409,7 @@ bool gsmPPP_SendData(uint8_t numConnect, uint8_t *pData, uint16_t len) {
 }
 
 uint16_t gsmPPP_GetRxLenData(uint8_t numConnect) {
-	if(pppState == ppp_ready_work) {
+	if(pppState != ppp_ready_work) {
 		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
 		return false;
 	}
@@ -417,7 +417,7 @@ uint16_t gsmPPP_GetRxLenData(uint8_t numConnect) {
 }
 
 uint16_t gsmPPP_ReadRxData(uint8_t numConnect, uint8_t **ppData) {
-	if(pppState == ppp_ready_work) {
+	if(pppState != ppp_ready_work) {
 		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
 		return false;
 	}
@@ -429,23 +429,6 @@ uint16_t gsmPPP_ReadRxData(uint8_t numConnect, uint8_t **ppData) {
 	}
 	return false;
 }
-
-//err_t dns_server_event_is_found(const char *hostname,
-//		ip_addr_t *addr,
-//		dns_found_callback found,
-//		void *callback_arg,
-//		u8_t dns_addrtype) {
-//	err_t res = ERR_VAL;
-//	if(dns_addrtype < SERVERS_COUNT) {
-//		DBGInfo("GSMPPP: DEST FOUND %s", inet_ntoa(addr));
-//		connectionPppStruct.ipRemoteAddr[dns_addrtype].addr = addr->addr;
-//		xSemaphoreGive(connectionPppStruct.semphr[dns_addrtype]);
-//		res = ERR_OK;
-//	} else {
-//		DBGInfo("GSMPPP: DNS != SERVER%s", inet_ntoa(addr));
-//	}
-//	return res;
-//}
 
 err_t tcp_connected_cb(void *arg, struct tcp_pcb *tpcb, err_t err) {
 	for(uint8_t i=0; i<SERVERS_COUNT; i++) {
@@ -518,16 +501,6 @@ void udp_dns_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, ip_addr_t
 }
 
 /* Private functions ---------------------------------------------------------*/
-/**
- * @brief  Initializes the lwIP stack
- * @param  None
- * @retval None
- */
-void lwipStack_Init(void) {
-	uint8_t setup = 0;
-	tcpip_init(tcpip_init_done, &setup);
-}
-
 static void tcpip_init_done(void * arg) {
 	if (arg != NULL) {
 		*((int *) arg) = 1;
