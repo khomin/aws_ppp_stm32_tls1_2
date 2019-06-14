@@ -20,7 +20,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -28,6 +27,9 @@
 #include "fpga_commander.h"
 #include "debug_print.h"
 #include "gsm.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "stats.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,7 +53,6 @@ CRC_HandleTypeDef hcrc;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
-osThreadId_t defaultTaskHandle;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -112,7 +113,7 @@ int main(void)
 
 	/* USER CODE END 2 */
 
-	osKernelInitialize(); // Initialize CMSIS-RTOS
+	// Initialize CMSIS-RTOS
 
 	/* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
@@ -153,7 +154,7 @@ int main(void)
 	/* USER CODE END RTOS_THREADS */
 
 	/* Start scheduler */
-	osKernelStart();
+	vTaskStartScheduler();
 
 	/* We should never get here as control is now taken by the scheduler */
 
@@ -417,8 +418,25 @@ void Error_Handler(void)
 	/* USER CODE END Error_Handler_Debug */
 }
 
+
+//static char hookErrorInfoBuf[256] = {0};
+
 void vApplicationStackOverflowHook( TaskHandle_t xTask,
 		signed char *pcTaskName ) {
+	ICMP_STATS_DISPLAY();
+	LINK_STATS_DISPLAY();
+	MEM_STATS_DISPLAY();
+	MEM_STATS_DISPLAY();
+	SYS_STATS_DISPLAY();
+	for(uint8_t i=0; i<MEMP_MAX; i++) {
+		MEMP_STATS_DISPLAY(i);
+	}
+
+//	vTaskList(hookErrorInfoBuf);
+//	DBGLog("TaskList:\r\n %s", hookErrorInfoBuf);
+//	vTaskGetRunTimeStats(hookErrorInfoBuf);
+//	DBGLog("TaskList:\r\n %s", hookErrorInfoBuf);
+
 	DBGInfo("STACK OVERFLOW in task %s!!!!!!", pcTaskName);
 }
 

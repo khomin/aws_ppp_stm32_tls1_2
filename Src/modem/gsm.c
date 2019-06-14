@@ -9,7 +9,6 @@
 #include "gsmLLR2.h"
 #include "gsmPPP.h"
 #include "main.h"
-#include "cmsis_os.h"
 #include <stdlib.h>
 #include "debug_print.h"
 #include "time.h"

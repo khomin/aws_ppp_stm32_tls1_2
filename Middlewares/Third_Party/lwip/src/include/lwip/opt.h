@@ -266,7 +266,7 @@
  *      memp_malloc() or memp_free() is called (useful but slow!)
  */
 #if !defined MEMP_OVERFLOW_CHECK || defined __DOXYGEN__
-#define MEMP_OVERFLOW_CHECK             0
+#define MEMP_OVERFLOW_CHECK
 #endif
 
 /**
@@ -1008,7 +1008,7 @@
  * transport.
  */
 #if !defined LWIP_DNS || defined __DOXYGEN__
-#define LWIP_DNS                        1
+#define LWIP_DNS                        0
 #endif
 
 /** DNS maximum number of entries to maintain locally. */

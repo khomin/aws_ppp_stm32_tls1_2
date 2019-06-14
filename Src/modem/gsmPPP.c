@@ -8,7 +8,6 @@
 #include "gsm.h"
 #include "gsmLLR2.h"
 #include "string.h"
-#include "cmsis_os2.h"
 #include "time.h"
 #include <time.h>
 #include "debug_print.h"
@@ -53,11 +52,11 @@ static void tcpip_init_done(void * arg);
 static void status_cb(ppp_pcb *pcb, int err_code, void *ctx);
 
 static err_t tcp_connected_cb(void *arg, struct tcp_pcb *tpcb, err_t err);
-static err_t dns_server_event_is_found(const char *hostname,
-		ip_addr_t *addr,
-		dns_found_callback found, void *callback_arg,
-		u8_t dns_addrtype
-);
+//static err_t dns_server_event_is_found(const char *hostname,
+//		ip_addr_t *addr,
+//		dns_found_callback found, void *callback_arg,
+//		u8_t dns_addrtype
+//);
 static err_t server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err);
 static err_t server_err(void *arg, err_t err);
 static void server_close(struct tcp_pcb *pcb);
@@ -68,12 +67,7 @@ static void gsmPPP_rawInput(void *pvParamter);
 void gsmPPP_Tsk(void *pvParamter);
 
 bool gsmPPP_Init(void) {
-	osThreadAttr_t attributes = {
-			.name = "gsmPPP_Tsk",
-			.priority = (osPriority_t) osPriorityNormal,
-			.stack_size = 2048
-	};
-	osThreadNew(gsmPPP_Tsk, NULL, &attributes);
+	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 1024, 0, tskIDLE_PRIORITY+3, NULL);
 	return true;
 }
 
@@ -156,6 +150,7 @@ static void status_cb(ppp_pcb *pcb, int err_code, void *ctx) {
 //    }
 //    case PPPERR_CONNECT: {
 //      DBGInfo("PPP: status_cb: Connection lost");
+//      pppState = ppp_ready_work;
 //      break;
 //    }
 //    case PPPERR_AUTHFAIL: {
@@ -216,12 +211,7 @@ static  void ctx_cb_callback(void *p) {}
 void gsmPPP_Tsk(void *pvParamter) {
 	lwipStack_Init();
 
-	const osThreadAttr_t attr = {
-			.name = "pppRxData",
-			.priority = (osPriority_t) osPriorityBelowNormal2,
-			.stack_size = 1024
-	};
-	osThreadNew(gsmPPP_rawInput, NULL, &attr);
+	xTaskCreate(gsmPPP_rawInput, "pppRxData", 1024, 0, tskIDLE_PRIORITY+4, NULL);
 
 	sioWriteSemaphore = xSemaphoreCreateBinary();
 	for(uint8_t i=0; i<SERVERS_COUNT; i++) {
@@ -234,7 +224,7 @@ void gsmPPP_Tsk(void *pvParamter) {
 	ppp_set_default(ppp);
 
 	/* Ask the peer for up to 2 DNS server addresses. */
-	ppp_set_usepeerdns(ppp, 1);
+//	ppp_set_usepeerdns(ppp, 1);
 
 	/* Auth configuration, this is pretty self-explanatory */
 	ppp_set_auth(ppp, PPPAUTHTYPE_ANY, "gdata", "gdata");
@@ -244,9 +234,6 @@ void gsmPPP_Tsk(void *pvParamter) {
 			if((pppState != ppp_wait_for_connect) && (pppState != ppp_ready_work)) {
 				if(ppp_connect(ppp, 0) == ERR_OK) {
 					DBGInfo("PPP inited - OK");
-//					lwip_stats.link.drop = 0;
-//					lwip_stats.link.chkerr = 0;
-//					lwip_stats.link.err = 0;
 					pppState = ppp_wait_for_connect;
 				} else {
 //					DBGInfo("PPP: ppp_connect -ERROR");
@@ -277,7 +264,7 @@ void gsmPPP_rawInput(void *pvParamter) {
 	vTaskDelay(1000/portTICK_RATE_MS);
 	while(1) {
 		if(uartParcerStruct.ppp.pppModeEnable) {
-			while(xQueueReceive(uartParcerStruct.uart.rxQueue, &tbuf[tbuf_len], 2/portTICK_RATE_MS) == pdTRUE) {
+			while(xQueueReceive(uartParcerStruct.uart.rxQueue, &tbuf[tbuf_len], 1/portTICK_RATE_MS) == pdTRUE) {
 				tbuf_len++;
 				if(tbuf_len >= sizeof(tbuf)-1){
 					break;
@@ -318,66 +305,66 @@ void gsmPPP_wtdControl() {
 }
 
 bool gsmPPP_Connect(uint8_t numConnect, char *pDestAddr, uint16_t port) {
-	ip_addr_t resolved;
-	bool useDns = false;
-	uint8_t ipCut[4] = {0};
-
-	if(pppState == ppp_ready_work) {
-		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
-		return false;
-	}
-	sscanf(pDestAddr, "%u.%u.%u.%u", &ipCut[0], &ipCut[1], &ipCut[2], &ipCut[3]);
-
-	if((ipCut[0]!=0)&&(ipCut[1]!=0)&&(ipCut[2]!=0)&&(ipCut[3]!=0)) {
-		IP4_ADDR(&connectionPppStruct.ipRemoteAddr[numConnect], ipCut[0],ipCut[1],ipCut[2],ipCut[3]);
-		useDns = false;
-		DBGInfo("GSMPPP: connect... without dns [%d.%d.%d.%d|%d]", ipCut[0], ipCut[1], ipCut[2], ipCut[3], port);
-	} else{
-		useDns = true;
-		DBGInfo("GSMPPP: connect... use dns %s", pDestAddr);
-	}
-
-	if(connectionPppStruct.connected[numConnect] == false) {
-		if(connectionPppStruct.tcpClient[numConnect] == NULL) {
-			connectionPppStruct.tcpClient[numConnect] = tcp_new();
-		}
-		tcp_recv(connectionPppStruct.tcpClient[numConnect], server_recv);
-
-		if(useDns == true) {
-			switch(dns_gethostbyname(pDestAddr, &resolved, dns_server_event_is_found, &numConnect)) {
-			case ERR_OK: // numeric or cached, returned in resolved
-				connectionPppStruct.ipRemoteAddr[numConnect].addr = resolved.addr;
-				break;
-			case ERR_INPROGRESS: // need to ask, will return data via callback
-				if(xSemaphoreTake(connectionPppStruct.semphr[numConnect], 10000/portTICK_PERIOD_MS) != pdTRUE) {
-					server_close(connectionPppStruct.tcpClient[numConnect]);
-					connectionPppStruct.connected[numConnect] = false;
-					DBGInfo("GSMPPP: dns-ERROR");
-					return false;
-				} else { }
-				break;
-			}
-		}
-
-		tcp_connect(connectionPppStruct.tcpClient[numConnect], &connectionPppStruct.ipRemoteAddr[numConnect], port, &tcp_connected_cb);
-
-		if(xSemaphoreTake(connectionPppStruct.semphr[numConnect], 10000/portTICK_PERIOD_MS) == pdTRUE) {
-			connectionPppStruct.connected[numConnect] = true;
-			DBGInfo("GSMPPP: connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
-			return true;
-		} else {
-			DBGInfo("GSMPPP: connectTimeout-ERROR");
-			return false;
-		}
-	} else {
-		if(gsmLLR_ConnectServiceStatus(numConnect) == eOk) {
-			DBGInfo("GSMPPP: CONNECT-already connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
-			return true;
-		} else {
-			DBGInfo("GSMPPP: CONNECT CLOSE!!!");
-			return false;
-		}
-	}
+//	ip_addr_t resolved;
+//	bool useDns = false;
+//	uint8_t ipCut[4] = {0};
+//
+//	if(pppState == ppp_ready_work) {
+//		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
+//		return false;
+//	}
+//	sscanf(pDestAddr, "%u.%u.%u.%u", &ipCut[0], &ipCut[1], &ipCut[2], &ipCut[3]);
+//
+//	if((ipCut[0]!=0)&&(ipCut[1]!=0)&&(ipCut[2]!=0)&&(ipCut[3]!=0)) {
+//		IP4_ADDR(&connectionPppStruct.ipRemoteAddr[numConnect], ipCut[0],ipCut[1],ipCut[2],ipCut[3]);
+//		useDns = false;
+//		DBGInfo("GSMPPP: connect... without dns [%d.%d.%d.%d|%d]", ipCut[0], ipCut[1], ipCut[2], ipCut[3], port);
+//	} else{
+//		useDns = true;
+//		DBGInfo("GSMPPP: connect... use dns %s", pDestAddr);
+//	}
+//
+//	if(connectionPppStruct.connected[numConnect] == false) {
+//		if(connectionPppStruct.tcpClient[numConnect] == NULL) {
+//			connectionPppStruct.tcpClient[numConnect] = tcp_new();
+//		}
+//		tcp_recv(connectionPppStruct.tcpClient[numConnect], server_recv);
+//
+//		if(useDns == true) {
+//			switch(dns_gethostbyname(pDestAddr, &resolved, dns_server_event_is_found, &numConnect)) {
+//			case ERR_OK: // numeric or cached, returned in resolved
+//				connectionPppStruct.ipRemoteAddr[numConnect].addr = resolved.addr;
+//				break;
+//			case ERR_INPROGRESS: // need to ask, will return data via callback
+//				if(xSemaphoreTake(connectionPppStruct.semphr[numConnect], 10000/portTICK_PERIOD_MS) != pdTRUE) {
+//					server_close(connectionPppStruct.tcpClient[numConnect]);
+//					connectionPppStruct.connected[numConnect] = false;
+//					DBGInfo("GSMPPP: dns-ERROR");
+//					return false;
+//				} else { }
+//				break;
+//			}
+//		}
+//
+//		tcp_connect(connectionPppStruct.tcpClient[numConnect], &connectionPppStruct.ipRemoteAddr[numConnect], port, &tcp_connected_cb);
+//
+//		if(xSemaphoreTake(connectionPppStruct.semphr[numConnect], 10000/portTICK_PERIOD_MS) == pdTRUE) {
+//			connectionPppStruct.connected[numConnect] = true;
+//			DBGInfo("GSMPPP: connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
+//			return true;
+//		} else {
+//			DBGInfo("GSMPPP: connectTimeout-ERROR");
+//			return false;
+//		}
+//	} else {
+//		if(gsmLLR_ConnectServiceStatus(numConnect) == eOk) {
+//			DBGInfo("GSMPPP: CONNECT-already connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
+//			return true;
+//		} else {
+//			DBGInfo("GSMPPP: CONNECT CLOSE!!!");
+//			return false;
+//		}
+//	}
 	return false;
 }
 
@@ -443,22 +430,22 @@ uint16_t gsmPPP_ReadRxData(uint8_t numConnect, uint8_t **ppData) {
 	return false;
 }
 
-err_t dns_server_event_is_found(const char *hostname,
-		ip_addr_t *addr,
-		dns_found_callback found,
-		void *callback_arg,
-		u8_t dns_addrtype) {
-	err_t res = ERR_VAL;
-	if(dns_addrtype < SERVERS_COUNT) {
-		DBGInfo("GSMPPP: DEST FOUND %s", inet_ntoa(addr));
-		connectionPppStruct.ipRemoteAddr[dns_addrtype].addr = addr->addr;
-		xSemaphoreGive(connectionPppStruct.semphr[dns_addrtype]);
-		res = ERR_OK;
-	} else {
-		DBGInfo("GSMPPP: DNS != SERVER%s", inet_ntoa(addr));
-	}
-	return res;
-}
+//err_t dns_server_event_is_found(const char *hostname,
+//		ip_addr_t *addr,
+//		dns_found_callback found,
+//		void *callback_arg,
+//		u8_t dns_addrtype) {
+//	err_t res = ERR_VAL;
+//	if(dns_addrtype < SERVERS_COUNT) {
+//		DBGInfo("GSMPPP: DEST FOUND %s", inet_ntoa(addr));
+//		connectionPppStruct.ipRemoteAddr[dns_addrtype].addr = addr->addr;
+//		xSemaphoreGive(connectionPppStruct.semphr[dns_addrtype]);
+//		res = ERR_OK;
+//	} else {
+//		DBGInfo("GSMPPP: DNS != SERVER%s", inet_ntoa(addr));
+//	}
+//	return res;
+//}
 
 err_t tcp_connected_cb(void *arg, struct tcp_pcb *tpcb, err_t err) {
 	for(uint8_t i=0; i<SERVERS_COUNT; i++) {

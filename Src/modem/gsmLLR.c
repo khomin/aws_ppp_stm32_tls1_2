@@ -9,8 +9,6 @@
 #include "gsmPPP.h"
 #include "string.h"
 #include "main.h"
-#include "cmsis_os.h"
-#include "cmsis_os.h"
 #include "debug_print.h"
 #include <stdlib.h>
 

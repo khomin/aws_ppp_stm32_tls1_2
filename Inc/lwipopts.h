@@ -71,7 +71,7 @@ a lot of data that needs to be copied, this should be set high. */
 #define MEMP_NUM_UDP_PCB        4
 /* MEMP_NUM_TCP_PCB: the number of simulatenously active TCP
    connections. */
-#define MEMP_NUM_TCP_PCB        18
+#define MEMP_NUM_TCP_PCB        4
 /* MEMP_NUM_TCP_PCB_LISTEN: the number of listening TCP
    connections. */
 #define MEMP_NUM_TCP_PCB_LISTEN 2
@@ -117,10 +117,6 @@ a lot of data that needs to be copied, this should be set high. */
 /* ---------- ICMP options ---------- */
 #define LWIP_ICMP                       1
 
-
-#define LWIP_STATS_DISPLAY				1
-
-
 /* ---------- DHCP options ---------- */
 /* Define LWIP_DHCP to 1 if you want DHCP configuration of
    interfaces. DHCP is not implemented in lwIP 0.5.1, however, so
@@ -134,14 +130,17 @@ a lot of data that needs to be copied, this should be set high. */
 
 
 /* ---------- Statistics options ---------- */
-#define LWIP_STATS 							0
-#define LWIP_PROVIDE_ERRNO					0
+#define LWIP_STATS 							1
+#define MEM_STATS							1
+#define LWIP_STATS_DISPLAY					1
 
 /* ---------- link callback options ---------- */
 /* LWIP_NETIF_LINK_CALLBACK==1: Support a callback function from an interface
  * whenever the link changes (i.e., link down)
  */
 #define LWIP_NETIF_LINK_CALLBACK        1
+
+#define MEMP_OVERFLOW_CHECK				0
 
 /*
    --------------------------------------

@@ -8,6 +8,7 @@
 #include "stm32f4xx_hal_uart.h"
 #include "debug_print.h"
 #include "fpga_commander.h"
+#include "gsmLLR2.h"
 
 extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
