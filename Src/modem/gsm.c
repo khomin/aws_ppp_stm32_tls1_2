@@ -32,18 +32,17 @@ extern sGsmUartParcer uartParcerStruct;
 extern bool pppIsOpen;
 
 sGsmSettings gsmSettings = {0, "internet", "gdata", "gdata"};
-sConnectSettings connectSettings = {{"193.193.165.166", "111", 20332}};
+sConnectSettings connectSettings = {{"31.10.4.146", "111", 45454}};
 
 void vGsmTask( void * pvParameters );
 
 /* init GSM */
 void gsmTaskInit(void) {
-	xTaskCreate(vGsmTask, "gsmTsk", (configMINIMAL_STACK_SIZE*2), 0, tskIDLE_PRIORITY+1, &gsmInitTaskId);
+	xTaskCreate(vGsmTask, "gsmTsk", 1024, 0, tskIDLE_PRIORITY+1, &gsmInitTaskId);
 }
 
 /* task GSM module */
 void vGsmTask( void * pvParameters ) {	
-	// lowLevel init
 	gsmLLR_Init();
 	gsmLLR2_Init();
 	gsmPPP_Init();
@@ -72,46 +71,46 @@ void vGsmTask( void * pvParameters ) {
 				continue;
 			}
 			// check module is ready
-			if(GsmLLR_ATAT() != eOk) {
+			if(gsmLLR_ATAT() != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
 			// disable power warnings
-			if(GsmLLR_WarningOff() != eOk) {
+			if(gsmLLR_WarningOff() != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
 			// set type reply
-			if(GsmLLR_FlowControl() != eOk) {
+			if(gsmLLR_FlowControl() != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
 			// get IMEI
-			if(GsmLLR_GetIMEI(aIMEI) != eOk) {
+			if(gsmLLR_GetIMEI(aIMEI) != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
 			DBGInfo("GSM: module IMEI=%s", aIMEI);
 			// get IMSI
-			if(GsmLLR_GetIMSI(aIMSI) != eOk) {
+			if(gsmLLR_GetIMSI(aIMSI) != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
 			DBGInfo("GSM: module IMSI=%s", aIMSI);
 			// get software version
-			if(GsmLLR_GetModuleSoftWareVersion(aVerionSoftware) != eOk) {
+			if(gsmLLR_GetModuleSoftWareVersion(aVerionSoftware) != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
 			// set the type of registration message
-			if(GsmLLR_AtCREG() != eOk) {
+			if(gsmLLR_AtCREG() != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
 			DBGInfo("GSM: creg -OK");
 
 			// get csq
-			if(GsmLLR_UpdateCSQ(&gsmCsqValue) != eOk) {
+			if(gsmLLR_UpdateCSQ(&gsmCsqValue) != eOk) {
 				DBGInfo("GSM: get CSQ ERROR, -RELOAD");
 				gsmState.notRespond = true;
 				continue;
@@ -119,7 +118,7 @@ void vGsmTask( void * pvParameters ) {
 				DBGInfo("GSM: csq value %d", gsmCsqValue);
 
 				// get phone number
-				if(GsmLLR_GetSimCardNum(aSimCardNumber) != eOk) {
+				if(gsmLLR_GetSimCardNum(aSimCardNumber) != eOk) {
 					gsmState.notRespond = true;
 					continue;
 				}

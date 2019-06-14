@@ -37,7 +37,7 @@ static const char *comATAT[] = {"AT"};
 static const char *comGetIMEI[] = {"AT+GSN"};
 static const char *comGetIMSI[] = {"AT+CIMI"};
 static const char *comModemVersionSoftware[] = {"AT+CGMR"};
-static const char *comFlowControl[] = {"AT+IFC=2,2"};
+//static const char *comFlowControl[] = {"AT+IFC=2,2"};
 static const char *comCSQ[] = {"AT+CSQ"};
 static const char *comCREG[] = {"AT+CREG=1"};
 static const char *comCGATT[] = {"AT+CGATT=1"};
@@ -120,9 +120,10 @@ bool gsmLLR_GiveMutex(void) {
 eRetComm gsmLLR_PowerUp(void) {
 	uint8_t attemp = 0;
 	DBGInfo("GSM: power up begin");
-
+	// если уже высокий
 	if(HAL_GPIO_ReadPin(GSM_STATUS_GPIO_Port, GSM_STATUS_Pin) == GPIO_PIN_RESET) {
 		DBGInfo("GSM: module already up");
+		return true;
 	} else {
 		for(attemp = 0; attemp <3; attemp++) {
 			DBGInfo("GSM: power up, attempt %d", attemp);
@@ -234,11 +235,11 @@ eRetComm gsmLLR_StartPPP(sGsmSettings *pProperty) {
 			sprintf((char*)pData, "%s\"%s\"", "AT+CSTT=", "internet");	// AT+CSTT="internet"...OK
 			runAtCommand((char*)pData, &resultCommand);
 
-			sprintf((char*)pData, "%s", "AT+CGDCONT=1,\"PPP\",\"internet\"");	/// .
+			sprintf((char*)pData, "%s", "AT+CGDCONT=1,\"IP\",\"internet\"");	/// .
 			runAtCommand((char*)pData, &resultCommand);
 
-			sprintf((char*)pData, "%s", "AT+CUSD=1,\"*99#\"");
-//			sprintf((char*)pData, "%s", "ATD*99#");
+//			sprintf((char*)pData, "%s", "AT+CUSD=1,\"*99#\"");
+			sprintf((char*)pData, "%s", "ATD*99#");
 			runAtCommand(*comPPP_1, &resultCommand);
 
 			uartParcerStruct.ppp.pppModeEnable = true;
@@ -252,14 +253,39 @@ eRetComm gsmLLR_StartPPP(sGsmSettings *pProperty) {
 	return eOk;
 }
 
+//sResultCommand resultCommand;
+//char **comPPP_Mass[3] = {comPPP_2, comPPP_3, comPPP_4};
+//uint8_t *pData = NULL;
+//if(gsmLLR_GetMutex() == true) {
+//	pData = pvPortMalloc(GSM_MALLOC_COMMAND_SIZE);
+//	if(pData != NULL) {
+//		memset(pData, 0, GSM_MALLOC_COMMAND_SIZE);
+//		sprintf((char*)pData, "%s%s", comPPP_0[0], "\"internet\"");
+//		runAtCommand((char*)pData, &resultCommand);
+//
+//		uint8_t stepIndex = 0;
+//		while(stepIndex != (3)) {
+//			uint16_t len = strlen((char*)*comPPP_Mass[stepIndex]);
+//			sprintf((char*)pData, "%s\0", (char*)*comPPP_Mass[stepIndex]);
+//			runAtCommand((char*)pData, &resultCommand);
+//			stepIndex++;
+//		}
+//		memset(pData, 0, GSM_MALLOC_COMMAND_SIZE);
+//		vPortFree(pData);
+//	}
+//	gsmLLR_GiveMutex();
+//}
+//return eOk;
+
 eRetComm gsmLLR_FlowControl(void) {
 	eRetComm ret;
-	sResultCommand resultCommand;
-	if(gsmLLR_GetMutex() == true) {
-		ret = runAtCommand(*comFlowControl, &resultCommand);
-		gsmLLR_GiveMutex();
-	}
-	return ret;
+//	sResultCommand resultCommand;
+//	if(gsmLLR_GetMutex() == true) {
+//		ret = runAtCommand(*comFlowControl, &resultCommand);
+//		gsmLLR_GiveMutex();
+//	}
+//	return ret;
+	return eOk;
 }
 
 /* значение уровня сигнала 0-31 или 99 если ошибка */
@@ -624,12 +650,12 @@ eRetComm runAtCommand(const char* pCommand, sResultCommand *resultCommand) {
 				replayResult = uartParceReceiveData(&uartParcerStruct);
 				if((replayResult.atReplyfound == true) && ((replayResult.atReplyType == eOk) || (replayResult.atReplyType == ePPP))) {
 					resultCommand->state = eOk;
-					DBGInfo("GSM_PARSER: at reply ok");
 					result = eOk;
 					//Выход из цикла
 					break;
 				}
 			}
+			DBGInfo("GSM_PARSER: reply %s", uartParcerStruct.uart.pRxBuffer);
 			// flush last result
 			uartParcerStruct.uart.receiveState = false;
 		} else {
