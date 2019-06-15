@@ -65,6 +65,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/pkcs11}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/mbedtls/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Drivers/BSP/Components/es_wifi}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.805484847" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -99,9 +100,12 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/bufferpool"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/crypto"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/mqtt"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/pkcs11/mbedtls"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/pkcs11/portable/st/stm32l475_discovery"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/secure_sockets/portable/st/stm32l475_discovery"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/tls"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/utils"/>
 					</sourceEntries>
 				</configuration>

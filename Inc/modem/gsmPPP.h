@@ -45,7 +45,10 @@ typedef struct {
 }sGetDnsResult;
 
 bool gsmPPP_Init(void);
-bool gsmPPP_Connect(char *pDestAddr, uint16_t port);
+
+sGetDnsResult getIpByDns(const char *pDnsName, uint8_t len);
+
+bool gsmPPP_Connect(uint8_t* destIp, uint16_t port);
 bool gsmPPP_Disconnect(uint8_t numConnect);
 bool gsmPPP_SendData(uint8_t numConnect, uint8_t *pData, uint16_t len);
 uint16_t gsmPPP_GetRxLenData(uint8_t numConnect);

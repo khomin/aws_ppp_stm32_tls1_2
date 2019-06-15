@@ -55,6 +55,7 @@ UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 extern ePppState pppState;
+RNG_HandleTypeDef hrng;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -282,6 +283,32 @@ static void MX_CRC_Init(void)
 	/* USER CODE BEGIN CRC_Init 2 */
 
 	/* USER CODE END CRC_Init 2 */
+
+}
+
+/**
+  * @brief RNG Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RNG_Init(void)
+{
+
+  /* USER CODE BEGIN RNG_Init 0 */
+
+  /* USER CODE END RNG_Init 0 */
+
+  /* USER CODE BEGIN RNG_Init 1 */
+
+  /* USER CODE END RNG_Init 1 */
+  hrng.Instance = RNG;
+  if (HAL_RNG_Init(&hrng) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RNG_Init 2 */
+
+  /* USER CODE END RNG_Init 2 */
 
 }
 

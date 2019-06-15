@@ -87,7 +87,7 @@
 /**
  * @brief The topic that the MQTT client both subscribes and publishes to.
  */
-#define echoTOPIC_NAME           ( ( const uint8_t * ) "freertos/demos/echo" )
+#define echoTOPIC_NAME           ( ( const uint8_t * ) "$aws/things/USB_Printer_Board/shadow/update" )
 
 /**
  * @brief The string appended to messages that are echoed back to the MQTT broker.

@@ -38,7 +38,7 @@
 #include "aws_tls.h"
 
 /* WiFi driver includes. */
-//#include "es_wifi.h"
+#include "es_wifi.h"
 //#include "es_wifi_io.h"
 
 /* Socket and WiFi interface includes. */
@@ -124,8 +124,7 @@
  */
 typedef struct STWiFiModule
 {
-// TODO
-//    ES_WIFIObject_t xWifiObject;        /**< Internal WiFi object. */
+    ES_WIFIObject_t xWifiObject;        /**< Internal WiFi object. */
     SemaphoreHandle_t xSemaphoreHandle; /**< Semaphore used to serialize all the operations on the WiFi module. */
 } STWiFiModule_t;
 
@@ -135,7 +134,7 @@ typedef struct STWiFiModule
 typedef struct STSecureSocket
 {
     uint8_t ucInUse;                    /**< Tracks whether the socket is in use or not. */
-//    ES_WIFI_ConnType_t xSocketType;     /**< Type of the socket. @see ES_WIFI_ConnType_t. */
+    ES_WIFI_ConnType_t xSocketType;     /**< Type of the socket. @see ES_WIFI_ConnType_t. */
     uint32_t ulFlags;                   /**< Various properties of the socket (secured etc.). */
     uint32_t ulSendTimeout;             /**< Send timeout. */
     uint32_t ulReceiveTimeout;          /**< Receive timeout. */
@@ -313,89 +312,91 @@ static BaseType_t prvNetworkSend( void * pvContext,
                                   const unsigned char * pucData,
                                   size_t xDataLength )
 {
-//	TODO
-//    uint32_t ulSocketNumber = ( uint32_t ) pvContext; /*lint !e923 cast is necessary for port. */
-//    STSecureSocket_t * pxSecureSocket;
-//    uint16_t usSentBytes = 0;
+    uint32_t ulSocketNumber = ( uint32_t ) pvContext; /*lint !e923 cast is necessary for port. */
+    STSecureSocket_t * pxSecureSocket;
+    uint16_t usSentBytes = 0;
     BaseType_t xRetVal = SOCKETS_SOCKET_ERROR;
-//    ES_WIFI_Status_t xWiFiResult;
-//
-//    /* Shortcut for easy access. */
-//    pxSecureSocket = &( xSockets[ ulSocketNumber ] );
-//
-//    /* Try to acquire the semaphore. */
-//    if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE )
-//    {
-//        /* Since WiFi module has only one timeout, this needs
-//         * to be set per send and receive operation to the
-//         * respective send or receive timeout. Also, this
-//         * must be done after acquiring the semaphore as the
-//         * xWiFiModule is a shared object.*/
-//        if( pxSecureSocket->ulSendTimeout == 0 )
-//        {
-//            /* Set the SPI timeout to the maximum uint32_t value.
-//             * This is a little over 49 days. */
-//            xWiFiModule.xWifiObject.Timeout = 0xFFFFFFFF;
-//        }
-//        else
-//        {
-//            /* The maximum timeout for Inventek module is 30 seconds.
-//             * This timeout is about 65 seconds, so the module should
-//             * timeout before the SPI. */
-//            xWiFiModule.xWifiObject.Timeout = ES_WIFI_TIMEOUT;
-//        }
-//
-//        /* Send the data. */
-//        xWiFiResult = ES_WIFI_SendData( &( xWiFiModule.xWifiObject ),
-//                                        ( uint8_t ) ulSocketNumber,
-//                                        ( uint8_t * ) pucData, /*lint !e9005 STM function does not use const. */
-//                                        ( uint16_t ) xDataLength,
-//                                        &( usSentBytes ),
-//                                        pxSecureSocket->ulSendTimeout );
-//
-//        if( xWiFiResult == ES_WIFI_STATUS_OK )
-//        {
-//            /* If the data was successfully sent, return the actual
-//             * number of bytes sent. Otherwise return SOCKETS_SOCKET_ERROR. */
-//            xRetVal = ( BaseType_t ) usSentBytes;
-//        }
-//
-//        /* Return the semaphore. */
-//        ( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
-//    }
-//
-//    /* The following code attempts to revive the Inventek WiFi module
-//     * from its unusable state.*/
+    ES_WIFI_Status_t xWiFiResult;
+
+    /* Shortcut for easy access. */
+    pxSecureSocket = &( xSockets[ ulSocketNumber ] );
+
+    /* Try to acquire the semaphore. */
+    if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE )
+    {
+    	/* Since WiFi module has only one timeout, this needs
+    	 * to be set per send and receive operation to the
+    	 * respective send or receive timeout. Also, this
+    	 * must be done after acquiring the semaphore as the
+    	 * xWiFiModule is a shared object.*/
+    	if( pxSecureSocket->ulSendTimeout == 0 )
+    	{
+    		/* Set the SPI timeout to the maximum uint32_t value.
+    		 * This is a little over 49 days. */
+    		xWiFiModule.xWifiObject.Timeout = 0xFFFFFFFF;
+    	}
+    	else
+    	{
+    		/* The maximum timeout for Inventek module is 30 seconds.
+    		 * This timeout is about 65 seconds, so the module should
+    		 * timeout before the SPI. */
+    		xWiFiModule.xWifiObject.Timeout = ES_WIFI_TIMEOUT;
+    	}
+
+    	/* Send the data. */
+    	xWiFiResult = ES_WIFI_SendData( &( xWiFiModule.xWifiObject ),
+    			( uint8_t ) ulSocketNumber,
+				( uint8_t * ) pucData, /*lint !e9005 STM function does not use const. */
+				( uint16_t ) xDataLength,
+				&( usSentBytes ),
+				pxSecureSocket->ulSendTimeout );
+
+    	if( xWiFiResult == ES_WIFI_STATUS_OK )
+    	{
+    		/* If the data was successfully sent, return the actual
+    		 * number of bytes sent. Otherwise return SOCKETS_SOCKET_ERROR. */
+    		xRetVal = ( BaseType_t ) usSentBytes;
+    	}
+
+    	/* Return the semaphore. */
+    	( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
+    }
+
+    /* The following code attempts to revive the Inventek WiFi module
+     * from its unusable state.*/
+
+    // TODO: power and reset
+
 //    if( xWiFiResult == ES_WIFI_STATUS_IO_ERROR )
 //    {
-//        /* Reset the WiFi Module. Since the WIFI_Reset function
-//         * acquires the same semaphore, we must not acquire
-//         * it. */
-//        if( WIFI_Reset() == eWiFiSuccess )
-//        {
-//            /* Try to acquire the semaphore. */
-//            if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, portMAX_DELAY ) == pdTRUE )
-//            {
-//                /* Reinitialize the socket structures which
-//                 * marks all sockets as closed and free. */
-//                SOCKETS_Init();
+//    	/* Reset the WiFi Module. Since the WIFI_Reset function
+//    	 * acquires the same semaphore, we must not acquire
+//    	 * it. */
+//    	if( WIFI_Reset() == eWiFiSuccess )
+//    	{
+//    		/* Try to acquire the semaphore. */
+//    		if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, portMAX_DELAY ) == pdTRUE )
+//    		{
+//    			/* Reinitialize the socket structures which
+//    			 * marks all sockets as closed and free. */
+//    			SOCKETS_Init();
 //
-//                /* Return the semaphore. */
-//                ( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
-//            }
+//    			/* Return the semaphore. */
+//    			( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
+//    		}
 //
-//            /* Set the error code to indicate that
-//             * WiFi needs to be reconnected to network. */
-//            xRetVal = SOCKETS_PERIPHERAL_RESET;
-//        }
+//    		/* Set the error code to indicate that
+//    		 * WiFi needs to be reconnected to network. */
+//    		xRetVal = SOCKETS_PERIPHERAL_RESET;
+//    	}
 //    }
-//
-//    /* To allow other tasks of equal priority that are using this API to run as
-//     * a switch to an equal priority task that is waiting for the mutex will
-//     * only otherwise occur in the tick interrupt - at which point the mutex
-//     * might have been taken again by the currently running task.
-//     */
-//    taskYIELD();
+
+    /* To allow other tasks of equal priority that are using this API to run as
+     * a switch to an equal priority task that is waiting for the mutex will
+     * only otherwise occur in the tick interrupt - at which point the mutex
+     * might have been taken again by the currently running task.
+     */
+    taskYIELD();
 
     return xRetVal;
 }
@@ -541,28 +542,28 @@ Socket_t SOCKETS_Socket( int32_t lDomain,
 {
     uint32_t ulSocketNumber;
 
-//    /* Ensure that only supported values are supplied. */
-//    configASSERT( lDomain == SOCKETS_AF_INET );
-//    configASSERT( ( lType == SOCKETS_SOCK_STREAM && lProtocol == SOCKETS_IPPROTO_TCP ) );
-//
-//    /* Try to get a free socket. */
-//    ulSocketNumber = prvGetFreeSocket();
-//
-//    /* If we get a free socket, set its attributes. */
-//    if( ulSocketNumber != ( uint32_t ) SOCKETS_INVALID_SOCKET )
-//    {
-//        /* Store the socket type. */
-//        xSockets[ ulSocketNumber ].xSocketType = ES_WIFI_TCP_CONNECTION;
-//
-//        /* Initialize all the members to sane values. */
-//        xSockets[ ulSocketNumber ].ulFlags = 0;
-//        xSockets[ ulSocketNumber ].ulSendTimeout = socketsconfigDEFAULT_SEND_TIMEOUT;
-//        xSockets[ ulSocketNumber ].ulReceiveTimeout = socketsconfigDEFAULT_RECV_TIMEOUT;
-//        xSockets[ ulSocketNumber ].pcDestination = NULL;
-//        xSockets[ ulSocketNumber ].pvTLSContext = NULL;
-//        xSockets[ ulSocketNumber ].pcServerCertificate = NULL;
-//        xSockets[ ulSocketNumber ].ulServerCertificateLength = 0;
-//    }
+    /* Ensure that only supported values are supplied. */
+    configASSERT( lDomain == SOCKETS_AF_INET );
+    configASSERT( ( lType == SOCKETS_SOCK_STREAM && lProtocol == SOCKETS_IPPROTO_TCP ) );
+
+    /* Try to get a free socket. */
+    ulSocketNumber = prvGetFreeSocket();
+
+    /* If we get a free socket, set its attributes. */
+    if( ulSocketNumber != ( uint32_t ) SOCKETS_INVALID_SOCKET )
+    {
+        /* Store the socket type. */
+        xSockets[ ulSocketNumber ].xSocketType = ES_WIFI_TCP_CONNECTION;
+
+        /* Initialize all the members to sane values. */
+        xSockets[ ulSocketNumber ].ulFlags = 0;
+        xSockets[ ulSocketNumber ].ulSendTimeout = socketsconfigDEFAULT_SEND_TIMEOUT;
+        xSockets[ ulSocketNumber ].ulReceiveTimeout = socketsconfigDEFAULT_RECV_TIMEOUT;
+        xSockets[ ulSocketNumber ].pcDestination = NULL;
+        xSockets[ ulSocketNumber ].pvTLSContext = NULL;
+        xSockets[ ulSocketNumber ].pcServerCertificate = NULL;
+        xSockets[ ulSocketNumber ].ulServerCertificateLength = 0;
+    }
 
     /* If we fail to get a free socket, we return SOCKETS_INVALID_SOCKET. */
     return ( Socket_t ) ulSocketNumber; /*lint !e923 cast required for portability. */
@@ -573,175 +574,174 @@ int32_t SOCKETS_Connect( Socket_t xSocket,
                          SocketsSockaddr_t * pxAddress,
                          Socklen_t xAddressLength )
 {
-	//    TODO
-//	uint32_t ulSocketNumber = ( uint32_t ) xSocket; /*lint !e923 cast required for portability. */
-//    STSecureSocket_t * pxSecureSocket;
-//    ES_WIFI_Conn_t xWiFiConnection;
+	uint32_t ulSocketNumber = ( uint32_t ) xSocket; /*lint !e923 cast required for portability. */
+    STSecureSocket_t * pxSecureSocket;
+    ES_WIFI_Conn_t xWiFiConnection;
     int32_t lRetVal = SOCKETS_ERROR_NONE;
 
-//    #ifndef USE_OFFLOAD_SSL
-//        TLSParams_t xTLSParams = { 0 };
-//    #endif /* USE_OFFLOAD_SSL */
-//
-//    /* Ensure that a valid socket was passed. */
-//    if( prvIsValidSocket( ulSocketNumber ) == pdTRUE )
-//    {
-//        /* Shortcut for easy access. */
-//        pxSecureSocket = &( xSockets[ ulSocketNumber ] );
-//
-//        /* Check that the socket is not already connected. */
-//        if( ( pxSecureSocket->ulFlags & stsecuresocketsSOCKET_IS_CONNECTED_FLAG ) != 0UL )
-//        {
-//            /* Connect attempted on an already connected socket. */
-//            lRetVal = SOCKETS_SOCKET_ERROR;
-//        }
-//
-//        /* Try to acquire the semaphore. */
-//        if( ( lRetVal == SOCKETS_ERROR_NONE ) &&
-//            ( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE ) )
-//        {
-//            /* Store server certificate if we are using offload SSL
-//             * and the socket is a secure socket. */
-//            #ifdef USE_OFFLOAD_SSL
-//                if( ( pxSecureSocket->ulFlags & stsecuresocketsSOCKET_SECURE_FLAG ) != 0UL )
-//                {
-//                    /* Store the custom certificate if needed. */
-//                    if( pxSecureSocket->pcServerCertificate != NULL )
-//                    {
-//                        if( ES_WIFI_StoreCA( &( xWiFiModule.xWifiObject ),
-//                                             ES_WIFI_FUNCTION_TLS,
-//                                             stsecuresocketsOFFLOAD_SSL_CREDS_SLOT,
-//                                             ( uint8_t * ) pxSecureSocket->pcServerCertificate,
-//                                             ( uint16_t ) pxSecureSocket->ulServerCertificateLength ) == ES_WIFI_STATUS_OK )
-//                        {
-//                            /* Certificate stored successfully. */
-//                            lRetVal = SOCKETS_ERROR_NONE;
-//                        }
-//                        else
-//                        {
-//                            /* Failed to store certificate. */
-//                            lRetVal = SOCKETS_SOCKET_ERROR;
-//                        }
-//                    }
-//                    else
-//                    {
-//                        /* If we are not using the ATS endpoint, use the VeriSign root CA. Otherwise
-//                         * use the Starfield root CA. */
-//                        if( strstr( clientcredentialMQTT_BROKER_ENDPOINT, "-ats.iot" ) == NULL )
-//                        {
-//                            /* Store the default certificate. */
-//                            if( ES_WIFI_StoreCA( &( xWiFiModule.xWifiObject ),
-//                                                 ES_WIFI_FUNCTION_TLS,
-//                                                 stsecuresocketsOFFLOAD_SSL_CREDS_SLOT,
-//                                                 ( uint8_t * ) tlsVERISIGN_ROOT_CERTIFICATE_PEM,
-//                                                 ( uint16_t ) tlsVERISIGN_ROOT_CERTIFICATE_LENGTH ) == ES_WIFI_STATUS_OK )
-//                            {
-//                                /* Certificate stored successfully. */
-//                                lRetVal = SOCKETS_ERROR_NONE;
-//                            }
-//                            else
-//                            {
-//                                /* Failed to store certificate. */
-//                                lRetVal = SOCKETS_SOCKET_ERROR;
-//                            }
-//                        }
-//                        else
-//                        {
-//                            /* Store the default certificate. */
-//                            if( ES_WIFI_StoreCA( &( xWiFiModule.xWifiObject ),
-//                                                 ES_WIFI_FUNCTION_TLS,
-//                                                 stsecuresocketsOFFLOAD_SSL_CREDS_SLOT,
-//                                                 ( uint8_t * ) tlsSTARFIELD_ROOT_CERTIFICATE_PEM,
-//                                                 ( uint16_t ) tlsSTARFIELD_ROOT_CERTIFICATE_LENGTH ) == ES_WIFI_STATUS_OK )
-//                            {
-//                                /* Certificate stored successfully. */
-//                                lRetVal = SOCKETS_ERROR_NONE;
-//                            }
-//                            else
-//                            {
-//                                /* Failed to store certificate. */
-//                                lRetVal = SOCKETS_SOCKET_ERROR;
-//                            }
-//                        }
-//                    }
-//                }
-//            #endif /* USE_OFFLOAD_SSL */
-//
-//            if( lRetVal == SOCKETS_ERROR_NONE )
-//            {
-//                /* Setup connection parameters. */
-//                xWiFiConnection.Number = ( uint8_t ) ulSocketNumber;
-//                xWiFiConnection.Type = pxSecureSocket->xSocketType;
-//                xWiFiConnection.RemotePort = SOCKETS_ntohs( pxAddress->usPort ); /* WiFi Module expects the port number in host byte order. */
-//                memcpy( &( xWiFiConnection.RemoteIP ),
-//                        &( pxAddress->ulAddress ),
-//                        sizeof( xWiFiConnection.RemoteIP ) );
-//                xWiFiConnection.LocalPort = 0;
-//                xWiFiConnection.Name = NULL;
-//
-//                /* Start the client connection. */
-//                if( ES_WIFI_StartClientConnection( &( xWiFiModule.xWifiObject ), &( xWiFiConnection ) ) == ES_WIFI_STATUS_OK )
-//                {
-//                    /* Successful connection is established. */
-//                    lRetVal = SOCKETS_ERROR_NONE;
-//
-//                    /* Mark that the socket is connected. */
-//                    pxSecureSocket->ulFlags |= stsecuresocketsSOCKET_IS_CONNECTED_FLAG;
-//                }
-//                else
-//                {
-//                    /* Connection failed. */
-//                    lRetVal = SOCKETS_SOCKET_ERROR;
-//                }
-//            }
-//
-//            /* Return the semaphore. */
-//            ( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
-//        }
-//        else
-//        {
-//            /* Could not acquire semaphore. */
-//            lRetVal = SOCKETS_SOCKET_ERROR;
-//        }
-//    }
-//    else
-//    {
-//        /* Invalid socket handle was passed. */
-//        lRetVal = SOCKETS_EINVAL;
-//    }
-//
-//    /* TLS initialization is needed only if we are not using offload SSL. */
-//    #ifndef USE_OFFLOAD_SSL
-//        /* Initialize TLS only if the connection is successful. */
-//        if( ( lRetVal == SOCKETS_ERROR_NONE ) &&
-//            ( ( pxSecureSocket->ulFlags & stsecuresocketsSOCKET_SECURE_FLAG ) != 0UL ) )
-//        {
-//            /* Setup TLS parameters. */
-//            xTLSParams.ulSize = sizeof( xTLSParams );
-//            xTLSParams.pcDestination = pxSecureSocket->pcDestination;
-//            xTLSParams.pcServerCertificate = pxSecureSocket->pcServerCertificate;
-//            xTLSParams.ulServerCertificateLength = pxSecureSocket->ulServerCertificateLength;
-//            xTLSParams.pvCallerContext = ( void * ) xSocket;
-//            xTLSParams.pxNetworkRecv = &( prvNetworkRecv );
-//            xTLSParams.pxNetworkSend = &( prvNetworkSend );
-//
-//            /* Initialize TLS. */
-//            if( TLS_Init( &( pxSecureSocket->pvTLSContext ), &( xTLSParams ) ) == pdFREERTOS_ERRNO_NONE )
-//            {
-//                /* Initiate TLS handshake. */
-//                if( TLS_Connect( pxSecureSocket->pvTLSContext ) != pdFREERTOS_ERRNO_NONE )
-//                {
-//                    /* TLS handshake failed. */
-//                    lRetVal = SOCKETS_TLS_HANDSHAKE_ERROR;
-//                }
-//            }
-//            else
-//            {
-//                /* TLS Initialization failed. */
-//                lRetVal = SOCKETS_TLS_INIT_ERROR;
-//            }
-//        }
-//    #endif /* USE_OFFLOAD_SSL*/
+#ifndef USE_OFFLOAD_SSL
+    TLSParams_t xTLSParams = { 0 };
+#endif /* USE_OFFLOAD_SSL */
+
+    /* Ensure that a valid socket was passed. */
+    if( prvIsValidSocket( ulSocketNumber ) == pdTRUE )
+    {
+    	/* Shortcut for easy access. */
+    	pxSecureSocket = &( xSockets[ ulSocketNumber ] );
+
+    	/* Check that the socket is not already connected. */
+    	if( ( pxSecureSocket->ulFlags & stsecuresocketsSOCKET_IS_CONNECTED_FLAG ) != 0UL )
+    	{
+    		/* Connect attempted on an already connected socket. */
+    		lRetVal = SOCKETS_SOCKET_ERROR;
+    	}
+
+    	/* Try to acquire the semaphore. */
+    	if( ( lRetVal == SOCKETS_ERROR_NONE ) &&
+    			( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE ) )
+    	{
+    		/* Store server certificate if we are using offload SSL
+    		 * and the socket is a secure socket. */
+#ifdef USE_OFFLOAD_SSL
+    		if( ( pxSecureSocket->ulFlags & stsecuresocketsSOCKET_SECURE_FLAG ) != 0UL )
+    		{
+    			/* Store the custom certificate if needed. */
+    			if( pxSecureSocket->pcServerCertificate != NULL )
+    			{
+    				if( ES_WIFI_StoreCA( &( xWiFiModule.xWifiObject ),
+    						ES_WIFI_FUNCTION_TLS,
+							stsecuresocketsOFFLOAD_SSL_CREDS_SLOT,
+							( uint8_t * ) pxSecureSocket->pcServerCertificate,
+							( uint16_t ) pxSecureSocket->ulServerCertificateLength ) == ES_WIFI_STATUS_OK )
+    				{
+    					/* Certificate stored successfully. */
+						lRetVal = SOCKETS_ERROR_NONE;
+    				}
+    				else
+    				{
+    					/* Failed to store certificate. */
+						lRetVal = SOCKETS_SOCKET_ERROR;
+    				}
+    			}
+    			else
+    			{
+    				/* If we are not using the ATS endpoint, use the VeriSign root CA. Otherwise
+    				 * use the Starfield root CA. */
+    				if( strstr( clientcredentialMQTT_BROKER_ENDPOINT, "-ats.iot" ) == NULL )
+    				{
+    					/* Store the default certificate. */
+    					if( ES_WIFI_StoreCA( &( xWiFiModule.xWifiObject ),
+    							ES_WIFI_FUNCTION_TLS,
+								stsecuresocketsOFFLOAD_SSL_CREDS_SLOT,
+								( uint8_t * ) tlsVERISIGN_ROOT_CERTIFICATE_PEM,
+								( uint16_t ) tlsVERISIGN_ROOT_CERTIFICATE_LENGTH ) == ES_WIFI_STATUS_OK )
+    					{
+    						/* Certificate stored successfully. */
+							lRetVal = SOCKETS_ERROR_NONE;
+    					}
+    					else
+    					{
+    						/* Failed to store certificate. */
+							lRetVal = SOCKETS_SOCKET_ERROR;
+    					}
+    				}
+    				else
+    				{
+    					/* Store the default certificate. */
+    					if( ES_WIFI_StoreCA( &( xWiFiModule.xWifiObject ),
+    							ES_WIFI_FUNCTION_TLS,
+								stsecuresocketsOFFLOAD_SSL_CREDS_SLOT,
+								( uint8_t * ) tlsSTARFIELD_ROOT_CERTIFICATE_PEM,
+								( uint16_t ) tlsSTARFIELD_ROOT_CERTIFICATE_LENGTH ) == ES_WIFI_STATUS_OK )
+    					{
+    						/* Certificate stored successfully. */
+							lRetVal = SOCKETS_ERROR_NONE;
+    					}
+    					else
+    					{
+    						/* Failed to store certificate. */
+							lRetVal = SOCKETS_SOCKET_ERROR;
+    					}
+    				}
+    			}
+    		}
+#endif /* USE_OFFLOAD_SSL */
+
+    		if( lRetVal == SOCKETS_ERROR_NONE )
+    		{
+    			/* Setup connection parameters. */
+    			xWiFiConnection.Number = ( uint8_t ) ulSocketNumber;
+    			xWiFiConnection.Type = pxSecureSocket->xSocketType;
+    			xWiFiConnection.RemotePort = SOCKETS_ntohs( pxAddress->usPort ); /* WiFi Module expects the port number in host byte order. */
+    			memcpy( &( xWiFiConnection.RemoteIP ),
+    					&( pxAddress->ulAddress ),
+						sizeof( xWiFiConnection.RemoteIP ) );
+    			xWiFiConnection.LocalPort = 0;
+    			xWiFiConnection.Name = NULL;
+
+    			/* Start the client connection. */
+    			if( ES_WIFI_StartClientConnection( &( xWiFiModule.xWifiObject ), &( xWiFiConnection ) ) == ES_WIFI_STATUS_OK )
+    			{
+    				/* Successful connection is established. */
+    				lRetVal = SOCKETS_ERROR_NONE;
+
+    				/* Mark that the socket is connected. */
+    				pxSecureSocket->ulFlags |= stsecuresocketsSOCKET_IS_CONNECTED_FLAG;
+    			}
+    			else
+    			{
+    				/* Connection failed. */
+    				lRetVal = SOCKETS_SOCKET_ERROR;
+    			}
+    		}
+
+    		/* Return the semaphore. */
+    		( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
+    	}
+    	else
+    	{
+    		/* Could not acquire semaphore. */
+    		lRetVal = SOCKETS_SOCKET_ERROR;
+    	}
+    }
+    else
+    {
+    	/* Invalid socket handle was passed. */
+    	lRetVal = SOCKETS_EINVAL;
+    }
+
+    /* TLS initialization is needed only if we are not using offload SSL. */
+#ifndef USE_OFFLOAD_SSL
+    /* Initialize TLS only if the connection is successful. */
+    if( ( lRetVal == SOCKETS_ERROR_NONE ) &&
+    		( ( pxSecureSocket->ulFlags & stsecuresocketsSOCKET_SECURE_FLAG ) != 0UL ) )
+    {
+    	/* Setup TLS parameters. */
+    	xTLSParams.ulSize = sizeof( xTLSParams );
+    	xTLSParams.pcDestination = pxSecureSocket->pcDestination;
+    	xTLSParams.pcServerCertificate = pxSecureSocket->pcServerCertificate;
+    	xTLSParams.ulServerCertificateLength = pxSecureSocket->ulServerCertificateLength;
+    	xTLSParams.pvCallerContext = ( void * ) xSocket;
+    	xTLSParams.pxNetworkRecv = &( prvNetworkRecv );
+    	xTLSParams.pxNetworkSend = &( prvNetworkSend );
+
+    	/* Initialize TLS. */
+		if( TLS_Init( &( pxSecureSocket->pvTLSContext ), &( xTLSParams ) ) == pdFREERTOS_ERRNO_NONE )
+		{
+			/* Initiate TLS handshake. */
+			if( TLS_Connect( pxSecureSocket->pvTLSContext ) != pdFREERTOS_ERRNO_NONE )
+			{
+				/* TLS handshake failed. */
+				lRetVal = SOCKETS_TLS_HANDSHAKE_ERROR;
+			}
+		}
+		else
+		{
+			/* TLS Initialization failed. */
+			lRetVal = SOCKETS_TLS_INIT_ERROR;
+		}
+    }
+#endif /* USE_OFFLOAD_SSL*/
 
     return lRetVal;
 }
@@ -1153,6 +1153,8 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
     return lRetVal;
 }
 /*-----------------------------------------------------------*/
+#include "gsmPPP.h"
+#include <string.h>
 
 uint32_t SOCKETS_GetHostByName( const char * pcHostName )
 {
@@ -1161,15 +1163,20 @@ uint32_t SOCKETS_GetHostByName( const char * pcHostName )
     /* Try to acquire the semaphore. */
     if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE )
     {
-//    TODO
-//    	/* Do a DNS Lookup. */
-//        if( ES_WIFI_DNS_LookUp( &( xWiFiModule.xWifiObject ), pcHostName, ( uint8_t * ) &( ulIPAddres ) ) != ES_WIFI_STATUS_OK )
-//        {
-//            /* Return 0 if the DNS lookup fails. */
-//            ulIPAddres = 0;
-//        }
+    	/* Do a DNS Lookup. */
+//    	sGetDnsResult resuls = getIpByDns(pcHostName, strlen(pcHostName));
+//    	if(resuls.isValid) {
+//    		ulIPAddres = resuls.resolved.addr;
+//    	}
 
-        /* Return the semaphore. */
+    	// TODO: test
+    	ulIPAddres = 0x92040a1f;
+//    	destIp[0] = 0x1f;
+//    	destIp[0] = 0x0a;
+//    	destIp[0] = 0x04;
+//    	destIp[0] = 0x92;
+
+    	/* Return the semaphore. */
         ( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
     }
 

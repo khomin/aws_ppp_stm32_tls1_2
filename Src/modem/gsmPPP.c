@@ -47,15 +47,14 @@ static void status_cb(ppp_pcb *pcb, int err_code, void *ctx);
 static void ctx_cb_callback(void *p);
 static u32_t output_cb(ppp_pcb *pcb, u8_t *data, u32_t len, void *ctx);
 
-//static err_t tcp_connected_cb(void *arg, struct tcp_pcb *tpcb, err_t err);
+static err_t tcp_connected_cb(void *arg, struct tcp_pcb *tpcb, err_t err);
 static void dns_server_is_found_cb(const char *name, const ip_addr_t *ipaddr, void *callback_arg);
-//static err_t server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err);
-//static err_t server_err(void *arg, err_t err);
-//static void server_close(struct tcp_pcb *pcb);
+static err_t server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err);
+static err_t server_err(void *arg, err_t err);
+static void server_close(struct tcp_pcb *pcb);
 //void udp_dns_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *addr, u16_t port);
 
 static void gsmPPP_rawInput(void *pvParamter);
-static sGetDnsResult getIpByDns(const char *pDnsName, uint8_t len);
 
 void gsmPPP_Tsk(void *pvParamter);
 
@@ -109,29 +108,28 @@ void gsmPPP_Tsk(void *pvParamter) {
 		}
 
 		if(pppState == ppp_ready_work) {
-				DBGLog("AWS PPP-MQTT: module initialized.\r\n");
+			DBGLog("AWS PPP-MQTT: module initialized.\r\n");
 
-				/* A simple example to demonstrate key and certificate provisioning in
-				 * microcontroller flash using PKCS#11 interface. This should be replaced
-				 * by production ready key provisioning mechanism. */
-				vDevModeKeyProvisioning();
+			WIFI_On();
+			/* A simple example to demonstrate key and certificate provisioning in
+			 * microcontroller flash using PKCS#11 interface. This should be replaced
+			 * by production ready key provisioning mechanism. */
+			vDevModeKeyProvisioning();
 
-//				if( SYSTEM_Init() == pdPASS ) {
-//					/* Connect to the WiFi before running the demos */
-////					prvWifiConnect();
-//#ifdef USE_OFFLOAD_SSL
-//					/* Check if WiFi firmware needs to be updated. */
-//					prvCheckWiFiFirmwareVersion();
-//#endif /* USE_OFFLOAD_SSL */
-//					/* Start demos. */
-//					vStartMQTTEchoDemo();
-//				}
-//			} else {
-//				configPRINTF( ( "WiFi module failed to initialize.\r\n" ) );
-//
-//				/* Stop here if we fail to initialize WiFi. */
-//				configASSERT( xWifiStatus == eWiFiSuccess );
-//			}
+			if( SYSTEM_Init() == pdPASS ) {
+				/* Connect to the WiFi before running the demos */
+				//prvWifiConnect();
+#ifdef USE_OFFLOAD_SSL
+				/* Check if WiFi firmware needs to be updated. */
+				prvCheckWiFiFirmwareVersion();
+#endif /* USE_OFFLOAD_SSL */
+				/* Start demos. */
+				vStartMQTTEchoDemo();
+			} else {
+				configPRINTF( ( "WiFi module failed to initialize.\r\n" ) );
+				/* Stop here if we fail to initialize WiFi. */
+				configASSERT( xWifiStatus == eWiFiSuccess );
+			}
 
 			while(1) {
 				vTaskDelay(500/portTICK_RATE_MS);
@@ -142,182 +140,128 @@ void gsmPPP_Tsk(void *pvParamter) {
 	}
 }
 
-static void prvWifiConnect(void) {
-//    WIFINetworkParams_t xNetworkParams;
-//    WIFIReturnCode_t xWifiStatus;
-//    uint8_t ucIPAddr[ 4 ];
-//
-//    /* Setup WiFi parameters to connect to access point. */
-//    xNetworkParams.pcSSID = clientcredentialWIFI_SSID;
-//    xNetworkParams.ucSSIDLength = sizeof( clientcredentialWIFI_SSID );
-//    xNetworkParams.pcPassword = clientcredentialWIFI_PASSWORD;
-//    xNetworkParams.ucPasswordLength = sizeof( clientcredentialWIFI_PASSWORD );
-//    xNetworkParams.xSecurity = clientcredentialWIFI_SECURITY;
-//    xNetworkParams.cChannel = 0;
-//
-//    /* Try connecting using provided wifi credentials. */
-//    xWifiStatus = WIFI_ConnectAP( &( xNetworkParams ) );
-//
-//    if( xWifiStatus == eWiFiSuccess )
-//    {
-//        configPRINTF( ( "WiFi connected to AP %s.\r\n", xNetworkParams.pcSSID ) );
-//
-//        /* Get IP address of the device. */
-//        WIFI_GetIP( &ucIPAddr[ 0 ] );
-//
-//        configPRINTF( ( "IP Address acquired %d.%d.%d.%d\r\n",
-//                        ucIPAddr[ 0 ], ucIPAddr[ 1 ], ucIPAddr[ 2 ], ucIPAddr[ 3 ] ) );
-//    }
-//    else
-//    {
-//        /* Connection failed configure softAP to allow user to set wifi credentials. */
-//        configPRINTF( ( "WiFi failed to connect to AP %s.\r\n", xNetworkParams.pcSSID ) );
-//
-//        xNetworkParams.pcSSID = wificonfigACCESS_POINT_SSID_PREFIX;
-//        xNetworkParams.pcPassword = wificonfigACCESS_POINT_PASSKEY;
-//        xNetworkParams.xSecurity = wificonfigACCESS_POINT_SECURITY;
-//        xNetworkParams.cChannel = wificonfigACCESS_POINT_CHANNEL;
-//
-//        configPRINTF( ( "Connect to softAP %s using password %s. \r\n",
-//                        xNetworkParams.pcSSID, xNetworkParams.pcPassword ) );
-//
-//        while( WIFI_ConfigureAP( &xNetworkParams ) != eWiFiSuccess )
-//        {
-//            configPRINTF( ( "Connect to softAP %s using password %s and configure WiFi. \r\n",
-//                            xNetworkParams.pcSSID, xNetworkParams.pcPassword ) );
-//        }
-//
-//        configPRINTF( ( "WiFi configuration successful. \r\n", xNetworkParams.pcSSID ) );
-//    }
-}
-
 //----------------------------
 //--	private functions
 //----------------------------
 
-bool gsmPPP_Connect(char *pDestAddr, uint16_t port) {
-	ip_addr_t resolved;
-	uint8_t ipCut[4] = {0};
-
+bool gsmPPP_Connect(uint8_t* destIp, uint16_t port) {
 	if(pppState != ppp_ready_work) {
 		return false;
 	}
-	// prepare ip address
-	sscanf(pDestAddr, "%" PRIu8 ".%" PRIu8 ".%" PRIu8 ".%" PRIu8,
-			&ipCut[0], &ipCut[1], &ipCut[2], &ipCut[3]);
 
-	if((ipCut[0] != 0) && (ipCut[1] != 0)
-			&& (ipCut[2] != 0)&&(ipCut[3] != 0)) {
-		IP4_ADDR(&connectionPppStruct.ipRemoteAddr, ipCut[0], ipCut[1], ipCut[2], ipCut[3]);
-		DBGInfo("GSMPPP: connect without dns [%d.%d.%d.%d|%d]... ", ipCut[0], ipCut[1], ipCut[2], ipCut[3], port);
-	} else{
-		DBGInfo("GSMPPP: connect use dns %s... ", pDestAddr);
-		sGetDnsResult dns_prop = getIpByDns(pDestAddr, strlen(pDestAddr));
-		if(dns_prop.isValid) {
-			resolved = dns_prop.resolved;
+	// TODO: test
+	destIp[0] = 31;
+	destIp[1] = 10;
+	destIp[2] = 4;
+	destIp[3] = 146;
+
+	port = 45454;
+
+	IP4_ADDR(&connectionPppStruct.ipRemoteAddr, destIp[0], destIp[1], destIp[2], destIp[3]);
+	DBGInfo("GSMPPP: connect without dns [%d.%d.%d.%d|%d]... ", destIp[0], destIp[1], destIp[2], destIp[3], port);
+
+	if(connectionPppStruct.connected == false) {
+		if(connectionPppStruct.tcpClient == NULL) {
+			connectionPppStruct.tcpClient = tcp_new();
+		}
+		tcp_recv(connectionPppStruct.tcpClient, server_recv);
+
+		tcp_connect(connectionPppStruct.tcpClient, &connectionPppStruct.ipRemoteAddr, port, &tcp_connected_cb);
+
+		if(xSemaphoreTake(connectionPppStruct.semphr, 10000/portTICK_PERIOD_MS) == pdTRUE) {
+			connectionPppStruct.connected = true;
+			DBGInfo("GSMPPP: connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
+			return true;
+		} else {
+			DBGInfo("GSMPPP: connect timeout -error");
+			return false;
+		}
+	} else {
+		if(gsmLLR_ConnectServiceStatus(0) == eOk) {
+			DBGInfo("GSMPPP: connect -already connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
+			return true;
+		} else {
+			DBGInfo("GSMPPP: connect -close");
+			return false;
 		}
 	}
-
-	//	if(connectionPppStruct.connected == false) {
-	//		if(connectionPppStruct.tcpClient == NULL) {
-	//			connectionPppStruct.tcpClient = tcp_new();
-	//		}
-	//		tcp_recv(connectionPppStruct.tcpClient, server_recv);
-	//
-	//		tcp_connect(connectionPppStruct.tcpClient[numConnect], &connectionPppStruct.ipRemoteAddr[numConnect], port, &tcp_connected_cb);
-	//
-	//		if(xSemaphoreTake(connectionPppStruct.semphr[numConnect], 10000/portTICK_PERIOD_MS) == pdTRUE) {
-	//			connectionPppStruct.connected[numConnect] = true;
-	//			DBGInfo("GSMPPP: connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
-	//			return true;
-	//		} else {
-	//			DBGInfo("GSMPPP: connect timeout -error");
-	//			return false;
-	//		}
-	//	} else {
-	//		if(gsmLLR_ConnectServiceStatus(numConnect) == eOk) {
-	//			DBGInfo("GSMPPP: connect -already connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
-	//			return true;
-	//		} else {
-	//			DBGInfo("GSMPPP: connect -close");
-	//			return false;
-	//		}
-	//	}
 	return false;
 }
 
-//
-//bool gsmPPP_Disconnect(uint8_t numConnect) {
-//	if(pppState != ppp_ready_work) {
-//		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
-//		return false;
-//	}
-//	if(connectionPppStruct.tcpClient[numConnect] == NULL) {
-//		return false;
-//	}
-//	server_close(connectionPppStruct.tcpClient[numConnect]);
-//	connectionPppStruct.connected[numConnect] = false;
-//	return true;
-//}
-//
-//bool gsmPPP_ConnectStatus(uint8_t numConnect) {
-//	if(pppState != ppp_ready_work) {
-//		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
-//		return false;
-//	}
-//	if(connectionPppStruct.tcpClient[numConnect]->state == ESTABLISHED) {
-//		return true;
-//	}
-//	return false;
-//}
-//
-//bool gsmPPP_SendData(uint8_t numConnect, uint8_t *pData, uint16_t len) {
-//	if(pppState != ppp_ready_work) {
-//		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
-//		return false;
-//	}
-//	//	if(tcp_write(connectionPppStruct.tcpClient[numConnect], pData, len, NULL) == ERR_OK) {
-//	//		return true;
-//	//	}else {
-//	//		server_close(connectionPppStruct.tcpClient[numConnect]);
-//	//		connectionPppStruct.connected[numConnect] = false;
-//	//		connectionPppStruct.rxData[numConnect].rxBufferLen = 0;
-//	//		memset(connectionPppStruct.rxData[numConnect].rxBuffer,0, sizeof(connectionPppStruct.rxData[numConnect].rxBuffer));
-//	//	}
-//	return false;
-//}
+bool gsmPPP_Disconnect(uint8_t numConnect) {
+	if(pppState != ppp_ready_work) {
+		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
+		return false;
+	}
+	if(connectionPppStruct.tcpClient == NULL) {
+		return false;
+	}
+	server_close(connectionPppStruct.tcpClient);
+	connectionPppStruct.connected = false;
+	return true;
+}
+
+
+bool gsmPPP_SendData(uint8_t numConnect, uint8_t *pData, uint16_t len) {
+	if(pppState != ppp_ready_work) {
+		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
+		return false;
+	}
+	if(tcp_write(connectionPppStruct.tcpClient, pData, len, NULL) == ERR_OK) {
+		return true;
+	}else {
+		server_close(connectionPppStruct.tcpClient);
+		connectionPppStruct.connected = false;
+		connectionPppStruct.rxData.rxBufferLen = 0;
+		memset(connectionPppStruct.rxData.rxBuffer,0, sizeof(connectionPppStruct.rxData.rxBuffer));
+	}
+	return false;
+}
+
+static bool dns_is_found = false;
+static ip_addr_t dns_found_ipaddr;
 
 sGetDnsResult getIpByDns(const char *pDnsName, uint8_t len) {
 	sGetDnsResult result;
 	result.isValid = false;
 
 	if(pppState == ppp_ready_work) {
-		if(connectionPppStruct.connected == false) {
-			// if not created, when creat it
-			if(connectionPppStruct.tcpClient == NULL) {
-				connectionPppStruct.tcpClient = tcp_new();
-			}
-			// set listener event
-			//			tcp_recv(connectionPppStruct.tcpClient, server_recv);
-			switch(dns_gethostbyname(pDnsName,
-					&result.resolved,
-					dns_server_is_found_cb,
-					NULL)) {
-			case ERR_OK: // numeric or cached, returned in resolved
-				connectionPppStruct.ipRemoteAddr.addr = result.resolved.addr;
-				result.isValid = true;
-				break;
-			case ERR_INPROGRESS: // need to ask, will return data via callback
-				if(xSemaphoreTake(connectionPppStruct.semphr, 5000/portTICK_PERIOD_MS) != pdTRUE) {
-					//					server_close(connectionPppStruct.tcpClient);
-					connectionPppStruct.connected = false;
-					DBGInfo("GSMPPP: dns-ERROR");
+		dns_is_found = false;
+
+		switch(dns_gethostbyname(pDnsName, &result.resolved, dns_server_is_found_cb, NULL)) {
+		case ERR_OK: // numeric or cached, returned in resolved
+			DBGInfo("GSM-PPP: dns -ERR_OK");
+			dns_is_found = true;
+			break;
+			// need to ask, will return data via callback
+		case ERR_INPROGRESS: {
+			DBGInfo("GSM-PPP: dns -ERR_INPROGRESS");
+			uint8_t time_out = 0;
+			while(dns_is_found == false) {
+				time_out ++;
+				vTaskDelay(500/portTICK_RATE_MS);
+				if(time_out >= 10) {
+					break;
 				}
-				break;
 			}
-		}
+			break;
+		}}
 	}
+
+	if(dns_is_found) {
+		result.resolved.addr = dns_found_ipaddr.addr;
+		result.isValid = true;
+	}
+
 	return result;
+}
+
+
+static void dns_server_is_found_cb(const char *name, const ip_addr_t *ipaddr, void *callback_arg) {
+	if ((ipaddr) && (ipaddr->addr)) {
+		dns_found_ipaddr.addr = ipaddr->addr;
+		dns_is_found = true;
+	}
 }
 
 /*
@@ -457,10 +401,6 @@ static void status_cb(ppp_pcb *pcb, int err_code, void *ctx) {
 
 void ctx_cb_callback(void *p) {}
 
-static void dns_server_is_found_cb(const char *name, const ip_addr_t *ipaddr, void *callback_arg) {
-
-}
-
 /* PPP over Serial: this is the input function to be called for received data. */
 void gsmPPP_rawInput(void *pvParamter) {
 	static u8_t tbuf[512] = {0};
@@ -468,7 +408,7 @@ void gsmPPP_rawInput(void *pvParamter) {
 	vTaskDelay(1000/portTICK_RATE_MS);
 	while(1) {
 		if(uartParcerStruct.ppp.pppModeEnable) {
-			while(xQueueReceive(uartParcerStruct.uart.rxQueue, &tbuf[tbuf_len], 5/portTICK_PERIOD_MS) == pdTRUE) {
+			while(xQueueReceive(uartParcerStruct.uart.rxQueue, &tbuf[tbuf_len], 2/portTICK_PERIOD_MS) == pdTRUE) {
 				tbuf_len++;
 				if((tbuf_len-1) >=  sizeof(tbuf)) {
 					break;
@@ -506,70 +446,63 @@ void gsmPPP_rawInput(void *pvParamter) {
 //	}
 //	return false;
 //}
-//
-//err_t tcp_connected_cb(void *arg, struct tcp_pcb *tpcb, err_t err) {
-//	for(uint8_t i=0; i<SERVERS_COUNT; i++) {
-//		if(tpcb == connectionPppStruct.tcpClient[i]) {
-//			DBGInfo("GSMPPP: connected (callback)%s", inet_ntoa(tpcb->local_ip.addr));
-//			xSemaphoreGive(connectionPppStruct.semphr[i]);
-//			break;
-//		}
-//	}
-//	return ERR_OK;
-//}
-//
-//err_t server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err) {
-//	LWIP_UNUSED_ARG(arg);
-//
-//	if(err == ERR_OK && p != NULL) {
-//		tcp_recved(pcb, p->tot_len);
-//		DBGInfo("GSMPPP:server_recv(): pbuf->len %d byte [%s]", p->len, inet_ntoa(pcb->remote_ip.addr));
-//
-//		for(uint8_t i=0; i<SERVERS_COUNT; i++) {
-//			if(pcb->remote_ip.addr == connectionPppStruct.tcpClient[i]->remote_ip.addr) {
-//				DBGInfo("GSMPPP: server_recv (callback) [%s]", inet_ntoa(pcb->remote_ip.addr));
-//				if(p->len < sizeof(connectionPppStruct.rxData[i].rxBuffer)) {
-//					memcpy(connectionPppStruct.rxData[i].rxBuffer, p->payload, p->len);
-//					connectionPppStruct.rxData[i].rxBufferLen = p->len;
-//					xSemaphoreGive(connectionPppStruct.rxData[i].rxSemh);
-//					DBGInfo("GSMPPP: server_recv (callback) GIVE SEMPH[%s][%d]", inet_ntoa(pcb->remote_ip.addr), p->len);
-//				} else {
-//					DBGInfo("GSMPPP: server_recv p->len > sizeof(buf) -ERROR");
-//				}
-//			}
-//		}
-//		pbuf_free(p);
-//	} else {
-//		DBGInfo("\nserver_recv(): Errors-> ");
-//		if (err != ERR_OK)
-//			DBGInfo("1) Connection is not on ERR_OK state, but in %d state->\n", err);
-//		if (p == NULL)
-//			DBGInfo("2) Pbuf pointer p is a NULL pointer->\n ");
-//		DBGInfo("server_recv(): Closing server-side connection...");
-//		pbuf_free(p);
-//		server_close(pcb);
-//	}
-//	return ERR_OK;
-//}
-//
-//static void server_close(struct tcp_pcb *pcb) {
-//	if(pcb->state != CLOSED) {
-//		tcp_arg(pcb, NULL);
-//		tcp_sent(pcb, NULL);
-//		tcp_recv(pcb, NULL);
-//		while(tcp_close(pcb) != ERR_OK) {
-//			vTaskDelay(100/portTICK_PERIOD_MS);
-//		}
-//	}
-//	for(uint8_t i=0; i<SERVERS_COUNT; i++) {
-//		if(pcb == connectionPppStruct.tcpClient[i]) {
-//			DBGInfo("GSMPPP: server_close (callback)%s", inet_ntoa(pcb->local_ip.addr));
-//			connectionPppStruct.connected[i] = false;
-//			connectionPppStruct.tcpClient[i] = NULL;
-//		}
-//	}
-//}
-//
+
+err_t tcp_connected_cb(void *arg, struct tcp_pcb *tpcb, err_t err) {
+	if(tpcb == connectionPppStruct.tcpClient) {
+		DBGInfo("GSMPPP: connected (callback)%s", inet_ntoa(tpcb->local_ip.addr));
+		xSemaphoreGive(connectionPppStruct.semphr);
+	}
+	return ERR_OK;
+}
+
+err_t server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err) {
+	LWIP_UNUSED_ARG(arg);
+
+	if(err == ERR_OK && p != NULL) {
+		tcp_recved(pcb, p->tot_len);
+		DBGInfo("GSMPPP:server_recv(): pbuf->len %d byte [%s]", p->len, inet_ntoa(pcb->remote_ip.addr));
+
+		if(pcb->remote_ip.addr == connectionPppStruct.tcpClient->remote_ip.addr) {
+			DBGInfo("GSMPPP: server_recv (callback) [%s]", inet_ntoa(pcb->remote_ip.addr));
+			if(p->len < sizeof(connectionPppStruct.rxData.rxBuffer)) {
+				memcpy(connectionPppStruct.rxData.rxBuffer, p->payload, p->len);
+				connectionPppStruct.rxData.rxBufferLen = p->len;
+				xSemaphoreGive(connectionPppStruct.rxData.rxSemh);
+				DBGInfo("GSMPPP: server_recv (callback) GIVE SEMPH[%s][%d]", inet_ntoa(pcb->remote_ip.addr), p->len);
+			} else {
+				DBGInfo("GSMPPP: server_recv p->len > sizeof(buf) -ERROR");
+			}
+		}
+		pbuf_free(p);
+	} else {
+		DBGInfo("\nserver_recv(): Errors-> ");
+		if (err != ERR_OK)
+			DBGInfo("1) Connection is not on ERR_OK state, but in %d state->\n", err);
+		if (p == NULL)
+			DBGInfo("2) Pbuf pointer p is a NULL pointer->\n ");
+		DBGInfo("server_recv(): Closing server-side connection...");
+		pbuf_free(p);
+		server_close(pcb);
+	}
+	return ERR_OK;
+}
+
+static void server_close(struct tcp_pcb *pcb) {
+	if(pcb->state != CLOSED) {
+		tcp_arg(pcb, NULL);
+		tcp_sent(pcb, NULL);
+		tcp_recv(pcb, NULL);
+		while(tcp_close(pcb) != ERR_OK) {
+			vTaskDelay(100/portTICK_PERIOD_MS);
+		}
+	}
+	if(pcb == connectionPppStruct.tcpClient) {
+		DBGInfo("GSMPPP: server_close (callback)%s", inet_ntoa(pcb->local_ip.addr));
+		connectionPppStruct.connected = false;
+		connectionPppStruct.tcpClient = NULL;
+	}
+}
+
 //void udp_dns_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *addr, u16_t port) {
 //	if (p != NULL) {
 //		DBGInfo("GSMM: udp echo dns -OK!");

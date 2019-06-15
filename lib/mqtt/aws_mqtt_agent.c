@@ -855,152 +855,151 @@ static BaseType_t prvSetupConnection( const MQTTEventData_t * const pxEventData 
 {
     SocketsSockaddr_t xMQTTServerAddress = { 0 };
     BaseType_t xStatus = pdPASS;
-// TODO:
-//    size_t xURLLength;
-//    MQTTBrokerConnection_t * pxConnection = &( xMQTTConnections[ pxEventData->uxBrokerNumber ] );
-//    char * ppcAlpns[] = { socketsAWS_IOT_ALPN_MQTT };
-//    TickType_t xMqttTimeout;
-//
-//    /* Should not get here if the socket used to communicate with the
-//     * broker is already connected. */
-//    configASSERT( pxConnection->xSocket == SOCKETS_INVALID_SOCKET );
-//
-//    /* Calculate the length of the supplied URL. */
-//    xURLLength = strlen( pxEventData->u.pxConnectParams->pcURL );
-//
-//    /* Ensure that the length of the specified URL is
-//     * within the permitted limits. */
-//    if( xURLLength <= ( size_t ) securesocketsMAX_DNS_NAME_LENGTH )
-//    {
-//        if( ( pxEventData->u.pxConnectParams->xFlags & mqttagentUSE_AWS_IOT_ALPN_443 ) != 0 )
-//        {
-//            /* The AWS IoT ALPN feature implies the default TLS server port. */
-//            xMQTTServerAddress.usPort = SOCKETS_htons( securesocketsDEFAULT_TLS_DESTINATION_PORT );
-//        }
-//        else
-//        {
-//            xMQTTServerAddress.usPort = SOCKETS_htons( pxEventData->u.pxConnectParams->usPort );
-//        }
-//
-//        xMQTTServerAddress.ulAddress = SOCKETS_GetHostByName( pxEventData->u.pxConnectParams->pcURL );
-//        xMQTTServerAddress.ucSocketDomain = SOCKETS_AF_INET;
-//
-//        /* Create the socket. */
-//        pxConnection->xSocket = SOCKETS_Socket( SOCKETS_AF_INET, SOCKETS_SOCK_STREAM, SOCKETS_IPPROTO_TCP );
-//
-//        if( pxConnection->xSocket != SOCKETS_INVALID_SOCKET )
-//        {
-//            /* Set a callback function that will unblock the MQTT task when data
-//             * is received on a socket. */
-//            ( void ) SOCKETS_SetSockOpt( pxConnection->xSocket,
-//                                         0,                                            /* Level - Unused. */
-//                                         SOCKETS_SO_WAKEUP_CALLBACK,
-//                                         ( void * ) prvMQTTClientSocketWakeupCallback, /*lint !e9087 !e9074 The cast is ok as we are setting the callback here. */
-//                                         sizeof( &( prvMQTTClientSocketWakeupCallback ) ) );
-//
-//            /* Set secure socket option if it is a secured connection. */
-//            if( ( pxConnection->uxFlags & mqttCONNECTION_SECURED ) == mqttCONNECTION_SECURED )
-//            {
-//                if( SOCKETS_SetSockOpt( pxConnection->xSocket,
-//                                        0, /* Level - Unused. */
-//                                        SOCKETS_SO_REQUIRE_TLS,
-//                                        NULL,
-//                                        0 ) != SOCKETS_ERROR_NONE )
-//                {
-//                    xStatus = pdFAIL;
-//                }
-//
-//                /* If a certificate is supplied, set it. */
-//                if( ( xStatus == pdPASS ) &&
-//                    ( pxEventData->u.pxConnectParams->pcCertificate != NULL ) )
-//                {
-//                    if( SOCKETS_SetSockOpt( pxConnection->xSocket,
-//                                            0, /* Level - Unused. */
-//                                            SOCKETS_SO_TRUSTED_SERVER_CERTIFICATE,
-//                                            pxEventData->u.pxConnectParams->pcCertificate,
-//                                            pxEventData->u.pxConnectParams->ulCertificateSize ) != SOCKETS_ERROR_NONE )
-//                    {
-//                        xStatus = pdFAIL;
-//                    }
-//                }
-//
-//                /* Use SNI if the provided URL is not IP address. */
-//                if( ( xStatus == pdPASS ) &&
-//                    ( ( pxEventData->u.pxConnectParams->xFlags & mqttagentURL_IS_IP_ADDRESS ) == 0 ) &&
-//                    ( pxEventData->u.pxConnectParams->xURLIsIPAddress == pdFALSE ) )
-//                {
-//                    if( SOCKETS_SetSockOpt( pxConnection->xSocket,
-//                                            0, /* Level - Unused. */
-//                                            SOCKETS_SO_SERVER_NAME_INDICATION,
-//                                            pxEventData->u.pxConnectParams->pcURL,
-//                                            ( size_t ) 1 + xURLLength ) != SOCKETS_ERROR_NONE )
-//                    {
-//                        xStatus = pdFAIL;
-//                    }
-//                }
-//
-//                /* Negotiate ALPN if requested. */
-//                if( ( xStatus == pdPASS ) &&
-//                    ( ( ( pxEventData->u.pxConnectParams->xFlags & mqttagentUSE_AWS_IOT_ALPN_443 ) ) != 0 ) )
-//                {
-//                    if( SOCKETS_SetSockOpt( pxConnection->xSocket,
-//                                            0, /* Level - Unused. */
-//                                            SOCKETS_SO_ALPN_PROTOCOLS,
-//                                            ppcAlpns,
-//                                            sizeof( ppcAlpns ) / sizeof( ppcAlpns[ 0 ] ) ) != SOCKETS_ERROR_NONE )
-//                    {
-//                        xStatus = pdFAIL;
-//                    }
-//                }
-//            }
-//
-//            /* Establish the connection. */
-//            if( xStatus == pdPASS )
-//            {
-//                if( SOCKETS_Connect( pxConnection->xSocket, &xMQTTServerAddress, sizeof( xMQTTServerAddress ) ) != SOCKETS_ERROR_NONE )
-//                {
-//                    xStatus = pdFAIL;
-//                }
-//            }
-//
-//            if( xStatus == pdPASS )
-//            {
-//                /* Do not block now onwards. */
-//                ( void ) SOCKETS_SetSockOpt( pxConnection->xSocket,
-//                                             0 /* Unused. */,
-//                                             SOCKETS_SO_NONBLOCK,
-//                                             NULL /* Unused. */,
-//                                             0 /* Unused. */ );
-//
-//                /* Set the Send Timeout of Socket to mqttconfigTCP_SEND_TIMEOUT_MS to block on sends. */
-//
-//                xMqttTimeout = pdMS_TO_TICKS( mqttconfigTCP_SEND_TIMEOUT_MS );
-//
-//                if( SOCKETS_SetSockOpt( pxConnection->xSocket,
-//                                        0,
-//                                        SOCKETS_SO_SNDTIMEO,
-//                                        &xMqttTimeout,
-//                                        sizeof( TickType_t ) ) != SOCKETS_ERROR_NONE )
-//                {
-//                    xStatus = pdFAIL;
-//                }
-//            }
-//            else
-//            {
-//                /* Connection Failed. */
-//                prvGracefulSocketClose( pxConnection );
-//            }
-//        }
-//        else
-//        {
-//            xStatus = pdFAIL;
-//        }
-//    }
-//    else
-//    {
-//        mqttconfigDEBUG_LOG( ( "Malformed URL %s.\r\n", pxEventData->u.pxConnectParams->pcURL ) );
-//        xStatus = pdFAIL;
-//    }
+    size_t xURLLength;
+    MQTTBrokerConnection_t * pxConnection = &( xMQTTConnections[ pxEventData->uxBrokerNumber ] );
+    char * ppcAlpns[] = { socketsAWS_IOT_ALPN_MQTT };
+    TickType_t xMqttTimeout;
+
+    /* Should not get here if the socket used to communicate with the
+     * broker is already connected. */
+    configASSERT( pxConnection->xSocket == SOCKETS_INVALID_SOCKET );
+
+    /* Calculate the length of the supplied URL. */
+    xURLLength = strlen( pxEventData->u.pxConnectParams->pcURL );
+
+    /* Ensure that the length of the specified URL is
+     * within the permitted limits. */
+    if( xURLLength <= ( size_t ) securesocketsMAX_DNS_NAME_LENGTH )
+    {
+    	if( ( pxEventData->u.pxConnectParams->xFlags & mqttagentUSE_AWS_IOT_ALPN_443 ) != 0 )
+    	{
+    		/* The AWS IoT ALPN feature implies the default TLS server port. */
+    		xMQTTServerAddress.usPort = SOCKETS_htons( securesocketsDEFAULT_TLS_DESTINATION_PORT );
+    	}
+    	else
+    	{
+    		xMQTTServerAddress.usPort = SOCKETS_htons( pxEventData->u.pxConnectParams->usPort );
+    	}
+
+    	xMQTTServerAddress.ulAddress = SOCKETS_GetHostByName( pxEventData->u.pxConnectParams->pcURL );
+    	xMQTTServerAddress.ucSocketDomain = SOCKETS_AF_INET;
+
+    	/* Create the socket. */
+    	pxConnection->xSocket = SOCKETS_Socket( SOCKETS_AF_INET, SOCKETS_SOCK_STREAM, SOCKETS_IPPROTO_TCP );
+
+    	if( pxConnection->xSocket != SOCKETS_INVALID_SOCKET )
+    	{
+    		/* Set a callback function that will unblock the MQTT task when data
+    		 * is received on a socket. */
+    		( void ) SOCKETS_SetSockOpt( pxConnection->xSocket,
+    				0,                                            /* Level - Unused. */
+					SOCKETS_SO_WAKEUP_CALLBACK,
+					( void * ) prvMQTTClientSocketWakeupCallback, /*lint !e9087 !e9074 The cast is ok as we are setting the callback here. */
+					sizeof( &( prvMQTTClientSocketWakeupCallback ) ) );
+
+    		/* Set secure socket option if it is a secured connection. */
+    		if( ( pxConnection->uxFlags & mqttCONNECTION_SECURED ) == mqttCONNECTION_SECURED )
+    		{
+    			if( SOCKETS_SetSockOpt( pxConnection->xSocket,
+    					0, /* Level - Unused. */
+						SOCKETS_SO_REQUIRE_TLS,
+						NULL,
+						0 ) != SOCKETS_ERROR_NONE )
+    			{
+    				xStatus = pdFAIL;
+    			}
+
+    			/* If a certificate is supplied, set it. */
+    			if( ( xStatus == pdPASS ) &&
+    					( pxEventData->u.pxConnectParams->pcCertificate != NULL ) )
+    			{
+    				if( SOCKETS_SetSockOpt( pxConnection->xSocket,
+    						0, /* Level - Unused. */
+							SOCKETS_SO_TRUSTED_SERVER_CERTIFICATE,
+							pxEventData->u.pxConnectParams->pcCertificate,
+							pxEventData->u.pxConnectParams->ulCertificateSize ) != SOCKETS_ERROR_NONE )
+    				{
+    					xStatus = pdFAIL;
+    				}
+    			}
+
+    			/* Use SNI if the provided URL is not IP address. */
+    			if( ( xStatus == pdPASS ) &&
+    					( ( pxEventData->u.pxConnectParams->xFlags & mqttagentURL_IS_IP_ADDRESS ) == 0 ) &&
+						( pxEventData->u.pxConnectParams->xURLIsIPAddress == pdFALSE ) )
+    			{
+    				if( SOCKETS_SetSockOpt( pxConnection->xSocket,
+    						0, /* Level - Unused. */
+							SOCKETS_SO_SERVER_NAME_INDICATION,
+							pxEventData->u.pxConnectParams->pcURL,
+							( size_t ) 1 + xURLLength ) != SOCKETS_ERROR_NONE )
+    				{
+    					xStatus = pdFAIL;
+    				}
+    			}
+
+    			/* Negotiate ALPN if requested. */
+    			if( ( xStatus == pdPASS ) &&
+    					( ( ( pxEventData->u.pxConnectParams->xFlags & mqttagentUSE_AWS_IOT_ALPN_443 ) ) != 0 ) )
+    			{
+    				if( SOCKETS_SetSockOpt( pxConnection->xSocket,
+    						0, /* Level - Unused. */
+							SOCKETS_SO_ALPN_PROTOCOLS,
+							ppcAlpns,
+							sizeof( ppcAlpns ) / sizeof( ppcAlpns[ 0 ] ) ) != SOCKETS_ERROR_NONE )
+    				{
+    					xStatus = pdFAIL;
+    				}
+    			}
+    		}
+
+    		/* Establish the connection. */
+    		if( xStatus == pdPASS )
+    		{
+    			if( SOCKETS_Connect( pxConnection->xSocket, &xMQTTServerAddress, sizeof( xMQTTServerAddress ) ) != SOCKETS_ERROR_NONE )
+    			{
+    				xStatus = pdFAIL;
+    			}
+    		}
+
+    		if( xStatus == pdPASS )
+    		{
+    			/* Do not block now onwards. */
+    			( void ) SOCKETS_SetSockOpt( pxConnection->xSocket,
+    					0 /* Unused. */,
+						SOCKETS_SO_NONBLOCK,
+						NULL /* Unused. */,
+						0 /* Unused. */ );
+
+    			/* Set the Send Timeout of Socket to mqttconfigTCP_SEND_TIMEOUT_MS to block on sends. */
+
+    			xMqttTimeout = pdMS_TO_TICKS( mqttconfigTCP_SEND_TIMEOUT_MS );
+
+    			if( SOCKETS_SetSockOpt( pxConnection->xSocket,
+    					0,
+						SOCKETS_SO_SNDTIMEO,
+						&xMqttTimeout,
+						sizeof( TickType_t ) ) != SOCKETS_ERROR_NONE )
+    			{
+    				xStatus = pdFAIL;
+    			}
+    		}
+    		else
+    		{
+    			/* Connection Failed. */
+    			prvGracefulSocketClose( pxConnection );
+    		}
+    	}
+    	else
+    	{
+    		xStatus = pdFAIL;
+    	}
+    }
+    else
+    {
+    	mqttconfigDEBUG_LOG( ( "Malformed URL %s.\r\n", pxEventData->u.pxConnectParams->pcURL ) );
+    	xStatus = pdFAIL;
+    }
 
     return xStatus;
 }
@@ -1282,88 +1281,87 @@ static void prvNotifyRequestingTask( MQTTNotificationData_t * const pxNotificati
 
 static TickType_t prvManageConnections( void )
 {
-//TODO:
-//    UBaseType_t uxBrokerNumber;
-//    MQTTBrokerConnection_t * pxConnection;
-//    BaseType_t xAnyConnectedClient = pdFALSE;
-//    int32_t lBytesReceived;
+	UBaseType_t uxBrokerNumber;
+    MQTTBrokerConnection_t * pxConnection;
+    BaseType_t xAnyConnectedClient = pdFALSE;
+    int32_t lBytesReceived;
     TickType_t xNextMQTTPeriodicInvokeTicks, xNextTimeoutTicks = portMAX_DELAY;
-//    uint64_t xTickCount = 0;
-//
-//    /* For each broker the MQTT task might be connected to. */
-//    for( uxBrokerNumber = 0; uxBrokerNumber < ( UBaseType_t ) mqttconfigMAX_BROKERS; uxBrokerNumber++ )
-//    {
-//        pxConnection = &( xMQTTConnections[ uxBrokerNumber ] );
-//
-//        /* Process only the connected clients. */
-//        if( pxConnection->xSocket != SOCKETS_INVALID_SOCKET )
-//        {
-//            /* Read data from the socket. */
-//            lBytesReceived = SOCKETS_Recv( pxConnection->xSocket, pxConnection->ucRxBuffer, mqttconfigRX_BUFFER_SIZE, 0 );
-//
-//            /* If data was read, pass it to the MQTT Core library. */
-//            if( lBytesReceived > 0 )
-//            {
-//                ( void ) MQTT_ParseReceivedData( &( pxConnection->xMQTTContext ), pxConnection->ucRxBuffer, ( size_t ) lBytesReceived );
-//
-//                /* Some data was received on this socket and we do not
-//                 * know if there is more data available. Therefore we
-//                 * set xNextTimeoutTicks to zero which ensures that we
-//                 * do not block on the command queue and try to read
-//                 * again from this socket on the next invocation of
-//                 * prvManageConnections. This way we ensure that we keep
-//                 * processing commands received on the command queue
-//                 * between calls to SOCKETS_Recv. As a result, a socket
-//                 * receiving lots of data continuously does not starve
-//                 * the command processing. */
-//                xNextTimeoutTicks = 0;
-//            }
-//            else if( lBytesReceived < 0 )
-//            {
-//                /* A negative return value from SOCKETS_Recv indicates error.
-//                 * Since the socket is marked non-blocking, read can potentially
-//                 * return SOCKETS_EWOULDBLOCK in which case we will re-try to
-//                 * read on the next execution of this function. In case of any
-//                 * other error, we disconnect. */
-//                if( lBytesReceived != SOCKETS_EWOULDBLOCK )
-//                {
-//                    /* Disconnect from the broker. Note that the socket close
-//                     * and cleanup will happen in the disconnect callback
-//                     * ( prvProcessReceivedDisconnect function ) from the core
-//                     * MQTT library. */
-//                    ( void ) MQTT_Disconnect( &( pxConnection->xMQTTContext ) );
-//                }
-//            }
-//            else
-//            {
-//                /* If no data was received on this socket, we continue
-//                 * to call MQTT_Periodic and calculate xNextTimeoutTicks
-//                 * accordingly. */
-//            }
-//        }
-//
-//        /* Is the client connected? */
-//        if( ( xAnyConnectedClient == pdFALSE ) && ( pxConnection->xSocket != SOCKETS_INVALID_SOCKET ) )
-//        {
-//            xAnyConnectedClient = pdTRUE;
-//        }
-//
-//        /* Get the current tick count. */
-//        prvMQTTGetTicks( &xTickCount );
-//
-//        /* Invoke MQTT_Periodic. */
-//        xNextMQTTPeriodicInvokeTicks = ( TickType_t ) MQTT_Periodic( &( pxConnection->xMQTTContext ), xTickCount );
-//
-//        /* Update the next timeout value. */
-//        xNextTimeoutTicks = configMIN( xNextTimeoutTicks, xNextMQTTPeriodicInvokeTicks );
-//    }
-//
-//    /* The MQTT task must not block for more than mqttconfigMQTT_TASK_MAX_BLOCK_TICKS
-//     * ticks if any client is connected. */
-//    if( xAnyConnectedClient == pdTRUE )
-//    {
-//        xNextTimeoutTicks = configMIN( xNextTimeoutTicks, ( TickType_t ) mqttconfigMQTT_TASK_MAX_BLOCK_TICKS );
-//    }
+    uint64_t xTickCount = 0;
+
+    /* For each broker the MQTT task might be connected to. */
+    for( uxBrokerNumber = 0; uxBrokerNumber < ( UBaseType_t ) mqttconfigMAX_BROKERS; uxBrokerNumber++ )
+    {
+        pxConnection = &( xMQTTConnections[ uxBrokerNumber ] );
+
+        /* Process only the connected clients. */
+        if( pxConnection->xSocket != SOCKETS_INVALID_SOCKET )
+        {
+            /* Read data from the socket. */
+            lBytesReceived = SOCKETS_Recv( pxConnection->xSocket, pxConnection->ucRxBuffer, mqttconfigRX_BUFFER_SIZE, 0 );
+
+            /* If data was read, pass it to the MQTT Core library. */
+            if( lBytesReceived > 0 )
+            {
+                ( void ) MQTT_ParseReceivedData( &( pxConnection->xMQTTContext ), pxConnection->ucRxBuffer, ( size_t ) lBytesReceived );
+
+                /* Some data was received on this socket and we do not
+                 * know if there is more data available. Therefore we
+                 * set xNextTimeoutTicks to zero which ensures that we
+                 * do not block on the command queue and try to read
+                 * again from this socket on the next invocation of
+                 * prvManageConnections. This way we ensure that we keep
+                 * processing commands received on the command queue
+                 * between calls to SOCKETS_Recv. As a result, a socket
+                 * receiving lots of data continuously does not starve
+                 * the command processing. */
+                xNextTimeoutTicks = 0;
+            }
+            else if( lBytesReceived < 0 )
+            {
+                /* A negative return value from SOCKETS_Recv indicates error.
+                 * Since the socket is marked non-blocking, read can potentially
+                 * return SOCKETS_EWOULDBLOCK in which case we will re-try to
+                 * read on the next execution of this function. In case of any
+                 * other error, we disconnect. */
+                if( lBytesReceived != SOCKETS_EWOULDBLOCK )
+                {
+                    /* Disconnect from the broker. Note that the socket close
+                     * and cleanup will happen in the disconnect callback
+                     * ( prvProcessReceivedDisconnect function ) from the core
+                     * MQTT library. */
+                    ( void ) MQTT_Disconnect( &( pxConnection->xMQTTContext ) );
+                }
+            }
+            else
+            {
+                /* If no data was received on this socket, we continue
+                 * to call MQTT_Periodic and calculate xNextTimeoutTicks
+                 * accordingly. */
+            }
+        }
+
+        /* Is the client connected? */
+        if( ( xAnyConnectedClient == pdFALSE ) && ( pxConnection->xSocket != SOCKETS_INVALID_SOCKET ) )
+        {
+            xAnyConnectedClient = pdTRUE;
+        }
+
+        /* Get the current tick count. */
+        prvMQTTGetTicks( &xTickCount );
+
+        /* Invoke MQTT_Periodic. */
+        xNextMQTTPeriodicInvokeTicks = ( TickType_t ) MQTT_Periodic( &( pxConnection->xMQTTContext ), xTickCount );
+
+        /* Update the next timeout value. */
+        xNextTimeoutTicks = configMIN( xNextTimeoutTicks, xNextMQTTPeriodicInvokeTicks );
+    }
+
+    /* The MQTT task must not block for more than mqttconfigMQTT_TASK_MAX_BLOCK_TICKS
+     * ticks if any client is connected. */
+    if( xAnyConnectedClient == pdTRUE )
+    {
+        xNextTimeoutTicks = configMIN( xNextTimeoutTicks, ( TickType_t ) mqttconfigMQTT_TASK_MAX_BLOCK_TICKS );
+    }
 
     /* The return value indicates when the MQTT task should wake up next. */
     return xNextTimeoutTicks;

@@ -14,6 +14,7 @@
 
 extern sConnectSettings connectSettings;
 extern sGsmSettings gsmSettings;
+extern sConnectionPppStruct connectionPppStruct;
 
 #define CTRL_Z	0x1A
 extern UART_HandleTypeDef huart3;
@@ -466,6 +467,13 @@ eRetComm gsmLLR_DisconnectService(uint8_t numConnect) {
 		gsmLLR_GiveMutex();
 	}
 	return ret;
+}
+
+bool gsmPPP_ConnectStatus(uint8_t numConnect) {
+	if(connectionPppStruct.tcpClient->state == ESTABLISHED) {
+		return true;
+	}
+	return false;
 }
 
 eRetComm gsmLLR_ConnectServiceStatus(uint8_t numConnect) {
