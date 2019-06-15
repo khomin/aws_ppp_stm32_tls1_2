@@ -20,6 +20,7 @@
 #include "netif/ppp/pppapi.h"
 #include "netif/ppp/pppoe.h"
 #include "netif/ppp/pppol2tp.h"
+#include "aws_system_init.h"
 
 extern xSemaphoreHandle sioWriteSemaphore;
 extern sGsmUartParcer uartParcerStruct;
@@ -81,6 +82,8 @@ void gsmPPP_Tsk(void *pvParamter) {
 
 	/* Auth configuration, this is pretty self-explanatory */
 	ppp_set_auth(ppp, PPPAUTHTYPE_ANY, "gdata", "gdata");
+
+	SYSTEM_Init();
 
 	for(;;) {
 		if(uartParcerStruct.ppp.pppModeEnable == true) {
