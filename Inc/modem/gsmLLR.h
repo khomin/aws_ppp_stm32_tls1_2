@@ -27,7 +27,6 @@
 #define MAX_GPRS_APN_LEN						64
 #define MAX_GPRS_USER_LEN						16
 #define MAX_GPRS_PASS_LEN						16
-#define SERVERS_COUNT							1
 
 typedef enum {
 	POWER_STATE_DOWN,
@@ -137,7 +136,7 @@ typedef struct __attribute__((packed)) {
 	char srvAddr[MAX_SRV_ADDR_LEN];
 	char srvPass[MAX_SRV_PASS_LEN];
 	uint16_t srvPort;
-}sConnectSettings[SERVERS_COUNT];
+}sConnectSettings;
 
 typedef struct {
 	eRetComm state;
@@ -261,11 +260,11 @@ eRetComm gsmLLR_GetNameOperator(char *strNameOperator);
 eRetComm gsmLLR_ConnectService(uint8_t numConnect);
 eRetComm gsmLLR_DisconnectService(uint8_t numConnect);
 eRetComm gsmLLR_ConnectServiceStatus(uint8_t numConnect);
-uint16_t gsmLLR_TcpGetRxCount(uint8_t serviceNum);
-eRetComm gsmLLR_TcpSend(uint8_t serviceNum, uint8_t *pData, uint16_t size);
-int	gsmLLR_TcpReadData(uint8_t serviceNum, uint8_t **ppData, uint16_t buffSize);
-xSemaphoreHandle* gsmLLR_GetRxSemphorePoint(uint8_t num);
+//uint16_t gsmLLR_TcpGetRxCount(uint8_t serviceNum);
+//eRetComm gsmLLR_TcpSend(uint8_t serviceNum, uint8_t *pData, uint16_t size);
+//int	gsmLLR_TcpReadData(uint8_t **ppData, uint16_t buffSize);
+//xSemaphoreHandle* gsmLLR_GetRxSemphorePoint(uint8_t num);
 //
-eRetComm getParameter(uint8_t paramNum, char *pStartChar, char *strInput, char *strOutput);
+//eRetComm getParameter(uint8_t paramNum, char *pStartChar, char *strInput, char *strOutput);
 
 #endif /* __AT_PARAM_STRUCT_H */

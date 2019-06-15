@@ -31,7 +31,7 @@ extern sGsmUartParcer uartParcerStruct;
 extern bool pppIsOpen;
 
 sGsmSettings gsmSettings = {0, "internet", "gdata", "gdata"};
-sConnectSettings connectSettings = {{"31.10.4.146", "111", 45454}};
+sConnectSettings connectSettings = {"31.10.4.146", "111", 45454};
 
 void vGsmTask( void * pvParameters );
 
