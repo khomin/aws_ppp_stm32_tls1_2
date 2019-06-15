@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS mbedTLS-based PKCS#11 V1.0.7
+ * Amazon FreeRTOS mbedTLS-based PKCS#11 V1.0.8
  * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -50,6 +50,8 @@
 /* C runtime includes. */
 #include <stdio.h>
 #include <string.h>
+#include "debug_print.h"
+#include "aws_crypto.h"
 
 typedef int ( * pfnMbedTlsSign )( void * ctx,
                                   mbedtls_md_type_t md_alg,
@@ -60,7 +62,7 @@ typedef int ( * pfnMbedTlsSign )( void * ctx,
                                   int ( *f_rng )( void *, unsigned char *, size_t ),
                                   void * p_rng );
 
-#define PKCS11_PRINT( X )    vLoggingPrintf X
+#define PKCS11_PRINT( X )    DBGLog X
 
 #define pkcs11NO_OPERATION            ( ( CK_MECHANISM_TYPE ) 0xFFFFFFFFF )
 

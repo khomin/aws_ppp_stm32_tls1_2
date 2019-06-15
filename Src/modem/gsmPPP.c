@@ -12,6 +12,7 @@
 #include <time.h>
 #include "debug_print.h"
 #include "FreeRTOS.h"
+#include "task.h"
 #include "stats.h"
 #include "dns.h"
 #include "lwip/tcpip.h"
@@ -37,7 +38,7 @@ extern sConnectSettings connectSettings;
 sConnectionPppStruct connectionPppStruct = {0};
 
 //-- current state
-static ePppState pppState = ppp_not_inited;
+ePppState pppState = ppp_not_inited;
 
 extern struct stats_ lwip_stats;
 // static functions
@@ -62,6 +63,10 @@ bool gsmPPP_Init(void) {
 	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 1024, 0, tskIDLE_PRIORITY+3, NULL);
 	return true;
 }
+
+#include "aws_dev_mode_key_provisioning.h"
+#include "aws_hello_world.h"
+#include "./aws_system_init.h"
 
 void gsmPPP_Tsk(void *pvParamter) {
 	uint8_t setup = 0;
@@ -104,14 +109,86 @@ void gsmPPP_Tsk(void *pvParamter) {
 		}
 
 		if(pppState == ppp_ready_work) {
-			DBGInfo("PPP: connect start...");
-			gsmPPP_Connect(connectSettings.srvAddr, connectSettings.srvPort);
-			DBGInfo("PPP: connect start -end");
-			vTaskDelay(5000/portTICK_RATE_MS);
+				DBGLog("AWS PPP-MQTT: module initialized.\r\n");
+
+				/* A simple example to demonstrate key and certificate provisioning in
+				 * microcontroller flash using PKCS#11 interface. This should be replaced
+				 * by production ready key provisioning mechanism. */
+				vDevModeKeyProvisioning();
+
+//				if( SYSTEM_Init() == pdPASS ) {
+//					/* Connect to the WiFi before running the demos */
+////					prvWifiConnect();
+//#ifdef USE_OFFLOAD_SSL
+//					/* Check if WiFi firmware needs to be updated. */
+//					prvCheckWiFiFirmwareVersion();
+//#endif /* USE_OFFLOAD_SSL */
+//					/* Start demos. */
+//					vStartMQTTEchoDemo();
+//				}
+//			} else {
+//				configPRINTF( ( "WiFi module failed to initialize.\r\n" ) );
+//
+//				/* Stop here if we fail to initialize WiFi. */
+//				configASSERT( xWifiStatus == eWiFiSuccess );
+//			}
+
+			while(1) {
+				vTaskDelay(500/portTICK_RATE_MS);
+			}
 		}
 
 		vTaskDelay(1000/portTICK_RATE_MS);
 	}
+}
+
+static void prvWifiConnect(void) {
+//    WIFINetworkParams_t xNetworkParams;
+//    WIFIReturnCode_t xWifiStatus;
+//    uint8_t ucIPAddr[ 4 ];
+//
+//    /* Setup WiFi parameters to connect to access point. */
+//    xNetworkParams.pcSSID = clientcredentialWIFI_SSID;
+//    xNetworkParams.ucSSIDLength = sizeof( clientcredentialWIFI_SSID );
+//    xNetworkParams.pcPassword = clientcredentialWIFI_PASSWORD;
+//    xNetworkParams.ucPasswordLength = sizeof( clientcredentialWIFI_PASSWORD );
+//    xNetworkParams.xSecurity = clientcredentialWIFI_SECURITY;
+//    xNetworkParams.cChannel = 0;
+//
+//    /* Try connecting using provided wifi credentials. */
+//    xWifiStatus = WIFI_ConnectAP( &( xNetworkParams ) );
+//
+//    if( xWifiStatus == eWiFiSuccess )
+//    {
+//        configPRINTF( ( "WiFi connected to AP %s.\r\n", xNetworkParams.pcSSID ) );
+//
+//        /* Get IP address of the device. */
+//        WIFI_GetIP( &ucIPAddr[ 0 ] );
+//
+//        configPRINTF( ( "IP Address acquired %d.%d.%d.%d\r\n",
+//                        ucIPAddr[ 0 ], ucIPAddr[ 1 ], ucIPAddr[ 2 ], ucIPAddr[ 3 ] ) );
+//    }
+//    else
+//    {
+//        /* Connection failed configure softAP to allow user to set wifi credentials. */
+//        configPRINTF( ( "WiFi failed to connect to AP %s.\r\n", xNetworkParams.pcSSID ) );
+//
+//        xNetworkParams.pcSSID = wificonfigACCESS_POINT_SSID_PREFIX;
+//        xNetworkParams.pcPassword = wificonfigACCESS_POINT_PASSKEY;
+//        xNetworkParams.xSecurity = wificonfigACCESS_POINT_SECURITY;
+//        xNetworkParams.cChannel = wificonfigACCESS_POINT_CHANNEL;
+//
+//        configPRINTF( ( "Connect to softAP %s using password %s. \r\n",
+//                        xNetworkParams.pcSSID, xNetworkParams.pcPassword ) );
+//
+//        while( WIFI_ConfigureAP( &xNetworkParams ) != eWiFiSuccess )
+//        {
+//            configPRINTF( ( "Connect to softAP %s using password %s and configure WiFi. \r\n",
+//                            xNetworkParams.pcSSID, xNetworkParams.pcPassword ) );
+//        }
+//
+//        configPRINTF( ( "WiFi configuration successful. \r\n", xNetworkParams.pcSSID ) );
+//    }
 }
 
 //----------------------------
@@ -221,7 +298,7 @@ sGetDnsResult getIpByDns(const char *pDnsName, uint8_t len) {
 				connectionPppStruct.tcpClient = tcp_new();
 			}
 			// set listener event
-//			tcp_recv(connectionPppStruct.tcpClient, server_recv);
+			//			tcp_recv(connectionPppStruct.tcpClient, server_recv);
 			switch(dns_gethostbyname(pDnsName,
 					&result.resolved,
 					dns_server_is_found_cb,
@@ -232,7 +309,7 @@ sGetDnsResult getIpByDns(const char *pDnsName, uint8_t len) {
 				break;
 			case ERR_INPROGRESS: // need to ask, will return data via callback
 				if(xSemaphoreTake(connectionPppStruct.semphr, 5000/portTICK_PERIOD_MS) != pdTRUE) {
-//					server_close(connectionPppStruct.tcpClient);
+					//					server_close(connectionPppStruct.tcpClient);
 					connectionPppStruct.connected = false;
 					DBGInfo("GSMPPP: dns-ERROR");
 				}

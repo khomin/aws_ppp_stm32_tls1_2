@@ -44,7 +44,6 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Inc/modem}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Drivers/STM32F4xx_HAL_Driver/Inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/FreeRTOS/Source/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Inc/fpga_buf}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/lwip/src/include/lwip}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Drivers/CMSIS/Include}&quot;"/>
@@ -60,6 +59,12 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/ConfigFiles}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/unity/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/lib/include/private}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/ConfigFiles/other}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/FreeRTOS/portable/Common}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/pkcs11}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/mbedtls/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party}&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.805484847" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -88,12 +93,15 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Debug/Middlewares/Third_Party/FreeRTOS/portable/Common"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/bufferpool"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/mqtt"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/pkcs11/mbedtls"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/secure_sockets/portable/st/stm32l475_discovery"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/utils"/>
 					</sourceEntries>
 				</configuration>

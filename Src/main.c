@@ -30,11 +30,11 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "stats.h"
+#include "gsmPPP.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -54,7 +54,7 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
-
+extern ePppState pppState;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,6 +66,51 @@ static void MX_USART3_UART_Init(void);
 void StartDefaultTask(void *argument); // for v2
 
 /* USER CODE BEGIN PFP */
+void vApplicationStackOverflowHook( TaskHandle_t xTask,
+		signed char *pcTaskName ) {
+	ICMP_STATS_DISPLAY();
+	LINK_STATS_DISPLAY();
+	MEM_STATS_DISPLAY();
+	MEM_STATS_DISPLAY();
+	SYS_STATS_DISPLAY();
+	for(uint8_t i=0; i<MEMP_MAX; i++) {
+		MEMP_STATS_DISPLAY(i);
+	}
+	DBGInfo("STACK OVERFLOW in task %s!!!!!!", pcTaskName);
+}
+
+void vApplicationMallocFailedHook(void) {
+	DBGInfo("STACK vApplicationMallocFailedHook !!!!!!");
+}
+
+void vApplicationDaemonTaskStartupHook( void ) {
+	DBGInfo("ApplicationDaemonTaskStartUpHook")
+}
+
+/* configUSE_STATIC_ALLOCATION is set to 1, so the application must provide an
+ * implementation of vApplicationGetTimerTaskMemory() to provide the memory that is
+ * used by the RTOS daemon/time task. */
+void vApplicationGetTimerTaskMemory( StaticTask_t ** ppxTimerTaskTCBBuffer,
+		StackType_t ** ppxTimerTaskStackBuffer,
+		uint32_t * pulTimerTaskStackSize ) {
+	/* If the buffers to be provided to the Timer task are declared inside this
+	 * function then they must be declared static - otherwise they will be allocated on
+	 * the stack and so not exists after this function exits. */
+	static StaticTask_t xTimerTaskTCB;
+	static StackType_t uxTimerTaskStack[ configTIMER_TASK_STACK_DEPTH ];
+
+	/* Pass out a pointer to the StaticTask_t structure in which the Idle
+	 * task's state will be stored. */
+	*ppxTimerTaskTCBBuffer = &xTimerTaskTCB;
+
+	/* Pass out the array that will be used as the Timer task's stack. */
+	*ppxTimerTaskStackBuffer = uxTimerTaskStack;
+
+	/* Pass out the size of the array pointed to by *ppxTimerTaskStackBuffer.
+	 * Note that, as the array is necessarily of type StackType_t,
+	 * configMINIMAL_STACK_SIZE is specified in words, not bytes. */
+	*pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+}
 
 /* USER CODE END PFP */
 
@@ -417,33 +462,6 @@ void Error_Handler(void)
 
 	/* USER CODE END Error_Handler_Debug */
 }
-
-
-//static char hookErrorInfoBuf[256] = {0};
-
-void vApplicationStackOverflowHook( TaskHandle_t xTask,
-		signed char *pcTaskName ) {
-	ICMP_STATS_DISPLAY();
-	LINK_STATS_DISPLAY();
-	MEM_STATS_DISPLAY();
-	MEM_STATS_DISPLAY();
-	SYS_STATS_DISPLAY();
-	for(uint8_t i=0; i<MEMP_MAX; i++) {
-		MEMP_STATS_DISPLAY(i);
-	}
-
-//	vTaskList(hookErrorInfoBuf);
-//	DBGLog("TaskList:\r\n %s", hookErrorInfoBuf);
-//	vTaskGetRunTimeStats(hookErrorInfoBuf);
-//	DBGLog("TaskList:\r\n %s", hookErrorInfoBuf);
-
-	DBGInfo("STACK OVERFLOW in task %s!!!!!!", pcTaskName);
-}
-
-void vApplicationMallocFailedHook(void) {
-	DBGInfo("STACK vApplicationMallocFailedHook !!!!!!");
-}
-
 
 #ifdef  USE_FULL_ASSERT
 /**
