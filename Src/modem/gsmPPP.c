@@ -57,6 +57,8 @@ static void server_close(struct tcp_pcb *pcb);
 
 static void gsmPPP_rawInput(void *pvParamter);
 
+static void prvWifiConnect( void );
+
 void gsmPPP_Tsk(void *pvParamter);
 
 bool gsmPPP_Init(void) {
@@ -119,7 +121,7 @@ void gsmPPP_Tsk(void *pvParamter) {
 
 			if( SYSTEM_Init() == pdPASS ) {
 				/* Connect to the WiFi before running the demos */
-				//prvWifiConnect();
+				prvWifiConnect();
 #ifdef USE_OFFLOAD_SSL
 				/* Check if WiFi firmware needs to be updated. */
 				//				prvCheckWiFiFirmwareVersion();
@@ -145,6 +147,58 @@ void gsmPPP_Tsk(void *pvParamter) {
 //--	private functions
 //----------------------------
 
+#include "aws_clientcredential.h"
+
+static void prvWifiConnect( void )
+{
+    WIFINetworkParams_t xNetworkParams;
+    WIFIReturnCode_t xWifiStatus;
+    uint8_t ucIPAddr[ 4 ];
+
+    /* Setup WiFi parameters to connect to access point. */
+    xNetworkParams.pcSSID = clientcredentialWIFI_SSID;
+    xNetworkParams.ucSSIDLength = sizeof( clientcredentialWIFI_SSID );
+    xNetworkParams.pcPassword = clientcredentialWIFI_PASSWORD;
+    xNetworkParams.ucPasswordLength = sizeof( clientcredentialWIFI_PASSWORD );
+    xNetworkParams.xSecurity = clientcredentialWIFI_SECURITY;
+    xNetworkParams.cChannel = 0;
+
+    /* Try connecting using provided wifi credentials. */
+    xWifiStatus = WIFI_ConnectAP( &( xNetworkParams ) );
+
+    if( xWifiStatus == eWiFiSuccess )
+    {
+        configPRINTF( ( "WiFi connected to AP %s.\r\n", xNetworkParams.pcSSID ) );
+
+        /* Get IP address of the device. */
+        WIFI_GetIP( &ucIPAddr[ 0 ] );
+
+        configPRINTF( ( "IP Address acquired %d.%d.%d.%d\r\n",
+                        ucIPAddr[ 0 ], ucIPAddr[ 1 ], ucIPAddr[ 2 ], ucIPAddr[ 3 ] ) );
+    }
+    else
+    {
+        /* Connection failed configure softAP to allow user to set wifi credentials. */
+        configPRINTF( ( "WiFi failed to connect to AP %s.\r\n", xNetworkParams.pcSSID ) );
+
+        xNetworkParams.pcSSID = wificonfigACCESS_POINT_SSID_PREFIX;
+        xNetworkParams.pcPassword = wificonfigACCESS_POINT_PASSKEY;
+        xNetworkParams.xSecurity = wificonfigACCESS_POINT_SECURITY;
+        xNetworkParams.cChannel = wificonfigACCESS_POINT_CHANNEL;
+
+        configPRINTF( ( "Connect to softAP %s using password %s. \r\n",
+                        xNetworkParams.pcSSID, xNetworkParams.pcPassword ) );
+
+        while( WIFI_ConfigureAP( &xNetworkParams ) != eWiFiSuccess )
+        {
+            configPRINTF( ( "Connect to softAP %s using password %s and configure WiFi. \r\n",
+                            xNetworkParams.pcSSID, xNetworkParams.pcPassword ) );
+        }
+
+        configPRINTF( ( "WiFi configuration successful. \r\n", xNetworkParams.pcSSID ) );
+    }
+}
+
 bool gsmPPP_Connect(uint8_t* destIp, uint16_t port) {
 	if(pppState != ppp_ready_work) {
 		DBGInfo("GSMPPP: gsmPPP_Connect - ppp no ready");
@@ -152,12 +206,11 @@ bool gsmPPP_Connect(uint8_t* destIp, uint16_t port) {
 	}
 
 	// TODO: test
-	destIp[0] = 31;
-	destIp[1] = 10;
-	destIp[2] = 4;
-	destIp[3] = 146;
-
-	port = 45454;
+//	destIp[0] = 31;
+//	destIp[1] = 10;
+//	destIp[2] = 4;
+//	destIp[3] = 146;
+//	port = 45454;
 
 	IP4_ADDR(&connectionPppStruct.ipRemoteAddr, destIp[0], destIp[1], destIp[2], destIp[3]);
 	DBGInfo("GSMPPP: connect without dns [%d.%d.%d.%d|%d]... ", destIp[0], destIp[1], destIp[2], destIp[3], port);
@@ -205,19 +258,22 @@ bool gsmPPP_Disconnect(uint8_t numConnect) {
 
 
 bool gsmPPP_SendData(uint8_t numConnect, uint8_t *pData, uint16_t len) {
+	bool res = false;
 	if(pppState != ppp_ready_work) {
 		DBGInfo("GSMPPP: gsmPPP_SendData - no connected");
 		return false;
 	}
 	if(tcp_write(connectionPppStruct.tcpClient, (void*)pData, len, NULL) == ERR_OK) {
-		return true;
+		DBGInfo("GSMPPP: gsmPPP_SendData -ok [len=%d]", len);
+		res = true;
 	} else {
+		DBGInfo("GSMPPP: gsmPPP_SendData -err [len=%d]", len);
 		server_close(connectionPppStruct.tcpClient);
 		connectionPppStruct.connected = false;
 		connectionPppStruct.rxData.rxBufferLen = 0;
 		memset(connectionPppStruct.rxData.rxBuffer,0, sizeof(connectionPppStruct.rxData.rxBuffer));
 	}
-	return false;
+	return res;
 }
 
 static bool dns_is_found = false;
@@ -226,6 +282,9 @@ static ip_addr_t dns_found_ipaddr;
 sGetDnsResult getIpByDns(const char *pDnsName, uint8_t len) {
 	sGetDnsResult result;
 	result.isValid = false;
+
+	// TODO: test
+//	ulIPAddres = 0x92040a1f;
 
 	if(pppState == ppp_ready_work) {
 		dns_is_found = false;
@@ -513,13 +572,6 @@ static void server_close(struct tcp_pcb *pcb) {
 		connectionPppStruct.tcpClient = NULL;
 	}
 }
-
-//void udp_dns_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *addr, u16_t port) {
-//	if (p != NULL) {
-//		DBGInfo("GSMM: udp echo dns -OK!");
-//		pbuf_free(p);
-//	}
-//}
 
 /* Private functions ---------------------------------------------------------*/
 static void tcpip_init_done(void * arg) {

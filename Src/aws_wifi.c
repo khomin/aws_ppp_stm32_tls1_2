@@ -89,35 +89,35 @@ static const TickType_t xSemaphoreWaitTicks = pdMS_TO_TICKS( wificonfigMAX_SEMAP
  *
  * @return Corresponding ST specific security type.
  */
-//static ES_WIFI_SecurityType_t prvConvertSecurityFromAbstractedToST( WIFISecurity_t xSecurity )
-//{
-//    ES_WIFI_SecurityType_t xConvertedSecurityType = ES_WIFI_SEC_UNKNOWN;
-//
-//    switch( xSecurity )
-//    {
-//        case eWiFiSecurityOpen:
-//            xConvertedSecurityType = ES_WIFI_SEC_OPEN;
-//            break;
-//
-//        case eWiFiSecurityWEP:
-//            xConvertedSecurityType = ES_WIFI_SEC_WEP;
-//            break;
-//
-//        case eWiFiSecurityWPA:
-//            xConvertedSecurityType = ES_WIFI_SEC_WPA;
-//            break;
-//
-//        case eWiFiSecurityWPA2:
-//            xConvertedSecurityType = ES_WIFI_SEC_WPA2;
-//            break;
-//
-//        case eWiFiSecurityNotSupported:
-//            xConvertedSecurityType = ES_WIFI_SEC_UNKNOWN;
-//            break;
-//    }
-//
-//    return xConvertedSecurityType;
-//}
+static ES_WIFI_SecurityType_t prvConvertSecurityFromAbstractedToST( WIFISecurity_t xSecurity )
+{
+    ES_WIFI_SecurityType_t xConvertedSecurityType = ES_WIFI_SEC_UNKNOWN;
+
+    switch( xSecurity )
+    {
+        case eWiFiSecurityOpen:
+            xConvertedSecurityType = ES_WIFI_SEC_OPEN;
+            break;
+
+        case eWiFiSecurityWEP:
+            xConvertedSecurityType = ES_WIFI_SEC_WEP;
+            break;
+
+        case eWiFiSecurityWPA:
+            xConvertedSecurityType = ES_WIFI_SEC_WPA;
+            break;
+
+        case eWiFiSecurityWPA2:
+            xConvertedSecurityType = ES_WIFI_SEC_WPA2;
+            break;
+
+        case eWiFiSecurityNotSupported:
+            xConvertedSecurityType = ES_WIFI_SEC_UNKNOWN;
+            break;
+    }
+
+    return xConvertedSecurityType;
+}
 
 /*-----------------------------------------------------------*/
 
@@ -203,69 +203,69 @@ WIFIReturnCode_t WIFI_Off( void )
 WIFIReturnCode_t WIFI_ConnectAP( const WIFINetworkParams_t * const pxNetworkParams )
 {
 	DBGLog("WIFI_ConnectAP");
-//    WIFIReturnCode_t xRetVal = eWiFiFailure;
-//    uint32_t x;
-//
-//    configASSERT( pxNetworkParams != NULL );
-//    configASSERT( pxNetworkParams->pcSSID != NULL );
-//
-//    if ( pxNetworkParams->xSecurity != eWiFiSecurityOpen )
-//    {
-//        configASSERT( pxNetworkParams->pcPassword != NULL );
-//    }
-//
-//    /* Try to acquire the semaphore. */
-//    if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE )
-//    {
-//        /* Disconnect first if we are connected, to connect to the input network. */
-//        if( ES_WIFI_IsConnected( &xWiFiModule.xWifiObject ) )
-//        {
-//            if( ES_WIFI_Disconnect( &( xWiFiModule.xWifiObject ) ) ==  ES_WIFI_STATUS_OK )
-//            {
-//                xRetVal = eWiFiSuccess;
-//            }
-//        }
-//        else
-//        {
-//            xRetVal = eWiFiSuccess;
-//        }
-//
-//        if ( xRetVal == eWiFiSuccess )
-//        {
-//            /* Reset the return value to failure to catch errors in connection. */
-//            xRetVal = eWiFiFailure;
-//
-//            /* Keep trying to connect until all the retries are exhausted. */
-//            for( x = 0 ; x < wificonfigNUM_CONNECTION_RETRY ; x++ )
-//            {
-//                /* Try to connect to Wi-Fi. */
-//                if( ES_WIFI_Connect( &( xWiFiModule.xWifiObject ),
-//                                        pxNetworkParams->pcSSID,
-//                                        pxNetworkParams->pcPassword,
-//                                        prvConvertSecurityFromAbstractedToST( pxNetworkParams->xSecurity ) ) == ES_WIFI_STATUS_OK )
-//                {
-//                    /* Store network settings. */
-//                    if( ES_WIFI_GetNetworkSettings( &( xWiFiModule.xWifiObject ) ) == ES_WIFI_STATUS_OK )
-//                    {
-//                        /* Connection successful. */
-//                        xRetVal = eWiFiSuccess;
-//
-//                        /* No more retries needed. */
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//
-//        /* Return the semaphore. */
-//        xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
-//    }
-//    else
-//    {
-//        xRetVal = eWiFiTimeout;
-//    }
-//
-//    return xRetVal;
+	WIFIReturnCode_t xRetVal = eWiFiFailure;
+	uint32_t x;
+
+	configASSERT( pxNetworkParams != NULL );
+	configASSERT( pxNetworkParams->pcSSID != NULL );
+
+	if ( pxNetworkParams->xSecurity != eWiFiSecurityOpen )
+	{
+		configASSERT( pxNetworkParams->pcPassword != NULL );
+	}
+
+	/* Try to acquire the semaphore. */
+	if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE )
+	{
+		/* Disconnect first if we are connected, to connect to the input network. */
+		if( ES_WIFI_IsConnected( &xWiFiModule.xWifiObject ) )
+		{
+			if( ES_WIFI_Disconnect( &( xWiFiModule.xWifiObject ) ) ==  ES_WIFI_STATUS_OK )
+			{
+				xRetVal = eWiFiSuccess;
+			}
+		}
+		else
+		{
+			xRetVal = eWiFiSuccess;
+		}
+
+		if ( xRetVal == eWiFiSuccess )
+		{
+			/* Reset the return value to failure to catch errors in connection. */
+			xRetVal = eWiFiFailure;
+
+			/* Keep trying to connect until all the retries are exhausted. */
+			for( x = 0 ; x < wificonfigNUM_CONNECTION_RETRY ; x++ )
+			{
+				/* Try to connect to Wi-Fi. */
+				if( ES_WIFI_Connect( &( xWiFiModule.xWifiObject ),
+						pxNetworkParams->pcSSID,
+						pxNetworkParams->pcPassword,
+						prvConvertSecurityFromAbstractedToST( pxNetworkParams->xSecurity ) ) == ES_WIFI_STATUS_OK )
+				{
+					/* Store network settings. */
+					if( ES_WIFI_GetNetworkSettings( &( xWiFiModule.xWifiObject ) ) == ES_WIFI_STATUS_OK )
+					{
+						/* Connection successful. */
+						xRetVal = eWiFiSuccess;
+
+						/* No more retries needed. */
+						break;
+					}
+				}
+			}
+		}
+
+		/* Return the semaphore. */
+		xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
+	}
+	else
+	{
+		xRetVal = eWiFiTimeout;
+	}
+
+	return xRetVal;
 }
 
 /*-----------------------------------------------------------*/
@@ -273,6 +273,7 @@ WIFIReturnCode_t WIFI_ConnectAP( const WIFINetworkParams_t * const pxNetworkPara
 WIFIReturnCode_t WIFI_Disconnect( void )
 {
 	DBGLog("WIFI_Disconnect");
+	while(1){}
 //    WIFIReturnCode_t xRetVal = eWiFiFailure;
 //
 //    /* Try to acquire the semaphore. */
@@ -307,6 +308,8 @@ WIFIReturnCode_t WIFI_Disconnect( void )
 WIFIReturnCode_t WIFI_Reset( void )
 {
 	DBGLog("WIFI_Reset");
+	while(1){}
+
 //    WIFIReturnCode_t xRetVal = eWiFiFailure;
 //
 //    /* Try to acquire the semaphore. */
@@ -335,6 +338,7 @@ WIFIReturnCode_t WIFI_SetMode( WIFIDeviceMode_t xDeviceMode )
     WIFIReturnCode_t xRetVal = eWiFiNotSupported;
 
 	DBGLog("WIFI_SetMode");
+	while(1){}
 
     return xRetVal;
 }
@@ -345,6 +349,7 @@ WIFIReturnCode_t WIFI_GetMode( WIFIDeviceMode_t * pxDeviceMode )
     WIFIReturnCode_t xRetVal = eWiFiNotSupported;
 
     DBGLog("WIFI_GetMode");
+    while(1){}
 
     return xRetVal;
 }
@@ -357,6 +362,7 @@ WIFIReturnCode_t WIFI_NetworkAdd( const WIFINetworkProfile_t * const pxNetworkPr
     WIFIReturnCode_t xRetVal = eWiFiNotSupported;
 
     DBGLog("WIFI_NetworkAdd");
+    while(1){}
 
     return xRetVal;
 }
@@ -370,6 +376,7 @@ WIFIReturnCode_t WIFI_NetworkGet( WIFINetworkProfile_t * pxNetworkProfile,
     WIFIReturnCode_t xRetVal = eWiFiNotSupported;
 
     DBGLog("WIFI_NetworkGet");
+    while(1){}
 
     return xRetVal;
 }
@@ -381,6 +388,7 @@ WIFIReturnCode_t WIFI_NetworkDelete( uint16_t usIndex )
     WIFIReturnCode_t xRetVal = eWiFiNotSupported;
 
     DBGLog("WIFI_NetworkDelete");
+    while(1){}
 
     return xRetVal;
 }
@@ -393,6 +401,7 @@ WIFIReturnCode_t WIFI_Ping( uint8_t * pucIPAddr,
 {
 
 	 DBGLog("WIFI_Ping");
+	 while(1){}
 
 //    WIFIReturnCode_t xRetVal = eWiFiFailure;
 //
@@ -424,9 +433,11 @@ WIFIReturnCode_t WIFI_Ping( uint8_t * pucIPAddr,
 
 WIFIReturnCode_t WIFI_GetIP( uint8_t * pucIPAddr )
 {
-	 DBGLog("WIFI_GetIP");
+    WIFIReturnCode_t xRetVal = eWiFiFailure;
 
-//    WIFIReturnCode_t xRetVal = eWiFiFailure;
+    DBGLog("WIFI_GetIP");
+    xRetVal = eWiFiSuccess;
+
 //
 //    configASSERT( pucIPAddr != NULL );
 //
@@ -455,6 +466,7 @@ WIFIReturnCode_t WIFI_GetIP( uint8_t * pucIPAddr )
 WIFIReturnCode_t WIFI_GetMAC( uint8_t * pucMac )
 {
 	DBGLog("WIFI_GetMAC");
+	while(1){}
 
 //    WIFIReturnCode_t xRetVal = eWiFiFailure;
 //
@@ -485,6 +497,7 @@ WIFIReturnCode_t WIFI_GetHostIP( char * pcHost,
                                  uint8_t * pucIPAddr )
 {
 	DBGLog("WIFI_GetHostIP");
+	while(1){}
 
 //    WIFIReturnCode_t xRetVal = eWiFiFailure;
 //
@@ -518,6 +531,7 @@ WIFIReturnCode_t WIFI_Scan( WIFIScanResult_t * pxBuffer,
                             uint8_t ucNumNetworks )
 {
 	DBGLog("WIFI_Scan");
+	while(1){}
 
 //    WIFIReturnCode_t xRetVal = eWiFiFailure;
 //    uint32_t x;
@@ -564,68 +578,69 @@ WIFIReturnCode_t WIFI_Scan( WIFIScanResult_t * pxBuffer,
 WIFIReturnCode_t WIFI_StartAP( void )
 {
 	DBGLog("WIFI_StartAP");
-//    /*WIFI_ConfigureAP configures and start the soft AP . */
-//    WIFIReturnCode_t xRetVal = eWiFiNotSupported;
-//
-//    return xRetVal;
+    /*WIFI_ConfigureAP configures and start the soft AP . */
+    WIFIReturnCode_t xRetVal = eWiFiNotSupported;
+
+    return xRetVal;
 }
 
 /*-----------------------------------------------------------*/
 WIFIReturnCode_t WIFI_StopAP( void )
 {
 	DBGLog("WIFI_StopAP");
-//    /*SoftAP mode stops after a timeout. */
-//    WIFIReturnCode_t xRetVal = eWiFiNotSupported;
-//
-//    return xRetVal;
+    /*SoftAP mode stops after a timeout. */
+    WIFIReturnCode_t xRetVal = eWiFiNotSupported;
+
+    return xRetVal;
 }
 
 /*-----------------------------------------------------------*/
 
 WIFIReturnCode_t WIFI_ConfigureAP( const WIFINetworkParams_t * const pxNetworkParams )
 {
-	DBGLog("WIFI_ConfigureAP");
-//    WIFIReturnCode_t xRetVal = eWiFiFailure;
-//    ES_WIFI_APConfig_t xApConfig;
-//
-//    configASSERT( pxNetworkParams != NULL );
-//    configASSERT( pxNetworkParams->pcSSID != NULL );
-//
-//    strncpy( ( char * ) xApConfig.SSID,
-//             ( char * ) pxNetworkParams->pcSSID,
-//             ES_WIFI_MAX_SSID_NAME_SIZE );
-//
-//    if ( pxNetworkParams->xSecurity != eWiFiSecurityOpen )
-//    {
-//        configASSERT( pxNetworkParams->pcPassword != NULL );
-//
-//        strncpy( ( char * ) xApConfig.Pass,
-//                 ( char * ) pxNetworkParams->pcPassword,
-//                 ES_WIFI_MAX_PSWD_NAME_SIZE );
-//    }
-//
-//    xApConfig.Channel = pxNetworkParams->cChannel;
-//    xApConfig.MaxConnections = wificonfigMAX_CONNECTED_STATIONS;
-//    xApConfig.Security = prvConvertSecurityFromAbstractedToST( pxNetworkParams->xSecurity );
-//
-//    /* Try to acquire the semaphore. */
-//    if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE )
-//    {
-//        /* Activate Soft AP. */
-//        if( ES_WIFI_ActivateAP( &xWiFiModule.xWifiObject, &xApConfig ) == ES_WIFI_STATUS_OK )
-//        {
-//            xRetVal = eWiFiSuccess;
-//        }
-//
-//        /* Return the semaphore. */
-//        xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
-//    }
-//    else
-//    {
-//        xRetVal = eWiFiTimeout;
-//    }
-//
-//    return xRetVal;
+    WIFIReturnCode_t xRetVal = eWiFiFailure;
+    ES_WIFI_APConfig_t xApConfig;
+
+    DBGLog("WIFI_ConfigureAP");
+
+    configASSERT( pxNetworkParams != NULL );
+    configASSERT( pxNetworkParams->pcSSID != NULL );
+
+    strncpy( ( char * ) xApConfig.SSID,
+             ( char * ) pxNetworkParams->pcSSID,
+             ES_WIFI_MAX_SSID_NAME_SIZE );
+
+    if ( pxNetworkParams->xSecurity != eWiFiSecurityOpen )
+    {
+        configASSERT( pxNetworkParams->pcPassword != NULL );
+
+        strncpy( ( char * ) xApConfig.Pass,
+                 ( char * ) pxNetworkParams->pcPassword,
+                 ES_WIFI_MAX_PSWD_NAME_SIZE );
+    }
+
+    xApConfig.Channel = pxNetworkParams->cChannel;
+    xApConfig.MaxConnections = wificonfigMAX_CONNECTED_STATIONS;
+    xApConfig.Security = prvConvertSecurityFromAbstractedToST( pxNetworkParams->xSecurity );
+
+    /* Try to acquire the semaphore. */
+    if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE )
+    {
+        /* Activate Soft AP. */
+        if( ES_WIFI_ActivateAP( &xWiFiModule.xWifiObject, &xApConfig ) == ES_WIFI_STATUS_OK )
+        {
+            xRetVal = eWiFiSuccess;
+        }
+
+        /* Return the semaphore. */
+        xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
+    }
+    else
+    {
+        xRetVal = eWiFiTimeout;
+    }
+
+    return xRetVal;
 }
 /*-----------------------------------------------------------*/
 

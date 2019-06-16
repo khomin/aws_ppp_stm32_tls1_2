@@ -45,7 +45,7 @@ static const char clientcredentialMQTT_BROKER_ENDPOINT[] = "a39gt7zyg3mya3-ats.i
 /*
  * Port number the MQTT broker is using.
  */
-#define clientcredentialMQTT_BROKER_PORT             45454//8883
+#define clientcredentialMQTT_BROKER_PORT             8883 // 45454
 
 /*
  * Port number the Green Grass Discovery use for JSON retrieval from cloud is using.

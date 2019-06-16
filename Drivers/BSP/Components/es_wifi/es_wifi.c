@@ -1074,31 +1074,32 @@ ES_WIFI_Status_t ES_WIFI_Connect(ES_WIFIObject_t *Obj, const char* SSID,
   LOCK_WIFI();  
 
   DBGLog("ES_WIFI_Connect");
+  ret = ES_WIFI_STATUS_OK;
 
-  sprintf((char*)Obj->CmdData,"C1=%s\r", SSID);
-  ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
-  if(ret == ES_WIFI_STATUS_OK)
-  {
-    sprintf((char*)Obj->CmdData,"C2=%s\r", Password);
-    ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
-
-    if(ret == ES_WIFI_STATUS_OK)
-    {
-      Obj->Security = SecType;
-      sprintf((char*)Obj->CmdData,"C3=%d\r", (uint8_t)SecType);
-      ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
-
-      if(ret == ES_WIFI_STATUS_OK)
-      {
-        sprintf((char*)Obj->CmdData,"C0\r");
-        ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
-        if(ret == ES_WIFI_STATUS_OK)
-        {
-           Obj->NetSettings.IsConnected = 1;
-        }
-      }
-    }
-  }
+//  sprintf((char*)Obj->CmdData,"C1=%s\r", SSID);
+//  ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//  if(ret == ES_WIFI_STATUS_OK)
+//  {
+//    sprintf((char*)Obj->CmdData,"C2=%s\r", Password);
+//    ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//
+//    if(ret == ES_WIFI_STATUS_OK)
+//    {
+//      Obj->Security = SecType;
+//      sprintf((char*)Obj->CmdData,"C3=%d\r", (uint8_t)SecType);
+//      ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//
+//      if(ret == ES_WIFI_STATUS_OK)
+//      {
+//        sprintf((char*)Obj->CmdData,"C0\r");
+//        ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//        if(ret == ES_WIFI_STATUS_OK)
+//        {
+//           Obj->NetSettings.IsConnected = 1;
+//        }
+//      }
+//    }
+//  }
   UNLOCK_WIFI();
   return ret;
 }
@@ -1114,8 +1115,8 @@ uint8_t ES_WIFI_IsConnected(ES_WIFIObject_t *Obj)
 
   DBGLog("ES_WIFI_IsConnected");
 
-  sprintf((char*)Obj->CmdData,"CS\r");
-  ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//  sprintf((char*)Obj->CmdData,"CS\r");
+//  ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
 
   if(gsmPPP_ConnectStatus(0)) {
 	  ret = ES_WIFI_STATUS_OK;
@@ -1152,14 +1153,15 @@ ES_WIFI_Status_t ES_WIFI_GetNetworkSettings(ES_WIFIObject_t *Obj)
   LOCK_WIFI();  
 
   DBGLog("ES_WIFI_GetNetworkSettings");
-
-  sprintf((char*)Obj->CmdData,"C?\r");
-  ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
-
-  if(ret == ES_WIFI_STATUS_OK)
-  {
-     AT_ParseConnSettings((char *)Obj->CmdData, &Obj->NetSettings);
-  }
+  ret = ES_WIFI_STATUS_OK;
+//
+//  sprintf((char*)Obj->CmdData,"C?\r");
+//  ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//
+//  if(ret == ES_WIFI_STATUS_OK)
+//  {
+//     AT_ParseConnSettings((char *)Obj->CmdData, &Obj->NetSettings);
+//  }
   
   UNLOCK_WIFI();
   return ret;
@@ -1179,45 +1181,46 @@ ES_WIFI_Status_t ES_WIFI_ActivateAP(ES_WIFIObject_t *Obj, ES_WIFI_APConfig_t *Ap
   LOCK_WIFI();  
 
   DBGLog("ES_WIFI_ActivateAP");
+  ret = ES_WIFI_STATUS_OK;
 
-  sprintf((char*)Obj->CmdData,"AS=0,%s\r", ApConfig->SSID);
-  ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
-  if(ret == ES_WIFI_STATUS_OK)
-  {
-
-    sprintf((char*)Obj->CmdData,"A1=%c\r", (int)ApConfig->Security + '0');
-    ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
-    if(ret == ES_WIFI_STATUS_OK)
-    {
-
-      sprintf((char*)Obj->CmdData,"A2=%s\r", ApConfig->Pass);
-      ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
-      if(ret == ES_WIFI_STATUS_OK)
-      {
-
-        sprintf((char*)Obj->CmdData,"AC=%d\r", ApConfig->Channel);
-        ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
-        if(ret == ES_WIFI_STATUS_OK)
-        {
-
-          sprintf((char*)Obj->CmdData,"AT=%d\r", ApConfig->MaxConnections);
-          ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
-          if(ret == ES_WIFI_STATUS_OK)
-          {
-            sprintf((char*)Obj->CmdData,"A0\r");
-            ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
-            if(ret == ES_WIFI_STATUS_OK)
-            {
-              if(strstr((char *)Obj->CmdData, "[AP     ]"))
-              {
-                ret = ES_WIFI_STATUS_OK;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+//  sprintf((char*)Obj->CmdData,"AS=0,%s\r", ApConfig->SSID);
+//  ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//  if(ret == ES_WIFI_STATUS_OK)
+//  {
+//
+//    sprintf((char*)Obj->CmdData,"A1=%c\r", (int)ApConfig->Security + '0');
+//    ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//    if(ret == ES_WIFI_STATUS_OK)
+//    {
+//
+//      sprintf((char*)Obj->CmdData,"A2=%s\r", ApConfig->Pass);
+//      ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//      if(ret == ES_WIFI_STATUS_OK)
+//      {
+//
+//        sprintf((char*)Obj->CmdData,"AC=%d\r", ApConfig->Channel);
+//        ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//        if(ret == ES_WIFI_STATUS_OK)
+//        {
+//
+//          sprintf((char*)Obj->CmdData,"AT=%d\r", ApConfig->MaxConnections);
+//          ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//          if(ret == ES_WIFI_STATUS_OK)
+//          {
+//            sprintf((char*)Obj->CmdData,"A0\r");
+//            ret = AT_ExecuteCommand(Obj, Obj->CmdData, Obj->CmdData);
+//            if(ret == ES_WIFI_STATUS_OK)
+//            {
+//              if(strstr((char *)Obj->CmdData, "[AP     ]"))
+//              {
+//                ret = ES_WIFI_STATUS_OK;
+//              }
+//            }
+//          }
+//        }
+//      }
+//    }
+//  }
   UNLOCK_WIFI();
   return ret;
 }
@@ -2094,8 +2097,6 @@ ES_WIFI_Status_t ES_WIFI_SendData(ES_WIFIObject_t *Obj, uint8_t Socket,
   ES_WIFI_Status_t ret = ES_WIFI_STATUS_ERROR;
   LOCK_WIFI();
   if(Reqlen >= ES_WIFI_PAYLOAD_SIZE ) Reqlen= ES_WIFI_PAYLOAD_SIZE;
-
-  *SentLen = Reqlen;
 
   DBGLog("ES_WIFI_SendData");
 

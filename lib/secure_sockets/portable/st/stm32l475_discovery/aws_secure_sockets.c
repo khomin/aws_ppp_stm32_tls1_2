@@ -101,7 +101,7 @@
  * do not want the Inventek module to block. Setting to zero means
  * no timeout, so one is the smallest value we can set it to.
  */
-#define stsecuresocketsONE_MILLISECOND             ( 5 )
+#define stsecuresocketsONE_MILLISECOND             ( 3 )
 
 /**
  * @brief The credential set to use for TLS on the Inventek module.
@@ -1168,17 +1168,10 @@ uint32_t SOCKETS_GetHostByName( const char * pcHostName )
     if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE )
     {
     	/* Do a DNS Lookup. */
-//    	sGetDnsResult resuls = getIpByDns(pcHostName, strlen(pcHostName));
-//    	if(resuls.isValid) {
-//    		ulIPAddres = resuls.resolved.addr;
-//    	}
-
-    	// TODO: test
-    	ulIPAddres = 0x92040a1f;
-//    	destIp[0] = 0x1f;
-//    	destIp[0] = 0x0a;
-//    	destIp[0] = 0x04;
-//    	destIp[0] = 0x92;
+    	sGetDnsResult resuls = getIpByDns(pcHostName, strlen(pcHostName));
+    	if(resuls.isValid) {
+    		ulIPAddres = resuls.resolved.addr;
+    	}
 
     	/* Return the semaphore. */
         ( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
