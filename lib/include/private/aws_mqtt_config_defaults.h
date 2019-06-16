@@ -35,6 +35,8 @@
 #ifndef _AWS_MQTT_CONFIG_DEFAULTS_H_
 #define _AWS_MQTT_CONFIG_DEFAULTS_H_
 
+#include "debug_print.h"
+
 /**
  * @brief Enable subscription management.
  *
@@ -108,7 +110,7 @@
 #if ( mqttconfigENABLE_DEBUG_LOGS == 1 )
     extern void vLoggingPrintf( const char * pcFormatString,
                                 ... );
-    #define mqttconfigDEBUG_LOG( x )    vLoggingPrintf x
+    #define mqttconfigDEBUG_LOG( x )    DBGInfo x
 #else
     #define mqttconfigDEBUG_LOG( x )
 #endif

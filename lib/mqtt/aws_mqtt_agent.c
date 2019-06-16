@@ -623,57 +623,56 @@ static uint32_t prvMQTTSendCallback( void * pvSendContext,
                                      const uint8_t * const pucData,
                                      uint32_t ulDataLength )
 {
-//TODO:
-//    MQTTBrokerConnection_t * pxConnection;
-//    UBaseType_t uxBrokerNumber = ( UBaseType_t ) pvSendContext; /*lint !e923 The cast is ok as we passed the index of the client before. */
-//    int32_t lSendRetVal;
+    MQTTBrokerConnection_t * pxConnection;
+    UBaseType_t uxBrokerNumber = ( UBaseType_t ) pvSendContext; /*lint !e923 The cast is ok as we passed the index of the client before. */
+    int32_t lSendRetVal;
     uint32_t ulBytesSent = 0;
-//    TimeOut_t xTimestamp;
-//    TickType_t xTicksToWait = pdMS_TO_TICKS( mqttconfigTCP_SEND_TIMEOUT_MS );
-//
-//    /* Broker number must be valid. */
-//    configASSERT( uxBrokerNumber < ( UBaseType_t ) mqttconfigMAX_BROKERS );
-//
-//    /* Record the timestamp when this function was called. */
-//    vTaskSetTimeOutState( &( xTimestamp ) );
-//
-//    /* Get the actual connection to the broker. */
-//    pxConnection = &( xMQTTConnections[ uxBrokerNumber ] );
-//
-//    /* Keep re-trying until timeout or any error
-//     * other than SOCKETS_EWOULDBLOCK occurs. */
-//    while( ulBytesSent < ulDataLength )
-//    {
-//        /* Check for timeout and if timeout has occurred, stop retrying. */
-//        if( xTaskCheckForTimeOut( &( xTimestamp ), &( xTicksToWait ) ) == pdTRUE )
-//        {
-//            break;
-//        }
-//
-//        /* Try sending the remaining data. */
-//        lSendRetVal = SOCKETS_Send( pxConnection->xSocket,
-//                                    &( pucData[ ulBytesSent ] ),               /* Only send the remaining data. */
-//                                    ( size_t ) ( ulDataLength - ulBytesSent ), /* Only send the remaining data. */
-//                                    0 );
-//
-//        /* A negative return value from SOCKETS_Send
-//         * means some error occurred. */
-//        if( lSendRetVal < 0 )
-//        {
-//            /* Since the socket is non-blocking, send can return
-//             * SOCKETS_EWOULDBLOCK, in which case we retry again until
-//             * timeout. In case of any other error, we stop re-trying. */
-//            if( lSendRetVal != SOCKETS_EWOULDBLOCK )
-//            {
-//                break;
-//            }
-//        }
-//        else
-//        {
-//            /* Update the count of sent bytes. */
-//            ulBytesSent += ( uint32_t ) lSendRetVal;
-//        }
-//    }
+    TimeOut_t xTimestamp;
+    TickType_t xTicksToWait = pdMS_TO_TICKS( mqttconfigTCP_SEND_TIMEOUT_MS );
+
+    /* Broker number must be valid. */
+    configASSERT( uxBrokerNumber < ( UBaseType_t ) mqttconfigMAX_BROKERS );
+
+    /* Record the timestamp when this function was called. */
+    vTaskSetTimeOutState( &( xTimestamp ) );
+
+    /* Get the actual connection to the broker. */
+    pxConnection = &( xMQTTConnections[ uxBrokerNumber ] );
+
+    /* Keep re-trying until timeout or any error
+     * other than SOCKETS_EWOULDBLOCK occurs. */
+    while( ulBytesSent < ulDataLength )
+    {
+    	/* Check for timeout and if timeout has occurred, stop retrying. */
+    	if( xTaskCheckForTimeOut( &( xTimestamp ), &( xTicksToWait ) ) == pdTRUE )
+    	{
+    		break;
+    	}
+
+    	/* Try sending the remaining data. */
+    	lSendRetVal = SOCKETS_Send( pxConnection->xSocket,
+    			&( pucData[ ulBytesSent ] ),               /* Only send the remaining data. */
+				( size_t ) ( ulDataLength - ulBytesSent ), /* Only send the remaining data. */
+				0 );
+
+    	/* A negative return value from SOCKETS_Send
+    	 * means some error occurred. */
+    	if( lSendRetVal < 0 )
+    	{
+    		/* Since the socket is non-blocking, send can return
+    		 * SOCKETS_EWOULDBLOCK, in which case we retry again until
+    		 * timeout. In case of any other error, we stop re-trying. */
+    		if( lSendRetVal != SOCKETS_EWOULDBLOCK )
+    		{
+    			break;
+    		}
+    	}
+    	else
+    	{
+    		/* Update the count of sent bytes. */
+    		ulBytesSent += ( uint32_t ) lSendRetVal;
+    	}
+    }
 
     return ulBytesSent;
 }
@@ -1007,45 +1006,44 @@ static BaseType_t prvSetupConnection( const MQTTEventData_t * const pxEventData 
 
 static void prvGracefulSocketClose( MQTTBrokerConnection_t * const pxConnection )
 {
-//TODO:
-//    const TickType_t xShortDelay = pdMS_TO_TICKS( 10 );
-//    TickType_t xTicksToWait = xShortDelay * ( TickType_t ) 100;
-//    TimeOut_t xTimeOut;
-//
-//    mqttconfigDEBUG_LOG( ( "About to close socket.\r\n" ) );
-//
-//    /* Initialize xTimeOut.  This records the time at which this function was
-//     * entered. */
-//    vTaskSetTimeOutState( &xTimeOut );
-//
-//    /* Shutdown the connection. */
-//    ( void ) SOCKETS_Shutdown( pxConnection->xSocket, SOCKETS_SHUT_RDWR );
-//
-//    /* Wait for the socket to disconnect gracefully (indicated by a
-//     * SOCKETS_ERRNO_EINVAL error) before closing the socket. */
-//    while( SOCKETS_Recv( pxConnection->xSocket, pxConnection->ucRxBuffer, sizeof( pxConnection->ucRxBuffer ), 0 ) >= 0 )
-//    {
-//        vTaskDelay( xShortDelay );
-//
-//        if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) != pdFALSE )
-//        {
-//            /* Timed out before the wanted number of bytes were available, exit
-//             * the loop. */
-//            break;
-//        }
-//    }
-//
-//    /* Close the socket. */
-//    ( void ) SOCKETS_Close( pxConnection->xSocket );
-//    pxConnection->xSocket = SOCKETS_INVALID_SOCKET;
-//    mqttconfigDEBUG_LOG( ( "Socket closed.\r\n" ) );
-//
-//    #if ( INCLUDE_uxTaskGetStackHighWaterMark == 1 )
-//        {
-//            /* Print the stack high watermark for the MQTT task. */
-//            mqttconfigDEBUG_LOG( ( "Stack high watermark for MQTT task: %u\r\n", uxTaskGetStackHighWaterMark( NULL ) ) );
-//        }
-//    #endif
+    const TickType_t xShortDelay = pdMS_TO_TICKS( 10 );
+    TickType_t xTicksToWait = xShortDelay * ( TickType_t ) 100;
+    TimeOut_t xTimeOut;
+
+    mqttconfigDEBUG_LOG( ( "About to close socket.\r\n" ) );
+
+    /* Initialize xTimeOut.  This records the time at which this function was
+     * entered. */
+    vTaskSetTimeOutState( &xTimeOut );
+
+    /* Shutdown the connection. */
+    ( void ) SOCKETS_Shutdown( pxConnection->xSocket, SOCKETS_SHUT_RDWR );
+
+    /* Wait for the socket to disconnect gracefully (indicated by a
+     * SOCKETS_ERRNO_EINVAL error) before closing the socket. */
+    while( SOCKETS_Recv( pxConnection->xSocket, pxConnection->ucRxBuffer, sizeof( pxConnection->ucRxBuffer ), 0 ) >= 0 )
+    {
+        vTaskDelay( xShortDelay );
+
+        if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) != pdFALSE )
+        {
+            /* Timed out before the wanted number of bytes were available, exit
+             * the loop. */
+            break;
+        }
+    }
+
+    /* Close the socket. */
+    ( void ) SOCKETS_Close( pxConnection->xSocket );
+    pxConnection->xSocket = SOCKETS_INVALID_SOCKET;
+    mqttconfigDEBUG_LOG( ( "Socket closed.\r\n" ) );
+
+    #if ( INCLUDE_uxTaskGetStackHighWaterMark == 1 )
+        {
+            /* Print the stack high watermark for the MQTT task. */
+            mqttconfigDEBUG_LOG( ( "Stack high watermark for MQTT task: %u\r\n", uxTaskGetStackHighWaterMark( NULL ) ) );
+        }
+    #endif
 }
 /*-----------------------------------------------------------*/
 
@@ -1843,7 +1841,7 @@ BaseType_t MQTT_AGENT_Init( void )
      * long as the MQTT application is running. */
 
     /* The variable used to hold the queue's data structure. */
-//    static StaticQueue_t xStaticQueue;
+    static StaticQueue_t xStaticQueue;
 
     /* The array to use as the queue's storage area.  This must be at least
      * uxQueueLength * uxItemSize bytes.  Again, must be static. */
@@ -1906,11 +1904,10 @@ BaseType_t MQTT_AGENT_Init( void )
 
         /* Don't create the MQTT task until the command queue has been created,
          * as the task itself assumes the queue is valid. */
-//        xCommandQueue = xQueueCreate( mqttCOMMAND_QUEUE_LENGTH, sizeof( MQTTEventData_t ), ucQueueStorageArea, &xStaticQueue );
-        xCommandQueue = xQueueCreate( mqttCOMMAND_QUEUE_LENGTH, sizeof( MQTTEventData_t ));
+        xCommandQueue = xQueueCreateStatic( mqttCOMMAND_QUEUE_LENGTH, sizeof( MQTTEventData_t ), ucQueueStorageArea, &xStaticQueue );
         configASSERT( xCommandQueue );
 
-        xMQTTTaskHandle = xTaskCreate( prvMQTTTask, "MQTT", mqttconfigMQTT_TASK_STACK_DEPTH, 0, mqttconfigMQTT_TASK_PRIORITY, NULL);
+        xMQTTTaskHandle = xTaskCreateStatic( prvMQTTTask, "MQTT", mqttconfigMQTT_TASK_STACK_DEPTH, NULL, mqttconfigMQTT_TASK_PRIORITY, xStack, &xStaticTask );
         configASSERT( xMQTTTaskHandle );
     }
 

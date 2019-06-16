@@ -51,8 +51,8 @@ sGetDnsResult getIpByDns(const char *pDnsName, uint8_t len);
 bool gsmPPP_Connect(uint8_t* destIp, uint16_t port);
 bool gsmPPP_Disconnect(uint8_t numConnect);
 bool gsmPPP_SendData(uint8_t numConnect, uint8_t *pData, uint16_t len);
-uint16_t gsmPPP_GetRxLenData(uint8_t numConnect);
-uint16_t gsmPPP_ReadRxData(uint8_t **pData);
+uint16_t gsmPPP_GetRxLenData();
+uint16_t gsmPPP_ReadRxData(uint8_t *pData, uint16_t maxLen, uint32_t timeout);
 bool gsmPPP_ConnectStatus(uint8_t numConnect);
 xSemaphoreHandle * gsmPPP_GetRxSemaphorePoint(uint8_t numService);
 

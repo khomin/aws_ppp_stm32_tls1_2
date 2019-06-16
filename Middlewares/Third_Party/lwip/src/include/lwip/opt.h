@@ -2635,28 +2635,28 @@
  * NETIF_DEBUG: Enable debugging in netif.c.
  */
 #if !defined NETIF_DEBUG || defined __DOXYGEN__
-#define NETIF_DEBUG                     LWIP_DBG_ON
+#define NETIF_DEBUG                     LWIP_DBG_OFF
 #endif
 
 /**
  * PBUF_DEBUG: Enable debugging in pbuf.c.
  */
 #if !defined PBUF_DEBUG || defined __DOXYGEN__
-#define PBUF_DEBUG                      LWIP_DBG_ON
+#define PBUF_DEBUG                      LWIP_DBG_OFF
 #endif
 
 /**
  * API_LIB_DEBUG: Enable debugging in api_lib.c.
  */
 #if !defined API_LIB_DEBUG || defined __DOXYGEN__
-#define API_LIB_DEBUG                   LWIP_DBG_ON
+#define API_LIB_DEBUG                   LWIP_DBG_OFF
 #endif
 
 /**
  * API_MSG_DEBUG: Enable debugging in api_msg.c.
  */
 #if !defined API_MSG_DEBUG || defined __DOXYGEN__
-#define API_MSG_DEBUG                   LWIP_DBG_ON
+#define API_MSG_DEBUG                   LWIP_DBG_OFF
 #endif
 
 /**
@@ -2669,7 +2669,7 @@
 /**
  * ICMP_DEBUG: Enable debugging in icmp.c.
  */
-#if !defined ICMP_DEBUG || defined __DOXYGEN__
+#if !defined ICMP_DEBUG || defined LWIP_DBG_OFF
 #define ICMP_DEBUG                      LWIP_DBG_ON
 #endif
 
@@ -2677,56 +2677,56 @@
  * IGMP_DEBUG: Enable debugging in igmp.c.
  */
 #if !defined IGMP_DEBUG || defined __DOXYGEN__
-#define IGMP_DEBUG                      LWIP_DBG_ON
+#define IGMP_DEBUG                      LWIP_DBG_OFF
 #endif
 
 /**
  * INET_DEBUG: Enable debugging in inet.c.
  */
 #if !defined INET_DEBUG || defined __DOXYGEN__
-#define INET_DEBUG                      LWIP_DBG_ON
+#define INET_DEBUG                      LWIP_DBG_OFF
 #endif
 
 /**
  * IP_DEBUG: Enable debugging for IP.
  */
 #if !defined IP_DEBUG || defined __DOXYGEN__
-#define IP_DEBUG                        LWIP_DBG_ON
+#define IP_DEBUG                        LWIP_DBG_OFF
 #endif
 
 /**
  * IP_REASS_DEBUG: Enable debugging in ip_frag.c for both frag & reass.
  */
 #if !defined IP_REASS_DEBUG || defined __DOXYGEN__
-#define IP_REASS_DEBUG                  LWIP_DBG_ON
+#define IP_REASS_DEBUG                  LWIP_DBG_OFF
 #endif
 
 /**
  * RAW_DEBUG: Enable debugging in raw.c.
  */
 #if !defined RAW_DEBUG || defined __DOXYGEN__
-#define RAW_DEBUG                       LWIP_DBG_ON
+#define RAW_DEBUG                       LWIP_DBG_OFF
 #endif
 
 /**
  * MEM_DEBUG: Enable debugging in mem.c.
  */
 #if !defined MEM_DEBUG || defined __DOXYGEN__
-#define MEM_DEBUG                       LWIP_DBG_ON
+#define MEM_DEBUG                       LWIP_DBG_OFF
 #endif
 
 /**
  * MEMP_DEBUG: Enable debugging in memp.c.
  */
 #if !defined MEMP_DEBUG || defined __DOXYGEN__
-#define MEMP_DEBUG                      LWIP_DBG_ON
+#define MEMP_DEBUG                      LWIP_DBG_OFF
 #endif
 
 /**
  * SYS_DEBUG: Enable debugging in sys.c.
  */
 #if !defined SYS_DEBUG || defined __DOXYGEN__
-#define SYS_DEBUG                       LWIP_DBG_ON
+#define SYS_DEBUG                       LWIP_DBG_OFF
 #endif
 
 /**
@@ -2818,35 +2818,35 @@
  * SLIP_DEBUG: Enable debugging in slipif.c.
  */
 #if !defined SLIP_DEBUG || defined __DOXYGEN__
-#define SLIP_DEBUG                      LWIP_DBG_ON
+#define SLIP_DEBUG                      LWIP_DBG_OFF
 #endif
 
 /**
  * DHCP_DEBUG: Enable debugging in dhcp.c.
  */
 #if !defined DHCP_DEBUG || defined __DOXYGEN__
-#define DHCP_DEBUG                      LWIP_DBG_ON
+#define DHCP_DEBUG                      LWIP_DBG_OFF
 #endif
 
 /**
  * AUTOIP_DEBUG: Enable debugging in autoip.c.
  */
 #if !defined AUTOIP_DEBUG || defined __DOXYGEN__
-#define AUTOIP_DEBUG                    LWIP_DBG_ON
+#define AUTOIP_DEBUG                    LWIP_DBG_OFF
 #endif
 
 /**
  * DNS_DEBUG: Enable debugging for DNS.
  */
 #if !defined DNS_DEBUG || defined __DOXYGEN__
-#define DNS_DEBUG                       LWIP_DBG_ON
+#define DNS_DEBUG                       LWIP_DBG_OFF
 #endif
 
 /**
  * IP6_DEBUG: Enable debugging for IPv6.
  */
 #if !defined IP6_DEBUG || defined __DOXYGEN__
-#define IP6_DEBUG                       LWIP_DBG_ON
+#define IP6_DEBUG                       LWIP_DBG_OFF
 #endif
 /**
  * @}

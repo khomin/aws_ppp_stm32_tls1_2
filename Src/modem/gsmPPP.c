@@ -22,6 +22,7 @@
 #include "netif/ppp/pppoe.h"
 #include "netif/ppp/pppol2tp.h"
 #include "aws_system_init.h"
+#include "aws_wifi.h"
 
 extern xSemaphoreHandle sioWriteSemaphore;
 extern sGsmUartParcer uartParcerStruct;
@@ -121,7 +122,7 @@ void gsmPPP_Tsk(void *pvParamter) {
 				//prvWifiConnect();
 #ifdef USE_OFFLOAD_SSL
 				/* Check if WiFi firmware needs to be updated. */
-				prvCheckWiFiFirmwareVersion();
+				//				prvCheckWiFiFirmwareVersion();
 #endif /* USE_OFFLOAD_SSL */
 				/* Start demos. */
 				vStartMQTTEchoDemo();
@@ -146,6 +147,7 @@ void gsmPPP_Tsk(void *pvParamter) {
 
 bool gsmPPP_Connect(uint8_t* destIp, uint16_t port) {
 	if(pppState != ppp_ready_work) {
+		DBGInfo("GSMPPP: gsmPPP_Connect - ppp no ready");
 		return false;
 	}
 
@@ -190,7 +192,7 @@ bool gsmPPP_Connect(uint8_t* destIp, uint16_t port) {
 
 bool gsmPPP_Disconnect(uint8_t numConnect) {
 	if(pppState != ppp_ready_work) {
-		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
+		DBGInfo("GSMPPP: gsmPPP_Disconnect - no connected");
 		return false;
 	}
 	if(connectionPppStruct.tcpClient == NULL) {
@@ -204,12 +206,12 @@ bool gsmPPP_Disconnect(uint8_t numConnect) {
 
 bool gsmPPP_SendData(uint8_t numConnect, uint8_t *pData, uint16_t len) {
 	if(pppState != ppp_ready_work) {
-		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
+		DBGInfo("GSMPPP: gsmPPP_SendData - no connected");
 		return false;
 	}
-	if(tcp_write(connectionPppStruct.tcpClient, pData, len, NULL) == ERR_OK) {
+	if(tcp_write(connectionPppStruct.tcpClient, (void*)pData, len, NULL) == ERR_OK) {
 		return true;
-	}else {
+	} else {
 		server_close(connectionPppStruct.tcpClient);
 		connectionPppStruct.connected = false;
 		connectionPppStruct.rxData.rxBufferLen = 0;
@@ -424,28 +426,37 @@ void gsmPPP_rawInput(void *pvParamter) {
 	}
 }
 
-//
-//uint16_t gsmPPP_GetRxLenData(uint8_t numConnect) {
-//	if(pppState != ppp_ready_work) {
-//		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
-//		return false;
-//	}
-//	return connectionPppStruct.rxData[numConnect].rxBufferLen;
-//}
-//
-//uint16_t gsmPPP_ReadRxData(uint8_t numConnect, uint8_t **ppData) {
-//	if(pppState != ppp_ready_work) {
-//		DBGInfo("GSMPPP: CONNECT ERROR - PPP closed");
-//		return false;
-//	}
-//	if(connectionPppStruct.rxData[numConnect].rxBufferLen != 0) {
-//		*ppData = (uint8_t *) connectionPppStruct.rxData[numConnect].rxBuffer;
-//		uint16_t retLen = connectionPppStruct.rxData[numConnect].rxBufferLen;
-//		connectionPppStruct.rxData[numConnect].rxBufferLen = 0;
-//		return retLen;
-//	}
-//	return false;
-//}
+
+uint16_t gsmPPP_GetRxLenData() {
+	if(pppState != ppp_ready_work) {
+		DBGInfo("GSMPPP: gsmPPP_GetRxLenData - no connected");
+		return false;
+	}
+	return connectionPppStruct.rxData.rxBufferLen;
+}
+
+uint16_t gsmPPP_ReadRxData(uint8_t *ppData, uint16_t maxLen, uint32_t timeout) {
+	uint16_t ret = 0;
+	if(pppState == ppp_ready_work) {
+		vTaskDelay(timeout * 1000/portTICK_PERIOD_MS);
+		DBGInfo("GSMPPP: gsmPPP_ReadRxData - timeout...");
+		if(connectionPppStruct.rxData.rxBufferLen != 0) {
+			if(connectionPppStruct.rxData.rxBufferLen < maxLen) {
+				memcpy(ppData, connectionPppStruct.rxData.rxBuffer, connectionPppStruct.rxData.rxBufferLen);
+				uint16_t retLen = connectionPppStruct.rxData.rxBufferLen;
+				return retLen;
+			} else {
+				DBGInfo("GSMPPP: gsmPPP_ReadRxData - rxData > max");
+			}
+		}
+	} else {
+		DBGInfo("GSMPPP: gsmPPP_ReadRxData - no connected");
+	}
+
+	connectionPppStruct.rxData.rxBufferLen = 0;
+
+	return ret;
+}
 
 err_t tcp_connected_cb(void *arg, struct tcp_pcb *tpcb, err_t err) {
 	if(tpcb == connectionPppStruct.tcpClient) {
@@ -497,7 +508,7 @@ static void server_close(struct tcp_pcb *pcb) {
 		}
 	}
 	if(pcb == connectionPppStruct.tcpClient) {
-		DBGInfo("GSMPPP: server_close (callback)%s", inet_ntoa(pcb->local_ip.addr));
+		DBGInfo("GSMPPP: server_close (callback)%s", inet_ntoa(pcb->remote_ip.addr));
 		connectionPppStruct.connected = false;
 		connectionPppStruct.tcpClient = NULL;
 	}

@@ -101,7 +101,7 @@
  * do not want the Inventek module to block. Setting to zero means
  * no timeout, so one is the smallest value we can set it to.
  */
-#define stsecuresocketsONE_MILLISECOND             ( 1 )
+#define stsecuresocketsONE_MILLISECOND             ( 5 )
 
 /**
  * @brief The credential set to use for TLS on the Inventek module.
@@ -406,131 +406,133 @@ static BaseType_t prvNetworkRecv( void * pvContext,
                                   unsigned char * pucReceiveBuffer,
                                   size_t xReceiveBufferLength )
 {
-//    TODO
-//	uint32_t ulSocketNumber = ( uint32_t ) pvContext; /*lint !e923 cast is needed for portability. */
-//    STSecureSocket_t * pxSecureSocket;
-//    uint16_t usReceivedBytes = 0;
+	uint32_t ulSocketNumber = ( uint32_t ) pvContext; /*lint !e923 cast is needed for portability. */
+    STSecureSocket_t * pxSecureSocket;
+    uint16_t usReceivedBytes = 0;
     BaseType_t xRetVal;
-//    ES_WIFI_Status_t xWiFiResult;
-//    TickType_t xTimeOnEntering = xTaskGetTickCount(), xSemaphoreWait;
+    ES_WIFI_Status_t xWiFiResult;
+    TickType_t xTimeOnEntering = xTaskGetTickCount(), xSemaphoreWait;
+
+    /* Shortcut for easy access. */
+    pxSecureSocket = &( xSockets[ ulSocketNumber ] );
+
+    /* WiFi module does not support receiving more than ES_WIFI_PAYLOAD_SIZE
+     * bytes at a time. */
+    if( xReceiveBufferLength > ( uint32_t ) ES_WIFI_PAYLOAD_SIZE )
+    {
+    	xReceiveBufferLength = ( uint32_t ) ES_WIFI_PAYLOAD_SIZE;
+    }
+
+    xSemaphoreWait = pxSecureSocket->ulReceiveTimeout + stsecuresocketsFIVE_MILLISECONDS;
+
+    for( ; ; )
+    {
+    	/* Try to acquire the semaphore. */
+    	if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWait ) == pdTRUE )
+    	{
+    		/* Since WiFi module has only one timeout, this needs
+    		 * to be set per send and receive operation to the
+    		 * respective send or receive timeout. Also, this
+    		 * must be done after acquiring the semaphore as the
+    		 * xWiFiModule is a shared object.*/
+    		if( pxSecureSocket->ulReceiveTimeout == 0 )
+    		{
+    			/* Set the SPI timeout to the maximum uint32_t value.
+    			 * This is a little over 49 days. */
+    			xWiFiModule.xWifiObject.Timeout = 0xFFFFFFFF;
+    		}
+    		else
+    		{
+    			/* The maximum timeout for Inventek module is 30 seconds.
+    			 * This timeout is about 65 seconds, so the module should
+    			 * timeout before the SPI. */
+    			xWiFiModule.xWifiObject.Timeout = ES_WIFI_TIMEOUT;
+    		}
+
+    		/* Receive the data. */
+    		xWiFiResult = ES_WIFI_ReceiveData( &( xWiFiModule.xWifiObject ),
+    				( uint8_t ) ulSocketNumber,
+					( uint8_t * ) pucReceiveBuffer,
+					( uint16_t ) xReceiveBufferLength,
+					&( usReceivedBytes ),
+					stsecuresocketsONE_MILLISECOND );
+
+    		/* Return the semaphore. */
+    		( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
+
+    		if( ( xWiFiResult == ES_WIFI_STATUS_OK ) && ( usReceivedBytes != 0 ) )
+    		{
+    			/* Success, return the number of bytes received. */
+    			xRetVal = ( BaseType_t ) usReceivedBytes;
+    			break;
+    		}
+    		else if( ( xWiFiResult == ES_WIFI_STATUS_TIMEOUT ) || ( ( xWiFiResult == ES_WIFI_STATUS_OK ) && ( usReceivedBytes == 0 ) ) )
+    		{
+    			/* The WiFi poll timed out, but has the socket timeout expired
+    			 * too? */
+    			if( ( xTaskGetTickCount() - xTimeOnEntering ) < pxSecureSocket->ulReceiveTimeout )
+    			{
+    				/* The socket has not timed out, but the driver supplied
+    				 * with the board is polling, which would block other tasks, so
+    				 * block for a short while to allow other tasks to run before
+    				 * trying again. */
+    				vTaskDelay( stsecuresocketsFIVE_MILLISECONDS );
+    			}
+    			else
+    			{
+    				/* The socket read has timed out too. Returning
+    				 * SOCKETS_EWOULDBLOCK will cause mBedTLS to fail
+    				 * and so we must return zero. */
+    				xRetVal = 0;
+    				break;
+    			}
+    		}
+    		else
+    		{
+    			/* xWiFiResult contains an error status. */
+    			xRetVal = SOCKETS_SOCKET_ERROR;
+    			break;
+    		}
+    	}
+    	else
+    	{
+    		/* Semaphore wait time was longer than the receive timeout so this
+    		 * is also a socket timeout. Returning SOCKETS_EWOULDBLOCK will
+    		 * cause mBedTLS to fail and so we must return zero.*/
+    		xRetVal = 0;
+    		break;
+    	}
+    }
+
+    /* The following code attempts to revive the Inventek WiFi module
+     * from its unusable state.*/
+    if( xWiFiResult == ES_WIFI_STATUS_IO_ERROR )
+    {
+    	/* Reset the WiFi Module. Since the WIFI_Reset function
+    	 * acquires the same semaphore, we must not acquire
+    	 * it. */
+
+    	// TODO: power and reset
+
+//    	if( WIFI_Reset() == eWiFiSuccess )
+//    	{
+//    		/* Try to acquire the semaphore. */
+//    		if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, portMAX_DELAY ) == pdTRUE )
+//    		{
+//    			/* Reinitialize the socket structures which
+//    			 * marks all sockets as closed and free. */
+//    			SOCKETS_Init();
 //
-//    /* Shortcut for easy access. */
-//    pxSecureSocket = &( xSockets[ ulSocketNumber ] );
+//    			/* Return the semaphore. */
+//    			( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
+//    		}
 //
-//    /* WiFi module does not support receiving more than ES_WIFI_PAYLOAD_SIZE
-//     * bytes at a time. */
-//    if( xReceiveBufferLength > ( uint32_t ) ES_WIFI_PAYLOAD_SIZE )
-//    {
-//        xReceiveBufferLength = ( uint32_t ) ES_WIFI_PAYLOAD_SIZE;
-//    }
-//
-//    xSemaphoreWait = pxSecureSocket->ulReceiveTimeout + stsecuresocketsFIVE_MILLISECONDS;
-//
-//    for( ; ; )
-//    {
-//        /* Try to acquire the semaphore. */
-//        if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWait ) == pdTRUE )
-//        {
-//            /* Since WiFi module has only one timeout, this needs
-//             * to be set per send and receive operation to the
-//             * respective send or receive timeout. Also, this
-//             * must be done after acquiring the semaphore as the
-//             * xWiFiModule is a shared object.*/
-//            if( pxSecureSocket->ulReceiveTimeout == 0 )
-//            {
-//                /* Set the SPI timeout to the maximum uint32_t value.
-//                 * This is a little over 49 days. */
-//                xWiFiModule.xWifiObject.Timeout = 0xFFFFFFFF;
-//            }
-//            else
-//            {
-//                /* The maximum timeout for Inventek module is 30 seconds.
-//                 * This timeout is about 65 seconds, so the module should
-//                 * timeout before the SPI. */
-//                xWiFiModule.xWifiObject.Timeout = ES_WIFI_TIMEOUT;
-//            }
-//
-//            /* Receive the data. */
-//            xWiFiResult = ES_WIFI_ReceiveData( &( xWiFiModule.xWifiObject ),
-//                                               ( uint8_t ) ulSocketNumber,
-//                                               ( uint8_t * ) pucReceiveBuffer,
-//                                               ( uint16_t ) xReceiveBufferLength,
-//                                               &( usReceivedBytes ),
-//                                               stsecuresocketsONE_MILLISECOND );
-//
-//            /* Return the semaphore. */
-//            ( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
-//
-//            if( ( xWiFiResult == ES_WIFI_STATUS_OK ) && ( usReceivedBytes != 0 ) )
-//            {
-//                /* Success, return the number of bytes received. */
-//                xRetVal = ( BaseType_t ) usReceivedBytes;
-//                break;
-//            }
-//            else if( ( xWiFiResult == ES_WIFI_STATUS_TIMEOUT ) || ( ( xWiFiResult == ES_WIFI_STATUS_OK ) && ( usReceivedBytes == 0 ) ) )
-//            {
-//                /* The WiFi poll timed out, but has the socket timeout expired
-//                 * too? */
-//                if( ( xTaskGetTickCount() - xTimeOnEntering ) < pxSecureSocket->ulReceiveTimeout )
-//                {
-//                    /* The socket has not timed out, but the driver supplied
-//                     * with the board is polling, which would block other tasks, so
-//                     * block for a short while to allow other tasks to run before
-//                     * trying again. */
-//                    vTaskDelay( stsecuresocketsFIVE_MILLISECONDS );
-//                }
-//                else
-//                {
-//                    /* The socket read has timed out too. Returning
-//                     * SOCKETS_EWOULDBLOCK will cause mBedTLS to fail
-//                     * and so we must return zero. */
-//                    xRetVal = 0;
-//                    break;
-//                }
-//            }
-//            else
-//            {
-//                /* xWiFiResult contains an error status. */
-//                xRetVal = SOCKETS_SOCKET_ERROR;
-//                break;
-//            }
-//        }
-//        else
-//        {
-//            /* Semaphore wait time was longer than the receive timeout so this
-//             * is also a socket timeout. Returning SOCKETS_EWOULDBLOCK will
-//             * cause mBedTLS to fail and so we must return zero.*/
-//            xRetVal = 0;
-//            break;
-//        }
-//    }
-//
-//    /* The following code attempts to revive the Inventek WiFi module
-//     * from its unusable state.*/
-//    if( xWiFiResult == ES_WIFI_STATUS_IO_ERROR )
-//    {
-//        /* Reset the WiFi Module. Since the WIFI_Reset function
-//         * acquires the same semaphore, we must not acquire
-//         * it. */
-//        if( WIFI_Reset() == eWiFiSuccess )
-//        {
-//            /* Try to acquire the semaphore. */
-//            if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, portMAX_DELAY ) == pdTRUE )
-//            {
-//                /* Reinitialize the socket structures which
-//                 * marks all sockets as closed and free. */
-//                SOCKETS_Init();
-//
-//                /* Return the semaphore. */
-//                ( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
-//            }
-//
-//            /* Set the error code to indicate that
-//             * WiFi needs to be reconnected to network. */
-//            xRetVal = SOCKETS_PERIPHERAL_RESET;
-//        }
-//    }
-//
+//    		/* Set the error code to indicate that
+//    		 * WiFi needs to be reconnected to network. */
+//    		xRetVal = SOCKETS_PERIPHERAL_RESET;
+//    	}
+    }
+
     return xRetVal;
 }
 
@@ -647,21 +649,24 @@ int32_t SOCKETS_Connect( Socket_t xSocket,
     				}
     				else
     				{
+
+// TODO: how did it work?
+
     					/* Store the default certificate. */
-    					if( ES_WIFI_StoreCA( &( xWiFiModule.xWifiObject ),
-    							ES_WIFI_FUNCTION_TLS,
-								stsecuresocketsOFFLOAD_SSL_CREDS_SLOT,
-								( uint8_t * ) tlsSTARFIELD_ROOT_CERTIFICATE_PEM,
-								( uint16_t ) tlsSTARFIELD_ROOT_CERTIFICATE_LENGTH ) == ES_WIFI_STATUS_OK )
-    					{
+//    					if( ES_WIFI_StoreCA( &( xWiFiModule.xWifiObject ),
+//    							ES_WIFI_FUNCTION_TLS,
+//								stsecuresocketsOFFLOAD_SSL_CREDS_SLOT,
+//								( uint8_t * ) tlsSTARFIELD_ROOT_CERTIFICATE_PEM,
+//								( uint16_t ) tlsSTARFIELD_ROOT_CERTIFICATE_LENGTH ) == ES_WIFI_STATUS_OK )
+//    					{
     						/* Certificate stored successfully. */
 							lRetVal = SOCKETS_ERROR_NONE;
-    					}
-    					else
-    					{
-    						/* Failed to store certificate. */
-							lRetVal = SOCKETS_SOCKET_ERROR;
-    					}
+//    					}
+//    					else
+//    					{
+//    						/* Failed to store certificate. */
+//							lRetVal = SOCKETS_SOCKET_ERROR;
+//    					}
     				}
     			}
     		}
@@ -919,78 +924,77 @@ int32_t SOCKETS_Shutdown( Socket_t xSocket,
 
 int32_t SOCKETS_Close( Socket_t xSocket )
 {
-//    TODO
-//    uint32_t ulSocketNumber = ( uint32_t ) xSocket; /*lint !e923 cast required for portability. */
-//    STSecureSocket_t * pxSecureSocket;
-//    ES_WIFI_Conn_t xWiFiConnection;
+    uint32_t ulSocketNumber = ( uint32_t ) xSocket; /*lint !e923 cast required for portability. */
+    STSecureSocket_t * pxSecureSocket;
+    ES_WIFI_Conn_t xWiFiConnection;
     int32_t lRetVal;
 
-//    /* Ensure that a valid socket was passed. */
-//    if( prvIsValidSocket( ulSocketNumber ) == pdTRUE )
-//    {
-//        /* Shortcut for easy access. */
-//        pxSecureSocket = &( xSockets[ ulSocketNumber ] );
-//
-//        /* Mark the socket as closed. */
-//        pxSecureSocket->ulFlags |= stsecuresocketsSOCKET_READ_CLOSED_FLAG;
-//        pxSecureSocket->ulFlags |= stsecuresocketsSOCKET_WRITE_CLOSED_FLAG;
-//
-//        /* Free the space allocated for pcDestination. */
-//        if( pxSecureSocket->pcDestination != NULL )
-//        {
-//            vPortFree( pxSecureSocket->pcDestination );
-//        }
-//
-//        /* Free the space allocated for pcServerCertificate. */
-//        if( pxSecureSocket->pcServerCertificate != NULL )
-//        {
-//            vPortFree( pxSecureSocket->pcServerCertificate );
-//        }
-//
-//        #ifndef USE_OFFLOAD_SSL
-//            /* Cleanup TLS. */
-//            if( ( pxSecureSocket->ulFlags & stsecuresocketsSOCKET_SECURE_FLAG ) != 0UL )
-//            {
-//                TLS_Cleanup( pxSecureSocket->pvTLSContext );
-//            }
-//        #endif /* USE_OFFLOAD_SSL */
-//
-//        /* Initialize the members used by the ES_WIFI_StopClientConnection call. */
-//        xWiFiConnection.Number = ( uint8_t ) ulSocketNumber;
-//
-//        /* Try to acquire the semaphore. */
-//        if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE )
-//        {
-//            /* Stop the client connection. */
-//            if( ES_WIFI_StopClientConnection( &( xWiFiModule.xWifiObject ), &( xWiFiConnection ) )
-//                == ES_WIFI_STATUS_OK )
-//            {
-//                /* Connection close successful. */
-//                lRetVal = SOCKETS_ERROR_NONE;
-//            }
-//            else
-//            {
-//                /* Couldn't stop WiFi client connection. */
-//                lRetVal = SOCKETS_SOCKET_ERROR;
-//            }
-//
-//            /* Return the semaphore. */
-//            ( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
-//        }
-//        else
-//        {
-//            /* Couldn't get semaphore. */
-//            lRetVal = SOCKETS_SOCKET_ERROR;
-//        }
-//
-//        /* Return the socket back to the free socket pool. */
-//        prvReturnSocket( ulSocketNumber );
-//    }
-//    else
-//    {
-//        /* Bad argument. */
-//        lRetVal = SOCKETS_EINVAL;
-//    }
+    /* Ensure that a valid socket was passed. */
+    if( prvIsValidSocket( ulSocketNumber ) == pdTRUE )
+    {
+    	/* Shortcut for easy access. */
+    	pxSecureSocket = &( xSockets[ ulSocketNumber ] );
+
+    	/* Mark the socket as closed. */
+    	pxSecureSocket->ulFlags |= stsecuresocketsSOCKET_READ_CLOSED_FLAG;
+    	pxSecureSocket->ulFlags |= stsecuresocketsSOCKET_WRITE_CLOSED_FLAG;
+
+    	/* Free the space allocated for pcDestination. */
+    	if( pxSecureSocket->pcDestination != NULL )
+    	{
+    		vPortFree( pxSecureSocket->pcDestination );
+    	}
+
+    	/* Free the space allocated for pcServerCertificate. */
+    	if( pxSecureSocket->pcServerCertificate != NULL )
+    	{
+    		vPortFree( pxSecureSocket->pcServerCertificate );
+    	}
+
+#ifndef USE_OFFLOAD_SSL
+    	/* Cleanup TLS. */
+    	if( ( pxSecureSocket->ulFlags & stsecuresocketsSOCKET_SECURE_FLAG ) != 0UL )
+    	{
+    		TLS_Cleanup( pxSecureSocket->pvTLSContext );
+    	}
+#endif /* USE_OFFLOAD_SSL */
+
+    	/* Initialize the members used by the ES_WIFI_StopClientConnection call. */
+    	xWiFiConnection.Number = ( uint8_t ) ulSocketNumber;
+
+    	/* Try to acquire the semaphore. */
+    	if( xSemaphoreTake( xWiFiModule.xSemaphoreHandle, xSemaphoreWaitTicks ) == pdTRUE )
+    	{
+    		/* Stop the client connection. */
+    		if( ES_WIFI_StopClientConnection( &( xWiFiModule.xWifiObject ), &( xWiFiConnection ) )
+    				== ES_WIFI_STATUS_OK )
+    		{
+    			/* Connection close successful. */
+    			lRetVal = SOCKETS_ERROR_NONE;
+    		}
+    		else
+    		{
+    			/* Couldn't stop WiFi client connection. */
+    			lRetVal = SOCKETS_SOCKET_ERROR;
+    		}
+
+    		/* Return the semaphore. */
+    		( void ) xSemaphoreGive( xWiFiModule.xSemaphoreHandle );
+    	}
+    	else
+    	{
+    		/* Couldn't get semaphore. */
+    		lRetVal = SOCKETS_SOCKET_ERROR;
+    	}
+
+    	/* Return the socket back to the free socket pool. */
+    	prvReturnSocket( ulSocketNumber );
+    }
+    else
+    {
+    	/* Bad argument. */
+    	lRetVal = SOCKETS_EINVAL;
+    }
 
     return lRetVal;
 }
