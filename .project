@@ -29,64 +29,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Common/entropy_hardware_poll.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/entropy_hardware_poll.c</locationURI>
-		</link>
-		<link>
-			<name>Common/heap.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/heap.c</locationURI>
-		</link>
-		<link>
-			<name>Common/http_util.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/http_util.c</locationURI>
-		</link>
-		<link>
-			<name>Common/iot_flash_config.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/iot_flash_config.c</locationURI>
-		</link>
-		<link>
-			<name>Common/lwip_net.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/lwip_net.c</locationURI>
-		</link>
-		<link>
-			<name>Common/mbedtls_net.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/mbedtls_net.c</locationURI>
-		</link>
-		<link>
-			<name>Common/net.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/net.c</locationURI>
-		</link>
-		<link>
-			<name>Common/net_tcp_lwip.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/net_tcp_lwip.c</locationURI>
-		</link>
-		<link>
 			<name>Common/net_tcp_wifi.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT/Common/Shared/Src/net_tcp_wifi.c</locationURI>
-		</link>
-		<link>
-			<name>Common/net_tls_mbedtls.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/net_tls_mbedtls.c</locationURI>
-		</link>
-		<link>
-			<name>Common/rfu.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/rfu.c</locationURI>
-		</link>
-		<link>
-			<name>Common/timedate.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/timedate.c</locationURI>
 		</link>
 		<link>
 			<name>SW4STM32/startup_stm32f769xx.s</name>
@@ -97,6 +42,11 @@
 			<name>SW4STM32/syscalls.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT1/syscalls.c</locationURI>
+		</link>
+		<link>
+			<name>Common/AWS/Src/rfu.c</name>
+			<type>1</type>
+			<locationURI>copy_PARENT/Common/Shared/Src/rfu.c</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

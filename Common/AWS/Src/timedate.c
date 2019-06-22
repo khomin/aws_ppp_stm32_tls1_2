@@ -65,7 +65,7 @@
 #include "iot_flash_config.h"
 
 extern net_hnd_t hnet;
-extern const user_config_t *lUserConfigPtr;
+extern const user_config_t lUserConfigPtr;
 extern RTC_HandleTypeDef hrtc;
 
 /** Size of the HTTP read buffer. 
@@ -114,7 +114,7 @@ int setRTCTimeDateFromNetwork(bool force_apply)
     ret |= net_sock_setopt(socket, "sock_read_timeout", (uint8_t*)NET_READ_TIMEOUT, sizeof(NET_READ_TIMEOUT));
     if (TIME_SOURCE_HTTP_PROTO == NET_PROTO_TLS)
     {
-      ret |= net_sock_setopt(socket, "tls_ca_certs", (void *)lUserConfigPtr->tls_root_ca_cert, strlen(lUserConfigPtr->tls_root_ca_cert));
+      ret |= net_sock_setopt(socket, "tls_ca_certs", (uint8_t*)&lUserConfigPtr.tls_root_ca_cert, strlen(lUserConfigPtr.tls_root_ca_cert));
       ret |= net_sock_setopt(socket, "tls_server_name", (uint8_t*)TIME_SOURCE_HTTP_HOST, sizeof(TIME_SOURCE_HTTP_HOST));
       ret |= net_sock_setopt(socket, (force_apply == true) ? "tls_server_noverification" : "tls_server_verification", NULL, 0);
     }

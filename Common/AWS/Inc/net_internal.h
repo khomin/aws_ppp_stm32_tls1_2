@@ -160,7 +160,7 @@ struct net_ctxt_s {
   net_if_t itf;
   net_sock_ctxt_t * sock_list;  /**< Linked list of the sockets opened on the network interface. */
 #ifdef USE_LWIP
-  struct netif lwip_netif;       /**< LwIP interface context. */
+  struct netif * lwip_netif;       /**< LwIP interface context. */
 #endif /* USE_LWIP */
 };
 

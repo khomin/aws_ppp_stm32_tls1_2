@@ -61,7 +61,7 @@ extern char  __firewall_ROM_start;
 //char  __firewall_ROM_start __attribute__((section(".firewall_section")));
 #endif
 
-extern  const user_config_t *lUserConfigPtr;
+extern  const user_config_t lUserConfigPtr;
 #endif
 
 

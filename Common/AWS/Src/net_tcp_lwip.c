@@ -49,6 +49,7 @@
 
 #ifdef USE_LWIP
 #include "lwip/netdb.h"
+#include "string.h"
 
 /* Private defines -----------------------------------------------------------*/
 /* Private typedef -----------------------------------------------------------*/
@@ -554,7 +555,7 @@ int net_get_hostaddress_lwip(net_hnd_t nethnd, net_ipaddr_t * ipAddress, const c
   }
   else
   {
-    if (ctxt->lwip_netif.ip_addr.addr == 0)
+    if (ctxt->lwip_netif->ip_addr.addr == 0)
     {
       /* The network interface is not configured. */
       rc = NET_PARAM;

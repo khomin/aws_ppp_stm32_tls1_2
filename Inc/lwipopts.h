@@ -82,6 +82,10 @@ a lot of data that needs to be copied, this should be set high. */
    timeouts. */
 #define MEMP_NUM_SYS_TIMEOUT    10
 
+#define LWIP_SO_RCVTIMEO                1
+#define LWIP_SO_RCVRCVTIMEO_NONSTANDARD 1   /* Pass an integer number of ms instead of a timeval struct. */
+#define LWIP_SO_SNDTIMEO                1
+#define LWIP_SO_SNDRCVTIMEO_NONSTANDARD 1   /* Pass an integer number of ms instead of a timeval struct. */
 
 /* ---------- Pbuf options ---------- */
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool. */
@@ -207,7 +211,7 @@ The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
 /**
  * LWIP_SOCKET==1: Enable Socket API (require to use sockets.c)
  */
-#define LWIP_SOCKET                     0
+#define LWIP_SOCKET                     1
 
 /*
    -----------------------------------

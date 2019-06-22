@@ -22,7 +22,8 @@
 #include "netif/ppp/pppoe.h"
 #include "netif/ppp/pppol2tp.h"
 #include "aws_system_init.h"
-#include "aws_wifi.h"
+#include "net.h"
+#include "cloud.h"
 
 extern xSemaphoreHandle sioWriteSemaphore;
 extern sGsmUartParcer uartParcerStruct;
@@ -31,6 +32,7 @@ extern sGsmState gsmState;
 
 ppp_pcb *ppp;
 struct netif ppp_netif;
+extern net_hnd_t hnet;
 
 //-- destination address
 extern sConnectSettings connectSettings;
@@ -62,13 +64,14 @@ static void prvWifiConnect( void );
 void gsmPPP_Tsk(void *pvParamter);
 
 bool gsmPPP_Init(void) {
-	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 1024, 0, tskIDLE_PRIORITY+3, NULL);
+	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 4096, 0, tskIDLE_PRIORITY, NULL);
 	return true;
 }
 
 #include "aws_dev_mode_key_provisioning.h"
 #include "aws_hello_world.h"
 #include "./aws_system_init.h"
+#include "net_internal.h"
 
 void gsmPPP_Tsk(void *pvParamter) {
 	uint8_t setup = 0;
@@ -109,7 +112,11 @@ void gsmPPP_Tsk(void *pvParamter) {
 		}
 
 		if(pppState == ppp_ready_work) {
-			DBGLog("AWS PPP-MQTT: module initialized.\r\n");
+			DBGLog("AWS PPP: module initialized.\r\n");
+
+			platform_init();
+			subscribe_publish_sensor_values();
+			platform_deinit();
 
 			while(1) {
 				vTaskDelay(500/portTICK_RATE_MS);
@@ -131,11 +138,11 @@ bool gsmPPP_Connect(uint8_t* destIp, uint16_t port) {
 	}
 
 	// TODO: test
-//	destIp[0] = 31;
-//	destIp[1] = 10;
-//	destIp[2] = 4;
-//	destIp[3] = 146;
-//	port = 45454;
+	//	destIp[0] = 31;
+	//	destIp[1] = 10;
+	//	destIp[2] = 4;
+	//	destIp[3] = 146;
+	//	port = 45454;
 
 	IP4_ADDR(&connectionPppStruct.ipRemoteAddr, destIp[0], destIp[1], destIp[2], destIp[3]);
 	DBGInfo("GSMPPP: connect without dns [%d.%d.%d.%d|%d]... ", destIp[0], destIp[1], destIp[2], destIp[3], port);
@@ -209,7 +216,7 @@ sGetDnsResult getIpByDns(const char *pDnsName, uint8_t len) {
 	result.isValid = false;
 
 	// TODO: test
-//	ulIPAddres = 0x92040a1f;
+	//	ulIPAddres = 0x92040a1f;
 
 	if(pppState == ppp_ready_work) {
 		dns_is_found = false;
@@ -307,6 +314,11 @@ static void status_cb(ppp_pcb *pcb, int err_code, void *ctx) {
 #if PPP_IPV6_SUPPORT
 		DBGInfo("PPP: our6_ipaddr = %s", ip6addr_ntoa(netif_ip6_addr(pppif, 0)));
 #endif /* PPP_IPV6_SUPPORT */
+
+		DBGInfo("PPP: status_cb: Unable to open PPP session");
+		pppState = ppp_ready_work;
+		net_ctxt_t *ctxt = (net_ctxt_t *)hnet;
+		ctxt->lwip_netif = &ppp_netif;
 		break;
 	}
 	case PPPERR_PARAM: {
@@ -315,7 +327,6 @@ static void status_cb(ppp_pcb *pcb, int err_code, void *ctx) {
 	}
 	case PPPERR_OPEN: {
 		DBGInfo("PPP: status_cb: Unable to open PPP session");
-		pppState = ppp_ready_work;
 		break;
 	}
 	case PPPERR_DEVICE: {

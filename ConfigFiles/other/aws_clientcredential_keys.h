@@ -89,6 +89,27 @@
 "8/1n9peHWl01Om/PMjv0PxDl3urVlVPo+ZRdga/ATZL3geDEZCCj\n" \
 "-----END RSA PRIVATE KEY-----\n" \
 
+#define keyCLIENT_PRIVATE_DEVICE_CERT_PEM \
+"-----BEGIN CERTIFICATE-----\n" \
+"MIIDWjCCAkKgAwIBAgIVAK8Wxv0/RRakxZ1Fq9FqYCtcvxQ9MA0GCSqGSIb3DQEB\n" \
+"CwUAME0xSzBJBgNVBAsMQkFtYXpvbiBXZWIgU2VydmljZXMgTz1BbWF6b24uY29t\n" \
+"IEluYy4gTD1TZWF0dGxlIFNUPVdhc2hpbmd0b24gQz1VUzAeFw0xOTA2MDEyMzA1\n" \
+"MTVaFw00OTEyMzEyMzU5NTlaMB4xHDAaBgNVBAMME0FXUyBJb1QgQ2VydGlmaWNh\n" \
+"dGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDCujKA9v4Ouo5OtsUa\n" \
+"/1bcDRubjW5cPZaMNXXe9RWxjXG8E5+YkSDEDEo30PLC442iKYGVLKrrsd0YxjtY\n" \
+"OASMqDyUjyUn8Jm4wU7i+6hny7JBIhODUOFmzQyszu01x8glpGo1NDf3UwiykiOZ\n" \
+"yofE1hgzFoAHHJFpT3MOYSl2X9rN1wyK/BeOvHJYRCCRsGj4eYCjlIrZIF7fbeyf\n" \
+"+ezJ9UDYRntq9b2axncYbRiUVlAJZJPXHt/9Jx2mxZnL+GqWIhtgnE3B+wuapE4K\n" \
+"OdYgjf1Er27jrxIxaLeUtd+H3apZSQkZML9dzLo1zHH+kSxNsbRRpxNkNQsj/tZW\n" \
+"PqwjAgMBAAGjYDBeMB8GA1UdIwQYMBaAFJRtBk1FKQv216Tb8ZT5POFC42pMMB0G\n" \
+"A1UdDgQWBBStDghpZ4+y4JFAGRJzKq35Uq67ZzAMBgNVHRMBAf8EAjAAMA4GA1Ud\n" \
+"DwEB/wQEAwIHgDANBgkqhkiG9w0BAQsFAAOCAQEANQUSEtbdM5Rt5m013rJ4mD4L\n" \
+"2XxQmLXt0TPHRe5IMm0s0qQ5n3zQv9rn1BXSLtrPwVA4wjAQngPdk0j3hq1J2nGG\n" \
+"T4f1yLaxDT+XdUAl0pQ3hJxpkoOwIHWvILu/usSfXGVWgYD1u3repBIGltqMNF7J\n" \
+"BBkTq8ittxcCwHhjHyAvuVTOxal6qbjCipmcPV85xnaY1wj9h+JTw3ZZ8qiGYmfn\n" \
+"ksbSaqkTE7P+T5KbEVaO5MyutadXtCU6OvgN0DANUmqt3M9kFl+CBLg1jgc/bq28\n" \
+"u9ypwNFLq7MbXIKZ0lO+qZXVgufOSnKmaAXV58jAolMljegVeWd15xtEx3vVGg==\n" \
+"-----END CERTIFICATE-----\n" \
 
 /* The constants above are set to const char * pointers defined in aws_dev_mode_key_provisioning.c,
  * and externed here for use in C files.  NOTE!  THIS IS DONE FOR CONVENIENCE

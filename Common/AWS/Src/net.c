@@ -289,7 +289,7 @@ int net_get_ip_address(net_hnd_t nethnd, net_ipaddr_t * ipAddress)
 #ifdef USE_LWIP
       case NET_IF_ETH:
       {
-        if (ctxt->lwip_netif.ip_addr.addr == 0)
+        if (ctxt->lwip_netif->ip_addr.addr == 0)
         {
           /* The network interface is not configured. */
           rc = NET_PARAM;
@@ -297,7 +297,7 @@ int net_get_ip_address(net_hnd_t nethnd, net_ipaddr_t * ipAddress)
         else
         {
           /* lwIP stores IPv4 addresses in network byte order. */
-          u32_t ip = ip4_addr_get_u32(&ctxt->lwip_netif.ip_addr);
+          u32_t ip = ip4_addr_get_u32(&ctxt->lwip_netif->ip_addr);
           ipAddress->ipv = NET_IP_V4;
           memset(ipAddress->ip, 0xFF, sizeof(ipAddress->ip));
           memcpy(&ipAddress->ip[12], &ip, 4);
@@ -353,16 +353,17 @@ int net_get_mac_address(net_hnd_t nethnd, net_macaddr_t * macAddress)
 #ifdef USE_LWIP
     case NET_IF_ETH:
     {
-      if (ctxt->lwip_netif.hwaddr_len != 6)
-      {
-        msg_error("Unexpected HW address length: %u.\n", ctxt->lwip_netif.hwaddr_len);
-        rc = NET_ERR;
-      }
-      else
-      {
-        memcpy(macAddress->mac, ctxt->lwip_netif.hwaddr, MIN(sizeof(macAddress->mac), ctxt->lwip_netif.hwaddr_len));
+    	// TODO: mac address
+//      if (ctxt->lwip_netif.hwaddr_len != 6)
+//      {
+//        msg_error("Unexpected HW address length: %u.\n", ctxt->lwip_netif.hwaddr_len);
+//        rc = NET_ERR;
+//      }
+//      else
+//      {
+//        memcpy(macAddress->mac, ctxt->lwip_netif.hwaddr, MIN(sizeof(macAddress->mac), ctxt->lwip_netif.hwaddr_len));
         rc = NET_OK;
-      }
+//      }
     }
     break;
 #endif /* USE_LWIP */

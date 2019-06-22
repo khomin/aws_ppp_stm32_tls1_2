@@ -178,9 +178,14 @@ IoT_Error_t aws_iot_mqtt_init(AWS_IoT_Client *pClient, IoT_Client_Init_Params *p
 
 	FUNC_ENTRY;
 
-	if(NULL == pClient || NULL == pInitParams || NULL == pInitParams->pHostURL || 0 == pInitParams->port ||
-	   NULL == pInitParams->pRootCALocation || NULL == pInitParams->pDevicePrivateKeyLocation ||
-	   NULL == pInitParams->pDeviceCertLocation) {
+	if(NULL == pClient
+			|| NULL == pInitParams
+			|| NULL == pInitParams->pHostURL
+			|| 0 == pInitParams->port
+			|| NULL == pInitParams->pRootCALocation
+	   || NULL == pInitParams->pDevicePrivateKeyLocation
+	   || NULL == pInitParams->pDeviceCertLocation)
+	{
 		FUNC_EXIT_RC(NULL_VALUE_ERROR);
 	}
 

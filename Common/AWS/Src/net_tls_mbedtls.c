@@ -45,7 +45,7 @@
 #ifdef USE_MBED_TLS
 /* Includes ------------------------------------------------------------------*/
 #include "net_internal.h"
-
+#include "string.h"
 /* Private defines -----------------------------------------------------------*/
 /* Private typedef -----------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -59,6 +59,9 @@ int net_sock_destroy_mbedtls(net_sockhnd_t sockhnd);
 
 static void my_debug( void *ctx, int level, const char *file, int line, const char *str );
 static void internal_close(net_sock_ctxt_t * sock);
+
+extern RNG_HandleTypeDef hrng;
+extern net_hnd_t hnet;
 
 /* Functions Definition ------------------------------------------------------*/
 
@@ -144,7 +147,9 @@ int net_sock_open_mbedtls(net_sockhnd_t sockhnd, const char * hostname, int dstp
 
   /* Entropy generator init */
   mbedtls_entropy_init(&tlsData->entropy);
-  if( (ret = mbedtls_entropy_add_source(&tlsData->entropy, mbedtls_hardware_poll, (void*)&hrng, 1, MBEDTLS_ENTROPY_SOURCE_STRONG)) != 0 )
+  if( (ret = mbedtls_entropy_add_source(&tlsData->entropy,
+		  mbedtls_hardware_poll, (void*)&hrng, 1,
+		  MBEDTLS_ENTROPY_SOURCE_STRONG)) != 0 )
   {
     msg_error( " failed\n  ! mbedtls_entropy_add_source returned -0x%x\n", -ret );
     internal_close(sock);

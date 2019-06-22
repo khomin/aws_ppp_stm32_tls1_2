@@ -69,8 +69,6 @@ typedef struct {
 #define FW_VERSION_PATCH 1
 #define FW_VERSION_DATE "06-February-2019 05:12:27 PM"
 
-#define AWS
-
 #ifdef AWS
 #define FW_VERSION_NAME   "X-CUBE-AWS"
 #define AWS_VERSION	TBD

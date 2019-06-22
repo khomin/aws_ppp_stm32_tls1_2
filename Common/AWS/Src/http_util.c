@@ -53,7 +53,7 @@
 #include "iot_flash_config.h"
 
 extern net_hnd_t hnet;
-extern const user_config_t *lUserConfigPtr;
+extern const user_config_t lUserConfigPtr;
 
 /* Private defines -----------------------------------------------------------*/
 #define HTTP_MAX_HOST_SIZE        80      /**< Max length of the http server hostname. */
@@ -205,7 +205,7 @@ int http_open(http_handle_t * const pHnd, const char *url)
       {
         if (tls == true)
         {
-          ret  = net_sock_setopt(pCtx->sock, "tls_ca_certs", (void *)lUserConfigPtr->tls_root_ca_cert, strlen(lUserConfigPtr->tls_root_ca_cert) + 1);
+          ret  = net_sock_setopt(pCtx->sock, "tls_ca_certs", (uint8_t*)lUserConfigPtr.tls_root_ca_cert, strlen(lUserConfigPtr.tls_root_ca_cert) + 1);
           ret |= net_sock_setopt(pCtx->sock, "tls_server_name", (void *)pCtx->hostname, strlen(pCtx->hostname) + 1);
           /* In test mode, setting the tls_server_noverification option allows to connect e.g. to a web server which name is not registered in the DNS used by the device.
            * tls_server_verification shall be used instead in a production environment.

@@ -8,6 +8,7 @@
 #include "fpga_buf.h"
 #include <stm32f4xx_it.h>
 #include "FreeRTOS.h"
+#include "task.h"
 #include "debug_print.h"
 #include "string.h"
 
