@@ -52,11 +52,7 @@ typedef enum {
 			MQTT_CONNACK_CONNECTION_ACCEPTED = 1,
 	/** Success return value - no error occurred */
         /* ST fix , SUCCESS is defined in HAL */
-#ifdef  __main_h__          
 			AWS_SUCCESS = 0,
-#else
-			SUCCESS = 0,
-#endif
 	/** A generic error. Not enough information for a specific error code */
 			FAILURE = -1,
 	/** A required parameter was passed as null */

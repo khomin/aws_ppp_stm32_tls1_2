@@ -66,6 +66,7 @@
 
 extern net_hnd_t hnet;
 extern const user_config_t *lUserConfigPtr;
+extern RTC_HandleTypeDef hrtc;
 
 /** Size of the HTTP read buffer. 
  *  Should be large enough to contain a complete HTTP response header. */

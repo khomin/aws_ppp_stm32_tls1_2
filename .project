@@ -29,11 +29,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Common/cloud.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/cloud.c</locationURI>
-		</link>
-		<link>
 			<name>Common/entropy_hardware_poll.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT/Common/Shared/Src/entropy_hardware_poll.c</locationURI>

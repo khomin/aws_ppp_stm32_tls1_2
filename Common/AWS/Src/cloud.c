@@ -58,6 +58,8 @@
 #include "iot_flash_config.h"
 #include "msg.h"
 
+#include "../Inc/version.h"
+
 extern int net_if_init(void * if_ctxt);
 extern int net_if_deinit(void * if_ctxt);
 extern int net_if_reinit(void * if_ctxt);

@@ -88,7 +88,7 @@ IoT_Error_t iot_tls_init(Network *pNetwork, char *pRootCALocation, char *pDevice
 
 	pNetwork->tlsDataParams.flags = 0;
 
-	return SUCCESS;
+	return AWS_SUCCESS;
 }
 
 IoT_Error_t iot_tls_is_connected(Network *pNetwork) {
@@ -251,11 +251,11 @@ IoT_Error_t iot_tls_connect(Network *pNetwork, TLSConnectParams *params) {
 			ret = SSL_CONNECTION_ERROR;
 		} else {
 			IOT_DEBUG(" ok\n");
-			ret = SUCCESS;
+			ret = AWS_SUCCESS;
 		}
 	} else {
 		IOT_DEBUG(" Server Verification skipped\n");
-		ret = SUCCESS;
+		ret = AWS_SUCCESS;
 	}
 
 #ifdef ENABLE_IOT_DEBUG
@@ -302,7 +302,7 @@ IoT_Error_t iot_tls_write(Network *pNetwork, unsigned char *pMsg, size_t len, Ti
 		return NETWORK_SSL_WRITE_TIMEOUT_ERROR;
 	}
 
-	return SUCCESS;
+	return AWS_SUCCESS;
 }
 
 IoT_Error_t iot_tls_read(Network *pNetwork, unsigned char *pMsg, size_t len, Timer *timer, size_t *read_len) {
@@ -329,7 +329,7 @@ IoT_Error_t iot_tls_read(Network *pNetwork, unsigned char *pMsg, size_t len, Tim
 
 	if (len == 0) {
 		*read_len = rxLen;
-		return SUCCESS;
+		return AWS_SUCCESS;
 	}
 
 	if (rxLen == 0) {
@@ -349,7 +349,7 @@ IoT_Error_t iot_tls_disconnect(Network *pNetwork) {
 	/* All other negative return values indicate connection needs to be reset.
 	 * No further action required since this is disconnect call */
 
-	return SUCCESS;
+	return AWS_SUCCESS;
 }
 
 IoT_Error_t iot_tls_destroy(Network *pNetwork) {
@@ -365,7 +365,7 @@ IoT_Error_t iot_tls_destroy(Network *pNetwork) {
 	mbedtls_ctr_drbg_free(&(tlsDataParams->ctr_drbg));
 	mbedtls_entropy_free(&(tlsDataParams->entropy));
 
-	return SUCCESS;
+	return AWS_SUCCESS;
 }
 
 #ifdef __cplusplus

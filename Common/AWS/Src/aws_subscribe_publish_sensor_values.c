@@ -54,6 +54,7 @@
 #include "iot_flash_config.h"
 #include "sensors_data.h"
 #include "msg.h"
+#include "aws_iot_error.h"
 
 void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topicNameLen, IoT_Publish_Message_Params *params, void *pData);
 int subscribe_publish_sensor_values(void);
@@ -238,9 +239,12 @@ int subscribe_publish_sensor_values(void)
     return -1;
   }
   
-  snprintf(cPTopicName, sizeof(cPTopicName), AWS_DEVICE_SHADOW_PRE "%s" AWS_DEVICE_SHADOW_UPDATE_TOPIC, deviceName);
-  snprintf(cSTopicName, sizeof(cSTopicName), AWS_DEVICE_SHADOW_PRE "%s" AWS_DEVICE_SHADOW_UPDATE_ACCEPTED_TOPIC, deviceName);
+  snprintf(cPTopicName, sizeof(cPTopicName), "$aws/things/%s/shadow/update", deviceName);
+  snprintf(cSTopicName, sizeof(cSTopicName), "$aws/things/%s/shadow/update/accepted", deviceName);
   
+//  snprintf(cPTopicName, sizeof(cPTopicName), AWS_DEVICE_SHADOW_PRE "%s" AWS_DEVICE_SHADOW_UPDATE_TOPIC, deviceName);
+//  snprintf(cSTopicName, sizeof(cSTopicName), AWS_DEVICE_SHADOW_PRE "%s" AWS_DEVICE_SHADOW_UPDATE_ACCEPTED_TOPIC, deviceName);
+
   /*
   IoT_Publish_Message_Params paramsQOS0;
   IoT_Publish_Message_Params paramsQOS1;

@@ -46,6 +46,8 @@ extern "C" {
 extern int mbedtls_hardware_poll( void *data, unsigned char *output, size_t len, size_t *olen );
 #endif /* USE_MBED_TLS */
 
+#define FLASH_PAGE_SIZE                    ((uint32_t)0x800)
+
 enum {BP_NOT_PUSHED=0, BP_SINGLE_PUSH, BP_MULTIPLE_PUSH};
 
 /* Exported functions --------------------------------------------------------*/

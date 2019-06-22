@@ -181,7 +181,7 @@ static IoT_Error_t _aws_iot_mqtt_serialize_connect(unsigned char *pTxBuf, size_t
 	}
 
 	rc = aws_iot_mqtt_internal_init_header(&header, CONNECT, QOS0, 0, 0);
-	if(SUCCESS != rc) {
+	if(AWS_SUCCESS != rc) {
 		FUNC_EXIT_RC(rc);
 	}
 
@@ -242,7 +242,7 @@ static IoT_Error_t _aws_iot_mqtt_serialize_connect(unsigned char *pTxBuf, size_t
 
 	*pSerializedLen = (size_t) (ptr - pTxBuf);
 
-	FUNC_EXIT_RC(SUCCESS);
+	FUNC_EXIT_RC(AWS_SUCCESS);
 }
 
 /**
@@ -287,7 +287,7 @@ static IoT_Error_t _aws_iot_mqtt_deserialize_connack(unsigned char *pSessionPres
 
 	/* read remaining length */
 	rc = aws_iot_mqtt_internal_decode_remaining_length_from_buffer(curdata, &decodedLen, &readBytesLen);
-	if(SUCCESS != rc) {
+	if(AWS_SUCCESS != rc) {
 		FUNC_EXIT_RC(rc);
 	}
 
@@ -325,7 +325,7 @@ static IoT_Error_t _aws_iot_mqtt_deserialize_connack(unsigned char *pSessionPres
 			break;
 	}
 
-	FUNC_EXIT_RC(SUCCESS);
+	FUNC_EXIT_RC(AWS_SUCCESS);
 }
 
 /**
@@ -379,7 +379,7 @@ static bool _aws_iot_mqtt_is_client_state_valid_for_connect(ClientState clientSt
  * @param pClient Reference to the IoT Client
  * @param pConnectParams Pointer to MQTT connection parameters
  *
- * @return An IoT Error Type defining successful/failed connection
+ * @return An IoT Error Type defining AWS_SUCCESSful/failed connection
  */
 static IoT_Error_t _aws_iot_mqtt_internal_connect(AWS_IoT_Client *pClient, IoT_Client_Connect_Params *pConnectParams) {
 	Timer connect_timer;
@@ -393,13 +393,13 @@ static IoT_Error_t _aws_iot_mqtt_internal_connect(AWS_IoT_Client *pClient, IoT_C
 	if(NULL != pConnectParams) {
 		/* override default options if new options were supplied */
 		rc = aws_iot_mqtt_set_connect_params(pClient, pConnectParams);
-		if(SUCCESS != rc) {
+		if(AWS_SUCCESS != rc) {
 			FUNC_EXIT_RC(MQTT_CONNECTION_ERROR);
 		}
 	}
 
 	rc = pClient->networkStack.connect(&(pClient->networkStack), NULL);
-	if(SUCCESS != rc) {
+	if(AWS_SUCCESS != rc) {
 		/* TLS Connect failed, return error */
 		FUNC_EXIT_RC(rc);
 	}
@@ -410,26 +410,26 @@ static IoT_Error_t _aws_iot_mqtt_internal_connect(AWS_IoT_Client *pClient, IoT_C
 	pClient->clientData.keepAliveInterval = pClient->clientData.options.keepAliveIntervalInSec;
 	rc = _aws_iot_mqtt_serialize_connect(pClient->clientData.writeBuf, pClient->clientData.writeBufSize,
 										 &(pClient->clientData.options), &len);
-	if(SUCCESS != rc || 0 >= len) {
+	if(AWS_SUCCESS != rc || 0 >= len) {
 		FUNC_EXIT_RC(rc);
 	}
 
 	/* send the connect packet */
 	rc = aws_iot_mqtt_internal_send_packet(pClient, len, &connect_timer);
-	if(SUCCESS != rc) {
+	if(AWS_SUCCESS != rc) {
 		FUNC_EXIT_RC(rc);
 	}
 
 	/* this will be a blocking call, wait for the CONNACK */
 	rc = aws_iot_mqtt_internal_wait_for_read(pClient, CONNACK, &connect_timer);
-	if(SUCCESS != rc) {
+	if(AWS_SUCCESS != rc) {
 		FUNC_EXIT_RC(rc);
 	}
 
 	/* Received CONNACK, check the return code */
 	rc = _aws_iot_mqtt_deserialize_connack((unsigned char *) &sessionPresent, &connack_rc, pClient->clientData.readBuf,
 										   pClient->clientData.readBufSize);
-	if(SUCCESS != rc) {
+	if(AWS_SUCCESS != rc) {
 		FUNC_EXIT_RC(rc);
 	}
 
@@ -440,7 +440,7 @@ static IoT_Error_t _aws_iot_mqtt_internal_connect(AWS_IoT_Client *pClient, IoT_C
 	pClient->clientStatus.isPingOutstanding = false;
 	countdown_sec(&pClient->pingTimer, pClient->clientData.keepAliveInterval);
 
-	FUNC_EXIT_RC(SUCCESS);
+	FUNC_EXIT_RC(AWS_SUCCESS);
 }
 
 /**
@@ -453,7 +453,7 @@ static IoT_Error_t _aws_iot_mqtt_internal_connect(AWS_IoT_Client *pClient, IoT_C
  * @param pClient Reference to the IoT Client
  * @param pConnectParams Pointer to MQTT connection parameters
  *
- * @return An IoT Error Type defining successful/failed connection
+ * @return An IoT Error Type defining AWS_SUCCESSful/failed connection
  */
 IoT_Error_t aws_iot_mqtt_connect(AWS_IoT_Client *pClient, IoT_Client_Connect_Params *pConnectParams) {
 	IoT_Error_t rc, disconRc;
@@ -476,10 +476,10 @@ IoT_Error_t aws_iot_mqtt_connect(AWS_IoT_Client *pClient, IoT_Client_Connect_Par
 
 	rc = _aws_iot_mqtt_internal_connect(pClient, pConnectParams);
 
-	if(SUCCESS != rc) {
+	if(AWS_SUCCESS != rc) {
 		pClient->networkStack.disconnect(&(pClient->networkStack));
 		disconRc = pClient->networkStack.destroy(&(pClient->networkStack));
-		if (SUCCESS != disconRc) {
+		if (AWS_SUCCESS != disconRc) {
 			FUNC_EXIT_RC(NETWORK_DISCONNECTED_ERROR);
 		}
 		aws_iot_mqtt_set_client_state(pClient, CLIENT_STATE_CONNECTING, CLIENT_STATE_DISCONNECTED_ERROR);
@@ -499,7 +499,7 @@ IoT_Error_t aws_iot_mqtt_connect(AWS_IoT_Client *pClient, IoT_Client_Connect_Par
  *
  * @param pClient Reference to the IoT Client
  *
- * @return An IoT Error Type defining successful/failed send of the disconnect control packet.
+ * @return An IoT Error Type defining AWS_SUCCESSful/failed send of the disconnect control packet.
  */
 
 IoT_Error_t _aws_iot_mqtt_internal_disconnect(AWS_IoT_Client *pClient);
@@ -515,7 +515,7 @@ IoT_Error_t _aws_iot_mqtt_internal_disconnect(AWS_IoT_Client *pClient) {
 	rc = aws_iot_mqtt_internal_serialize_zero(pClient->clientData.writeBuf, pClient->clientData.writeBufSize,
 											  DISCONNECT,
 											  &serialized_len);
-	if(SUCCESS != rc) {
+	if(AWS_SUCCESS != rc) {
 		FUNC_EXIT_RC(rc);
 	}
 
@@ -535,7 +535,7 @@ IoT_Error_t _aws_iot_mqtt_internal_disconnect(AWS_IoT_Client *pClient) {
 		FUNC_EXIT_RC(FAILURE);
 	}
 
-	FUNC_EXIT_RC(SUCCESS);
+	FUNC_EXIT_RC(AWS_SUCCESS);
 }
 
 /**
@@ -547,7 +547,7 @@ IoT_Error_t _aws_iot_mqtt_internal_disconnect(AWS_IoT_Client *pClient) {
  *
  * @param pClient Reference to the IoT Client
  *
- * @return An IoT Error Type defining successful/failed send of the disconnect control packet.
+ * @return An IoT Error Type defining AWS_SUCCESSful/failed send of the disconnect control packet.
  */
 IoT_Error_t aws_iot_mqtt_disconnect(AWS_IoT_Client *pClient) {
 	ClientState clientState;
@@ -566,13 +566,13 @@ IoT_Error_t aws_iot_mqtt_disconnect(AWS_IoT_Client *pClient) {
 	}
 
 	rc = aws_iot_mqtt_set_client_state(pClient, clientState, CLIENT_STATE_DISCONNECTING);
-	if(SUCCESS != rc) {
+	if(AWS_SUCCESS != rc) {
 		FUNC_EXIT_RC(rc);
 	}
 
 	rc = _aws_iot_mqtt_internal_disconnect(pClient);
 
-	if(SUCCESS != rc) {
+	if(AWS_SUCCESS != rc) {
 		pClient->clientStatus.clientState = clientState;
 	} else {
 		/* If called from Keepalive, this gets set to CLIENT_STATE_DISCONNECTED_ERROR */
@@ -593,7 +593,7 @@ IoT_Error_t aws_iot_mqtt_disconnect(AWS_IoT_Client *pClient) {
  *
  * @param pClient Reference to the IoT Client
  *
- * @return An IoT Error Type defining successful/failed connection
+ * @return An IoT Error Type defining AWS_SUCCESSful/failed connection
  */
 IoT_Error_t aws_iot_mqtt_attempt_reconnect(AWS_IoT_Client *pClient) {
 	IoT_Error_t rc;
@@ -618,7 +618,7 @@ IoT_Error_t aws_iot_mqtt_attempt_reconnect(AWS_IoT_Client *pClient) {
 	}
 
 	rc = aws_iot_mqtt_resubscribe(pClient);
-	if(SUCCESS != rc) {
+	if(AWS_SUCCESS != rc) {
 		FUNC_EXIT_RC(rc);
 	}
 

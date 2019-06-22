@@ -102,6 +102,28 @@ void HAL_CRC_MspInit(CRC_HandleTypeDef* hcrc)
 }
 
 /**
+* @brief CRC MSP De-Initialization
+* This function freeze the hardware resources used in this example
+* @param hcrc: CRC handle pointer
+* @retval None
+*/
+void HAL_CRC_MspDeInit(CRC_HandleTypeDef* hcrc)
+{
+  if(hcrc->Instance==CRC)
+  {
+  /* USER CODE BEGIN CRC_MspDeInit 0 */
+
+  /* USER CODE END CRC_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_CRC_CLK_DISABLE();
+  /* USER CODE BEGIN CRC_MspDeInit 1 */
+
+  /* USER CODE END CRC_MspDeInit 1 */
+  }
+
+}
+
+/**
 * @brief RNG MSP Initialization
 * This function configures the hardware resources used in this example
 * @param hrng: RNG handle pointer
@@ -146,23 +168,45 @@ void HAL_RNG_MspDeInit(RNG_HandleTypeDef* hrng)
 }
 
 /**
-* @brief CRC MSP De-Initialization
-* This function freeze the hardware resources used in this example
-* @param hcrc: CRC handle pointer
+* @brief RTC MSP Initialization
+* This function configures the hardware resources used in this example
+* @param hrtc: RTC handle pointer
 * @retval None
 */
-void HAL_CRC_MspDeInit(CRC_HandleTypeDef* hcrc)
+void HAL_RTC_MspInit(RTC_HandleTypeDef* hrtc)
 {
-  if(hcrc->Instance==CRC)
+  if(hrtc->Instance==RTC)
   {
-  /* USER CODE BEGIN CRC_MspDeInit 0 */
+  /* USER CODE BEGIN RTC_MspInit 0 */
 
-  /* USER CODE END CRC_MspDeInit 0 */
+  /* USER CODE END RTC_MspInit 0 */
+    /* Peripheral clock enable */
+    __HAL_RCC_RTC_ENABLE();
+  /* USER CODE BEGIN RTC_MspInit 1 */
+
+  /* USER CODE END RTC_MspInit 1 */
+  }
+
+}
+
+/**
+* @brief RTC MSP De-Initialization
+* This function freeze the hardware resources used in this example
+* @param hrtc: RTC handle pointer
+* @retval None
+*/
+void HAL_RTC_MspDeInit(RTC_HandleTypeDef* hrtc)
+{
+  if(hrtc->Instance==RTC)
+  {
+  /* USER CODE BEGIN RTC_MspDeInit 0 */
+
+  /* USER CODE END RTC_MspDeInit 0 */
     /* Peripheral clock disable */
-    __HAL_RCC_CRC_CLK_DISABLE();
-  /* USER CODE BEGIN CRC_MspDeInit 1 */
+    __HAL_RCC_RTC_DISABLE();
+  /* USER CODE BEGIN RTC_MspDeInit 1 */
 
-  /* USER CODE END CRC_MspDeInit 1 */
+  /* USER CODE END RTC_MspDeInit 1 */
   }
 
 }

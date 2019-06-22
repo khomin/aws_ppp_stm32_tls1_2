@@ -33,7 +33,7 @@
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.1736530581" name="MCU GCC Assembler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler">
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.149619148" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.value.g3" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.includepaths.1642378172" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.includepaths" useByScannerDiscovery="false" valueType="includePath"/>
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.definedsymbols.799505099" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.definedsymbols" valueType="definedSymbols">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.definedsymbols.799505099" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.definedsymbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="EFI32=1"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.157868069" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
@@ -42,51 +42,61 @@
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.2129183424" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.value.g3" valueType="enumerated"/>
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.1980708957" name="Optimization level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level" useByScannerDiscovery="false"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols.459310626" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols" useByScannerDiscovery="false" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="RFU"/>
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
+									<listOptionValue builtIn="false" value="USE_OFFLOAD_SSL"/>
+									<listOptionValue builtIn="false" value="SENSOR"/>
+									<listOptionValue builtIn="false" value="ENABLE_IOT_ERROR"/>
+									<listOptionValue builtIn="false" value="DEBUG"/>
 									<listOptionValue builtIn="false" value="MQTTCLIENT_PLATFORM_HEADER=MQTTCMSIS.h"/>
 									<listOptionValue builtIn="false" value="ENABLE_IOT_INFO"/>
-									<listOptionValue builtIn="false" value="ENABLE_IOT_ERROR"/>
-									<listOptionValue builtIn="false" value="SENSOR"/>
-									<listOptionValue builtIn="false" value="RFU"/>
 									<listOptionValue builtIn="false" value="UNITY_INCLUDE_CONFIG_H"/>
-									<listOptionValue builtIn="false" value="USE_OFFLOAD_SSL"/>
-									<listOptionValue builtIn="false" value="DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F429xx"/>
+									<listOptionValue builtIn="false" value="AWS=1"/>
+									<listOptionValue builtIn="false" value="OLD_RFU=1"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1265146530" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/mbedtls/include/mbedtls}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/lib/include/private}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Inc/modem}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/unity/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Drivers/STM32F4xx_HAL_Driver/Inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/AWS/include}&quot;"/>
+									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/AWS/external_libs/jsmn}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Inc/fpga_buf}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/lwip/src/include/lwip}&quot;"/>
+									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Drivers/CMSIS/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Common/Shared/Inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Drivers/CMSIS}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/lwip/src/portable}&quot;"/>
+									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/include"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/ConfigFiles/other}&quot;"/>
+									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/lwip/src/include/lwip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party}&quot;"/>
+									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/lwip/src/include/netif}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/lwip/src/include/netif/ppp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/lwip/src/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Common/AWS/Inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Drivers/CMSIS/Device/ST/STM32F4xx/Include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/lwip/src/portable}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/lwip/src/include/netif/ppp}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Drivers/CMSIS}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/lib/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/ConfigFiles}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/unity/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/lib/include/private}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/ConfigFiles/other}&quot;"/>
+									<listOptionValue builtIn="false" value="../Inc"/>
+									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/lib/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/FreeRTOS/portable/Common}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/tests/common/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/AWS/platform/linux}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/pkcs11}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/mbedtls/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/tests/common/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Common/AWS/Inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Common/Shared/Inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/AWS/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/AWS/external_libs/jsmn}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/mbedtls/include/mbedtls}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/stm32f429_amazon/Middlewares/Third_Party/AWS/platform/linux}&quot;"/>
 								</option>
-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.2137807337" name="Language standard" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.value.gnu11" valueType="enumerated"/>
+								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.2137807337" name="Language standard" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.value.isoc11" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.otherflags.1449604369" name="Other flags" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.otherflags" useByScannerDiscovery="false" valueType="stringList">
 									<listOptionValue builtIn="false" value="-u_printf_float"/>
 								</option>
@@ -122,15 +132,15 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Certificate"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Common"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Debug/Middlewares/Third_Party/FreeRTOS/portable/Common"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Certificate"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/bufferpool"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/crypto"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Debug/Middlewares/Third_Party/FreeRTOS/portable/Common"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -165,7 +175,7 @@
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.431068626" name="MCU GCC Assembler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler">
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.1377411962" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.debuglevel.value.g0" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.includepaths.295790933" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.includepaths" valueType="includePath"/>
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.definedsymbols.643288273" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.definedsymbols" valueType="definedSymbols">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.definedsymbols.643288273" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.definedsymbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="EFI32=1"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.2000089448" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
@@ -175,9 +185,9 @@
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.1793401155" name="Optimization level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o3" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols.889862775" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
-									<listOptionValue builtIn="false" value="STM32F429xx"/>
-									<listOptionValue builtIn="false" value="MBEDTLS_FS_IO=1"/>
 									<listOptionValue builtIn="false" value="EFI32=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_FS_IO=1"/>
+									<listOptionValue builtIn="false" value="STM32F429xx"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1286184209" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/include"/>
