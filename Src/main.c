@@ -31,6 +31,7 @@
 #include "task.h"
 #include "stats.h"
 #include "gsmPPP.h"
+#include "net.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,6 +57,8 @@ UART_HandleTypeDef huart3;
 /* USER CODE BEGIN PV */
 extern ePppState pppState;
 RNG_HandleTypeDef hrng;
+net_hnd_t hnet;
+static volatile uint8_t button_flags = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -434,6 +437,106 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+  * @brief Set LED state
+  */
+void Led_SetState(bool on)
+{
+  if (on == true)
+  {
+//    BSP_LED_On(LED_GREEN);
+  }
+  else
+  {
+//    BSP_LED_Off(LED_GREEN);
+  }
+}
+
+
+/**
+ * @brief Blink LED for 'count' cycles of 'period' period and 'duty' ON duration.
+ * duty < 0 tells to start with an OFF state.
+ */
+void Led_Blink(int period, int duty, int count)
+{
+  if ( (duty > 0) && (period >= duty) )
+  {
+    /*  Shape:   ____
+                  on |_off__ */
+    do
+    {
+      Led_SetState(true);
+      HAL_Delay(duty);
+      Led_SetState(false);
+      HAL_Delay(period - duty);
+    } while (count--);
+  }
+  if ( (duty < 0) && (period >= -duty) )
+  {
+    /*  Shape:         ____
+                __off_| on   */
+    do
+    {
+      Led_SetState(false);
+      HAL_Delay(period + duty);
+      Led_SetState(true);
+      HAL_Delay(-duty);
+    } while (count--);
+  }
+}
+
+/**
+  * @brief Update button ISR status
+  */
+static void Button_ISR(void)
+{
+  button_flags++;
+}
+
+
+/**
+  * @brief Waiting for button to be pushed
+  */
+uint8_t Button_WaitForPush(uint32_t delay)
+{
+  uint32_t time_out = HAL_GetTick()+delay;
+  do
+  {
+    if (button_flags > 1)
+    {
+      button_flags = 0;
+      return BP_MULTIPLE_PUSH;
+    }
+
+    if (button_flags == 1)
+    {
+      button_flags = 0;
+      return BP_SINGLE_PUSH;
+    }
+  }
+  while( HAL_GetTick() < time_out);
+  return BP_NOT_PUSHED;
+}
+
+/**
+  * @brief Waiting for button to be pushed
+  */
+uint8_t Button_WaitForMultiPush(uint32_t delay)
+{
+  HAL_Delay(delay);
+  if (button_flags > 1)
+  {
+    button_flags = 0;
+    return BP_MULTIPLE_PUSH;
+  }
+
+  if (button_flags == 1)
+  {
+    button_flags = 0;
+    return BP_SINGLE_PUSH;
+  }
+  return BP_NOT_PUSHED;
+}
 
 /* USER CODE END 4 */
 

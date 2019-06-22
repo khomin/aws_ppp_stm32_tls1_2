@@ -90,8 +90,6 @@ void gsmPPP_Tsk(void *pvParamter) {
 	/* Auth configuration, this is pretty self-explanatory */
 	ppp_set_auth(ppp, PPPAUTHTYPE_ANY, "gdata", "gdata");
 
-	SYSTEM_Init();
-
 	for(;;) {
 		if(uartParcerStruct.ppp.pppModeEnable == true) {
 			if((pppState != ppp_wait_for_connect) && (pppState != ppp_ready_work)) {
@@ -113,27 +111,6 @@ void gsmPPP_Tsk(void *pvParamter) {
 		if(pppState == ppp_ready_work) {
 			DBGLog("AWS PPP-MQTT: module initialized.\r\n");
 
-			WIFI_On();
-			/* A simple example to demonstrate key and certificate provisioning in
-			 * microcontroller flash using PKCS#11 interface. This should be replaced
-			 * by production ready key provisioning mechanism. */
-			vDevModeKeyProvisioning();
-
-			if( SYSTEM_Init() == pdPASS ) {
-				/* Connect to the WiFi before running the demos */
-				prvWifiConnect();
-#ifdef USE_OFFLOAD_SSL
-				/* Check if WiFi firmware needs to be updated. */
-				//				prvCheckWiFiFirmwareVersion();
-#endif /* USE_OFFLOAD_SSL */
-				/* Start demos. */
-				vStartMQTTEchoDemo();
-			} else {
-				configPRINTF( ( "WiFi module failed to initialize.\r\n" ) );
-				/* Stop here if we fail to initialize WiFi. */
-				configASSERT( xWifiStatus == eWiFiSuccess );
-			}
-
 			while(1) {
 				vTaskDelay(500/portTICK_RATE_MS);
 			}
@@ -146,58 +123,6 @@ void gsmPPP_Tsk(void *pvParamter) {
 //----------------------------
 //--	private functions
 //----------------------------
-
-#include "aws_clientcredential.h"
-
-static void prvWifiConnect( void )
-{
-    WIFINetworkParams_t xNetworkParams;
-    WIFIReturnCode_t xWifiStatus;
-    uint8_t ucIPAddr[ 4 ];
-
-    /* Setup WiFi parameters to connect to access point. */
-    xNetworkParams.pcSSID = clientcredentialWIFI_SSID;
-    xNetworkParams.ucSSIDLength = sizeof( clientcredentialWIFI_SSID );
-    xNetworkParams.pcPassword = clientcredentialWIFI_PASSWORD;
-    xNetworkParams.ucPasswordLength = sizeof( clientcredentialWIFI_PASSWORD );
-    xNetworkParams.xSecurity = clientcredentialWIFI_SECURITY;
-    xNetworkParams.cChannel = 0;
-
-    /* Try connecting using provided wifi credentials. */
-    xWifiStatus = WIFI_ConnectAP( &( xNetworkParams ) );
-
-    if( xWifiStatus == eWiFiSuccess )
-    {
-        configPRINTF( ( "WiFi connected to AP %s.\r\n", xNetworkParams.pcSSID ) );
-
-        /* Get IP address of the device. */
-        WIFI_GetIP( &ucIPAddr[ 0 ] );
-
-        configPRINTF( ( "IP Address acquired %d.%d.%d.%d\r\n",
-                        ucIPAddr[ 0 ], ucIPAddr[ 1 ], ucIPAddr[ 2 ], ucIPAddr[ 3 ] ) );
-    }
-    else
-    {
-        /* Connection failed configure softAP to allow user to set wifi credentials. */
-        configPRINTF( ( "WiFi failed to connect to AP %s.\r\n", xNetworkParams.pcSSID ) );
-
-        xNetworkParams.pcSSID = wificonfigACCESS_POINT_SSID_PREFIX;
-        xNetworkParams.pcPassword = wificonfigACCESS_POINT_PASSKEY;
-        xNetworkParams.xSecurity = wificonfigACCESS_POINT_SECURITY;
-        xNetworkParams.cChannel = wificonfigACCESS_POINT_CHANNEL;
-
-        configPRINTF( ( "Connect to softAP %s using password %s. \r\n",
-                        xNetworkParams.pcSSID, xNetworkParams.pcPassword ) );
-
-        while( WIFI_ConfigureAP( &xNetworkParams ) != eWiFiSuccess )
-        {
-            configPRINTF( ( "Connect to softAP %s using password %s and configure WiFi. \r\n",
-                            xNetworkParams.pcSSID, xNetworkParams.pcPassword ) );
-        }
-
-        configPRINTF( ( "WiFi configuration successful. \r\n", xNetworkParams.pcSSID ) );
-    }
-}
 
 bool gsmPPP_Connect(uint8_t* destIp, uint16_t port) {
 	if(pppState != ppp_ready_work) {
