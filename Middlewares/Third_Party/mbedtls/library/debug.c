@@ -38,7 +38,7 @@
 #endif
 
 #include "mbedtls/debug.h"
-
+#include "debug_print.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
@@ -75,6 +75,9 @@ static inline void debug_send_line( const mbedtls_ssl_context *ssl, int level,
     ssl->conf->f_dbg( ssl->conf->p_dbg, level, file, line, idstr );
 #else
     ssl->conf->f_dbg( ssl->conf->p_dbg, level, file, line, str );
+
+    DBGLog("MbedTLS [%s]", str);
+
 #endif
 }
 

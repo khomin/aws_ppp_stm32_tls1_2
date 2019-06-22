@@ -97,21 +97,12 @@ const  user_config_t lUserConfigPtr = {
 		{
 				// iot_config
 				{USER_CONF_MAGIC},
-				{USER_CONF_MAGIC},
+				{clientcredential_device_name},
 				{clientcredentialMQTT_BROKER_ENDPOINT},
 		},
 		{USER_CONF_MAGIC},	// ca_tls_magic
 		{USER_CONF_MAGIC} // device_tls_magic
 };
-
-//char tls_root_ca_cert[USER_CONF_TLS_OBJECT_MAX_SIZE * 3]; /* Allow room for 3 root CA certificates */
-//char tls_device_cert[USER_CONF_TLS_OBJECT_MAX_SIZE];
-//char tls_device_key[USER_CONF_TLS_OBJECT_MAX_SIZE];
-//iot_config_t iot_config;
-//uint64_t ca_tls_magic;        /**< The USER_CONF_MAGIC magic word signals that the TLS root CA certificates strings
-//                                  (tls_root_ca_cert) are present in Flash. */
-//uint64_t device_tls_magic;    /**< The USER_CONF_MAGIC magic word signals that the TLS device certificate and key
-//                                  (tls_device_cert and tls_device_key) are present in Flash. */
 
 #endif
 

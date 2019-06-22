@@ -122,6 +122,8 @@ IoT_Error_t iot_tls_is_connected(Network *pNetwork)
   return NETWORK_PHYSICAL_LAYER_CONNECTED;
 }
 
+#include "FreeRTOS.h"
+#include "task.h"
 
 /*
  * Amazon Profile
@@ -174,7 +176,7 @@ IoT_Error_t iot_tls_connect(Network *pNetwork, TLSConnectParams *params)
   mbedtls_x509_crt_init(&(tlsDataParams->cacert));
   mbedtls_x509_crt_init(&(tlsDataParams->clicert));
   mbedtls_pk_init(&(tlsDataParams->pkey));
-  mbedtls_debug_set_threshold(1);
+//  mbedtls_debug_set_threshold(5);
   mbedtls_ssl_conf_dbg( &(tlsDataParams->conf), my_debug, stdout );
 
 

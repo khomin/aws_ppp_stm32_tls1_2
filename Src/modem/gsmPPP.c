@@ -64,7 +64,7 @@ static void prvWifiConnect( void );
 void gsmPPP_Tsk(void *pvParamter);
 
 bool gsmPPP_Init(void) {
-	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 4096, 0, tskIDLE_PRIORITY, NULL);
+	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 8096, 0, tskIDLE_PRIORITY, NULL);
 	return true;
 }
 
