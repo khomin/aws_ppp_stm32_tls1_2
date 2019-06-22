@@ -48,15 +48,15 @@
 #include <stdio.h>
 #include "sensors_data.h"
 
-#include "stm32l4xx_hal.h"
-#include "stm32l475e_iot01.h"
-#include "stm32l475e_iot01_tsensor.h"
-#include "stm32l475e_iot01_hsensor.h"
-#include "stm32l475e_iot01_psensor.h"
-#include "stm32l475e_iot01_magneto.h"
-#include "stm32l475e_iot01_gyro.h"
-#include "stm32l475e_iot01_accelero.h"
-#include "vl53l0x_proximity.h"
+#include "stm32f4xx_hal.h"
+//#include "stm32l475e_iot01.h"
+//#include "stm32l475e_iot01_tsensor.h"
+//#include "stm32l475e_iot01_hsensor.h"
+//#include "stm32l475e_iot01_psensor.h"
+//#include "stm32l475e_iot01_magneto.h"
+//#include "stm32l475e_iot01_gyro.h"
+//#include "stm32l475e_iot01_accelero.h"
+//#include "vl53l0x_proximity.h"
 #include "msg.h"
 
 /* Private typedef -----------------------------------------------------------*/
@@ -77,44 +77,44 @@ int init_sensors(void)
 {
   int ret = 0;
   
-  if (HSENSOR_OK != BSP_HSENSOR_Init())
-  {
-    msg_error("BSP_HSENSOR_Init() returns %d\n", ret);
-    ret = -1;
-  }
-  
-  if (TSENSOR_OK != BSP_TSENSOR_Init())
-  {
-    msg_error("BSP_TSENSOR_Init() returns %d\n", ret);
-    ret = -1;
-  }
-  
-  if (PSENSOR_OK != BSP_PSENSOR_Init())
-  {
-    msg_error("BSP_PSENSOR_Init() returns %d\n", ret);
-    ret = -1;
-  }
-  
-  if (MAGNETO_OK != BSP_MAGNETO_Init())
-  {
-    msg_error("BSP_MAGNETO_Init() returns %d\n", ret);
-    ret = -1;
-  }
-
-  if (GYRO_OK != BSP_GYRO_Init())
-  {
-    msg_error("BSP_GYRO_Init() returns %d\n", ret);
-    ret = -1;
-  }
-  
-  if (ACCELERO_OK != BSP_ACCELERO_Init())
-  {
-    msg_error("BSP_ACCELERO_Init() returns %d\n", ret);
-    ret = -1;
-  }
-  
-  VL53L0X_PROXIMITY_Init();
-  
+//  if (HSENSOR_OK != BSP_HSENSOR_Init())
+//  {
+//    msg_error("BSP_HSENSOR_Init() returns %d\n", ret);
+//    ret = -1;
+//  }
+//
+//  if (TSENSOR_OK != BSP_TSENSOR_Init())
+//  {
+//    msg_error("BSP_TSENSOR_Init() returns %d\n", ret);
+//    ret = -1;
+//  }
+//
+//  if (PSENSOR_OK != BSP_PSENSOR_Init())
+//  {
+//    msg_error("BSP_PSENSOR_Init() returns %d\n", ret);
+//    ret = -1;
+//  }
+//
+//  if (MAGNETO_OK != BSP_MAGNETO_Init())
+//  {
+//    msg_error("BSP_MAGNETO_Init() returns %d\n", ret);
+//    ret = -1;
+//  }
+//
+//  if (GYRO_OK != BSP_GYRO_Init())
+//  {
+//    msg_error("BSP_GYRO_Init() returns %d\n", ret);
+//    ret = -1;
+//  }
+//
+//  if (ACCELERO_OK != BSP_ACCELERO_Init())
+//  {
+//    msg_error("BSP_ACCELERO_Init() returns %d\n", ret);
+//    ret = -1;
+//  }
+//
+//  VL53L0X_PROXIMITY_Init();
+//
   return ret;
 }
 

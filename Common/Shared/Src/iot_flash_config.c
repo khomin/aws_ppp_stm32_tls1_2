@@ -55,6 +55,7 @@
 #include "flash.h"
 #include "iot_flash_config.h"
 #include "msg.h"
+#include "cloud.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private defines -----------------------------------------------------------*/

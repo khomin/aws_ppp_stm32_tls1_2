@@ -48,6 +48,9 @@
 #include "firewall_wrapper.h"
 #include "msg.h"
 
+#include "md.h"
+#include "pk.h"
+
 static size_t xxx_get_bitlen( const void *ctx )
 {
   msg_info("xxx_get_bitlen : Not Implemented\n");

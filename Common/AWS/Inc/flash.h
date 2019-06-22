@@ -1,8 +1,9 @@
 /**
   ******************************************************************************
-  * @file    firewall.h
+  * @file    flash.h
   * @author  MCD Application Team
-  * @brief   IoT Discovery Kit firewall init functions.
+  * @brief   Management of the internal flash memory.
+  *          Header for flash.c
   ******************************************************************************
   * @attention
   *
@@ -44,18 +45,35 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __FIREWALL_H__
-#define __FIREWALL_H__
+#ifndef __flash_H
+#define __flash_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "mbedtls/pk_internal.h"
+#include <stdint.h>
 
-/* Public Definition -----------------------------------------------------------*/
+int FLASH_update(uint32_t dst_addr, const void *data, uint32_t size);
 
-typedef enum { FIREWALL_INIT_FUNC=0,FIREWALL_PK_PARSE_KEY_FUNC,FIREWALL_CANDO_FUNC,FIREWALL_SIGN_FUNC,FIREWALL_CTX_FREE_FUNC,FIREWALL_HEAP_STAT_FUNC,FIREWALL_FLASH_KEY_FUNC} funcid_t;
 
-extern int (*FireWallCallGatePtr)(funcid_t funcid,...);
+#if defined (STM32L475xx) || defined (STM32L496xx)
+uint32_t FLASH_Write(uint32_t uDestination, uint32_t *pSource, uint32_t uLength);
+uint32_t FLASH_Erase_Size(uint32_t uStart, uint32_t uLength);
+#else
+int FLASH_write_at(uint32_t address, uint32_t *pData, uint32_t len_bytes);
+uint32_t GetSectorMap(void);
+#endif
 
-#endif /* __FIREWALL_H__ */
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __flash_H */
+
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+

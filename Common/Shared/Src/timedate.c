@@ -62,6 +62,11 @@
 #define TIME_SOURCE_HTTP_PROTO  NET_PROTO_TLS
 #endif
 
+#include "iot_flash_config.h"
+
+extern net_hnd_t hnet;
+extern const user_config_t *lUserConfigPtr;
+
 /** Size of the HTTP read buffer. 
  *  Should be large enough to contain a complete HTTP response header. */
 #define NET_BUF_SIZE  1000
