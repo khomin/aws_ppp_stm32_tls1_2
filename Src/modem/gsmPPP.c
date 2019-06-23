@@ -55,16 +55,12 @@ static void dns_server_is_found_cb(const char *name, const ip_addr_t *ipaddr, vo
 static err_t server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err);
 static err_t server_err(void *arg, err_t err);
 static void server_close(struct tcp_pcb *pcb);
-//void udp_dns_echo_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *addr, u16_t port);
-
 static void gsmPPP_rawInput(void *pvParamter);
-
-static void prvWifiConnect( void );
 
 void gsmPPP_Tsk(void *pvParamter);
 
 bool gsmPPP_Init(void) {
-	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 8096, 0, tskIDLE_PRIORITY, NULL);
+	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 7000, 0, tskIDLE_PRIORITY, NULL);
 	return true;
 }
 
@@ -116,7 +112,7 @@ void gsmPPP_Tsk(void *pvParamter) {
 
 			platform_init();
 			subscribe_publish_sensor_values();
-			platform_deinit();
+//			platform_deinit();
 
 			while(1) {
 				vTaskDelay(500/portTICK_RATE_MS);

@@ -87,6 +87,9 @@
 #include "lwip/netif.h"
 #endif /* USE_LWIP_ETH */
 
+#include "FreeRTOS.h"
+#include "portable.h"
+
 /* Private defines -----------------------------------------------------------*/
 #define NET_DEFAULT_BLOCKING_WRITE_TIMEOUT  2000
 #define NET_DEFAULT_BLOCKING_READ_TIMEOUT   2000
@@ -169,8 +172,8 @@ struct net_ctxt_s {
 #define MIN(a,b)  ((a) < (b) ? (a) : (b))
 #define MAX(a,b)  ((a) < (b) ? (b) : (a))
 
-#define net_malloc(a) malloc((a))
-#define net_free(a)   free((a))
+#define net_malloc(a) pvPortMalloc((a))//malloc((a))
+#define net_free(a)   vPortFree((a))//free((a))
 
 int32_t net_timeout_left_ms(uint32_t init, uint32_t now, uint32_t timeout);
 #ifdef USE_MBED_TLS

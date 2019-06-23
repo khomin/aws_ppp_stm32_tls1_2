@@ -301,23 +301,14 @@ int subscribe_publish_sensor_values(void)
 	connectParams.clientIDLen = (uint16_t) strlen(pDeviceName);
 	connectParams.isWillMsgPresent = false;
 
-//	// TODO: !!!
-//	while(1) {
-//		vTaskDelay(1000/portTICK_PERIOD_MS);
-//	}
-
 	connectCounter = 0;
-	do
-	{
+	do {
 		connectCounter++;
 		printf("MQTT connection in progress:   Attempt %d/%d ...\n",
 				connectCounter,
 				MQTT_CONNECT_MAX_ATTEMPT_COUNT);
 		rc = aws_iot_mqtt_connect(&client, &connectParams);
-
-		vTaskDelay(1000/portTICK_PERIOD_MS);
-
-	} while((rc != AWS_SUCCESS) && (connectCounter < MQTT_CONNECT_MAX_ATTEMPT_COUNT));
+ 	} while((rc != AWS_SUCCESS) && (connectCounter < MQTT_CONNECT_MAX_ATTEMPT_COUNT));
 
 	if(AWS_SUCCESS != rc)
 	{

@@ -8035,14 +8035,15 @@ int mbedtls_ssl_handshake( mbedtls_ssl_context *ssl )
 
     while( ssl->state != MBEDTLS_SSL_HANDSHAKE_OVER )
     {
-    	if(ssl->state == 3) {
-    		DBGLog("mbedtls_ssl_handshake [state %d]", ssl->state);
-    	}
         ret = mbedtls_ssl_handshake_step( ssl );
 
         if( ret != 0 )
             break;
     }
+
+	if(ssl->state == 3) {
+		DBGLog("mbedtls_ssl_handshake [state %d]", ssl->state);
+	}
 
     MBEDTLS_SSL_DEBUG_MSG( 2, ( "<= handshake" ) );
 
