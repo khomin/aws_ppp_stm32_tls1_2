@@ -96,12 +96,12 @@ const  user_config_t lUserConfigPtr = {
 		{keyCLIENT_PRIVATE_KEY_PEM},	// tls_device_key
 		{
 				// iot_config
-				{USER_CONF_MAGIC},
+				USER_CONF_MAGIC,
 				{clientcredential_device_name},
 				{clientcredentialMQTT_BROKER_ENDPOINT},
 		},
-		{USER_CONF_MAGIC},	// ca_tls_magic
-		{USER_CONF_MAGIC} // device_tls_magic
+		USER_CONF_MAGIC,	// ca_tls_magic
+		USER_CONF_MAGIC // device_tls_magic
 };
 
 #endif

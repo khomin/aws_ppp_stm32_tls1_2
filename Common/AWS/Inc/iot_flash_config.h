@@ -79,13 +79,13 @@ typedef struct {
 } wifi_config_t;
 
 /* Bluemix key words */
-#define QUICK_START_REG_NAME "QuickStart"
-#define SIMPLE_REG_NAME      "SimpleReg"
-#define ORG_ID_KEY           "OrgId"
-#define DEVICE_TYPE_KEY      "DeviceType"
-#define DEVICE_ID_KEY        "DeviceId"
-#define TOKEN_KEY            "Token"
-#define IBM_IOT_URL          "internetofthings.ibmcloud.com"
+//#define QUICK_START_REG_NAME "QuickStart"
+//#define SIMPLE_REG_NAME      "SimpleReg"
+//#define ORG_ID_KEY           "OrgId"
+//#define DEVICE_TYPE_KEY      "DeviceType"
+//#define DEVICE_ID_KEY        "DeviceId"
+//#define TOKEN_KEY            "Token"
+//#define IBM_IOT_URL          "internetofthings.ibmcloud.com"
 
 typedef struct {
   uint64_t magic;                                     /**< The USER_CONF_MAGIC magic word signals that the structure was once written to FLASH. */

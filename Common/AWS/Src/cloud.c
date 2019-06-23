@@ -95,15 +95,15 @@ void CLOUD_Error_Handler(int errorCode);
  */
 bool dialog_ask(char *s)
 {
-//	char console_yn;
-//	do
-//	{
-//		printf("%s",s);
-//		console_yn= getchar();
-//		printf("\b");
-//	}
-//	while((console_yn != 'y') && (console_yn != 'n') && (console_yn != '\n'));
-//	if (console_yn == 'y') return true;
+	//	char console_yn;
+	//	do
+	//	{
+	//		printf("%s",s);
+	//		console_yn= getchar();
+	//		printf("\b");
+	//	}
+	//	while((console_yn != 'y') && (console_yn != 'n') && (console_yn != '\n'));
+	//	if (console_yn == 'y') return true;
 	return false;
 }
 
@@ -125,35 +125,35 @@ void CLOUD_Error_Handler(int errorCode)
 		break;
 	}
 	case (CLOUD_DEMO_MAC_ADDRESS_ERROR):
-    	{
+    		{
 		printf("Error detecting module!\n");
 
 		break;
-    	}
+    		}
 	case (CLOUD_DEMO_WIFI_CONNECTION_ERROR):
-    	{
+    		{
 		printf("Error connecting to AP!\n");
 
 		break;
-    	}
+    		}
 	case (CLOUD_DEMO_IP_ADDRESS_ERROR):
-    	{
+    		{
 		printf("Error retrieving IP address!\n");
 
 		break;
-    	}
+    		}
 	case (CLOUD_DEMO_CONNECTION_ERROR):
-    	{
+    		{
 		printf("Error connecting to Cloud!\n");
 
 		break;
-    	}
+    		}
 	case (CLOUD_DEMO_TIMEDATE_ERROR):
-    	{
+    		{
 		printf("Error initializing the RTC from the network time!\n");
 
 		break;
-    	}
+    		}
 	default:
 	{
 		break;
@@ -253,29 +253,29 @@ int platform_init(void)
 	/* Define, or allow to update if the user button is pushed. */
 
 	skip_reconf = (checkTLSRootCA() == 0)
-    		&& ( (checkTLSDeviceConfig() == 0) || !app_needs_device_keypair() )
-			&& (checkIoTDeviceConfig() == 0);
+    				&& ( (checkTLSDeviceConfig() == 0) || !app_needs_device_keypair() )
+					&& (checkIoTDeviceConfig() == 0);
 
-//	if (skip_reconf == true)
-//	{
-//		printf("Push the User button (Blue) within the next 5 seconds if you want to update "
-//				"the device security parameters or credentials.\n\n");
-//		skip_reconf = (Button_WaitForPush(5000) == BP_NOT_PUSHED);
-//	}
+	//	if (skip_reconf == true)
+	//	{
+	//		printf("Push the User button (Blue) within the next 5 seconds if you want to update "
+	//				"the device security parameters or credentials.\n\n");
+	//		skip_reconf = (Button_WaitForPush(5000) == BP_NOT_PUSHED);
+	//	}
 
-//	if (skip_reconf == false)
-//	{
-//		if ((checkIoTDeviceConfig() != 0) || dialog_ask("Do you want to update your IoT device connection parameters? (y/n)\n"))
-//		{
-//			if (cloud_device_enter_credentials() != 0)
-//			{
-//				msg_error("Failed configuring the IoT device.\n");
-//			}
-//		}
-//#if defined(USE_MBED_TLS) || (!defined(USE_CLEAR_TIMEDATE))
-//		updateTLSCredentials();
-//#endif
-//	}
+	//	if (skip_reconf == false)
+	//	{
+	//		if ((checkIoTDeviceConfig() != 0) || dialog_ask("Do you want to update your IoT device connection parameters? (y/n)\n"))
+	//		{
+	//			if (cloud_device_enter_credentials() != 0)
+	//			{
+	//				msg_error("Failed configuring the IoT device.\n");
+	//			}
+	//		}
+	//#if defined(USE_MBED_TLS) || (!defined(USE_CLEAR_TIMEDATE))
+	//		updateTLSCredentials();
+	//#endif
+	//	}
 	/* End of security and cloud parameters definition */
 
 	msg_info("Setting the RTC from the network time.\n");
@@ -284,14 +284,13 @@ int platform_init(void)
 #else   /* CLOUD_TIMEDATE_TLS_VERIFICATION_IGNORE */
 		if ( (setRTCTimeDateFromNetwork(false) != TD_OK) && (setRTCTimeDateFromNetwork(true) != TD_OK) )
 #endif  /* CLOUD_TIMEDATE_TLS_VERIFICATION_IGNORE */
-
 		{
 			CLOUD_Error_Handler(CLOUD_DEMO_TIMEDATE_ERROR);
 			return -1;
 		}
 
 #if defined(RFU) && !defined(FIREWALL_MBEDLIB)
-//	updateFirmwareVersion();
+	//	updateFirmwareVersion();
 #endif  /* RFU */
 
 #ifdef SENSOR

@@ -42,7 +42,7 @@
  * use pre-compile concatenation on the string. */
 #define clientcredentialIOT_THING_NAME               "Paste AWS IoT Thing name here."
 
-#define clientcredential_device_name 				"device_by_khomin"
+#define clientcredential_device_name 				"USB_Printer_Board"
 
 /*
  * Port number the MQTT broker is using.

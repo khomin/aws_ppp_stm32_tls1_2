@@ -279,9 +279,9 @@ int subscribe_publish_sensor_values(void)
 	mqttInitParams.pRootCALocation = (char *) pCaCert;
 	mqttInitParams.pDeviceCertLocation = (char *) pClientCert;
 	mqttInitParams.pDevicePrivateKeyLocation = (char *) pClientPrivateKey;
-	mqttInitParams.mqttCommandTimeout_ms = 20000;
+	mqttInitParams.mqttCommandTimeout_ms = 5000; // 20000;
 	mqttInitParams.tlsHandshakeTimeout_ms = 5000;
-	mqttInitParams.isSSLHostnameVerify = true;
+	mqttInitParams.isSSLHostnameVerify = false;//true;
 	mqttInitParams.disconnectHandler = disconnectCallbackHandler;
 	mqttInitParams.disconnectHandlerData = NULL;
 
@@ -294,7 +294,7 @@ int subscribe_publish_sensor_values(void)
 	}
 
 	getIoTDeviceConfig(&pDeviceName);
-	connectParams.keepAliveIntervalInSec = 30;
+	connectParams.keepAliveIntervalInSec = 10;//30;
 	connectParams.isCleanSession = true;
 	connectParams.MQTTVersion = MQTT_3_1_1;
 	connectParams.pClientID = (char *) pDeviceName;
