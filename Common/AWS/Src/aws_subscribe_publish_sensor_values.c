@@ -57,6 +57,13 @@
 #include "aws_iot_error.h"
 #include "aws_clientcredential_keys.h"
 #include "aws_clientcredential.h"
+#include "fpga_buf.h"
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "fpga_buf/fpga_buf.h"
+#include "fpga_buf/fpga_commander.h"
+
+extern xQueueHandle fpgaDataQueue;
 
 void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topicNameLen, IoT_Publish_Message_Params *params, void *pData);
 int subscribe_publish_sensor_values(void);
@@ -75,11 +82,6 @@ static char cPTopicName[MAX_SHADOW_TOPIC_LENGTH_BYTES] = "";
 static char cSTopicName[MAX_SHADOW_TOPIC_LENGTH_BYTES] = "";
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-/**
- * @brief This parameter will avoid infinite loop of publish and exit the program after certain number of publishes
- */
-static uint32_t publishCount = 60;
-
 /* Private function prototypes -----------------------------------------------*/
 
 /* Functions Definition ------------------------------------------------------*/
@@ -190,14 +192,14 @@ void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topi
 	/* If a new desired LED state is received, change the LED state. */
 	if (strstr((char *) params->payload, "\"desired\":{\"LED_value\":\"On\"}") != NULL)
 	{
-		Led_SetState(true);
+//		Led_SetState(true);
 		strcpy(ledstate, "On");
 		msg_info("LED On!\n");
 		msg = msg_on;
 	}
 	else if (strstr((char *) params->payload, "\"desired\":{\"LED_value\":\"Off\"}") != NULL)
 	{
-		Led_SetState(false);
+//		Led_SetState(false);
 		strcpy(ledstate, "Off");
 		msg_info("LED Off!\n");
 		msg = msg_off;
@@ -230,7 +232,7 @@ void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topi
 
 int subscribe_publish_sensor_values(void)
 {
-	bool infinitePublishFlag = true;
+	bool loop_is_normal = false;
 	const char *serverAddress = NULL;
 	const char *pCaCert;
 	const char *pClientCert;
@@ -241,10 +243,6 @@ int subscribe_publish_sensor_values(void)
 	int i = 0;
 	int connectCounter;
 	IoT_Error_t rc = FAILURE;
-#ifdef SENSOR
-	int timeCounter = 0;
-#endif
-	uint8_t bp_pushed;
 
 	AWS_IoT_Client client;
 	memset(&client, 0, sizeof(AWS_IoT_Client));
@@ -252,22 +250,13 @@ int subscribe_publish_sensor_values(void)
 	IoT_Client_Connect_Params connectParams = iotClientConnectParamsDefault;
 
 	getIoTDeviceConfig(&deviceName);
-	if (strlen(deviceName) >= MAX_SIZE_OF_THING_NAME)
-	{
+	if (strlen(deviceName) >= MAX_SIZE_OF_THING_NAME) {
 		msg_error("The length of the device name stored in the iot user configuration is larger than the AWS client MAX_SIZE_OF_THING_NAME.\n");
 		return -1;
 	}
 
 	snprintf(cPTopicName, sizeof(cPTopicName), "$aws/things/%s/shadow/update", deviceName);
 	snprintf(cSTopicName, sizeof(cSTopicName), "$aws/things/%s/shadow/update/accepted", deviceName);
-
-	//  snprintf(cPTopicName, sizeof(cPTopicName), AWS_DEVICE_SHADOW_PRE "%s" AWS_DEVICE_SHADOW_UPDATE_TOPIC, deviceName);
-	//  snprintf(cSTopicName, sizeof(cSTopicName), AWS_DEVICE_SHADOW_PRE "%s" AWS_DEVICE_SHADOW_UPDATE_ACCEPTED_TOPIC, deviceName);
-
-	/*
-  IoT_Publish_Message_Params paramsQOS0;
-  IoT_Publish_Message_Params paramsQOS1;
-	 */
 
 	msg_info("AWS IoT SDK Version %d.%d.%d-%s\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_TAG);
 
@@ -279,9 +268,9 @@ int subscribe_publish_sensor_values(void)
 	mqttInitParams.pRootCALocation = (char *) pCaCert;
 	mqttInitParams.pDeviceCertLocation = (char *) pClientCert;
 	mqttInitParams.pDevicePrivateKeyLocation = (char *) pClientPrivateKey;
-	mqttInitParams.mqttCommandTimeout_ms = 5000; // 20000;
+	mqttInitParams.mqttCommandTimeout_ms = 20000;
 	mqttInitParams.tlsHandshakeTimeout_ms = 5000;
-	mqttInitParams.isSSLHostnameVerify = false;//true;
+	mqttInitParams.isSSLHostnameVerify = true;
 	mqttInitParams.disconnectHandler = disconnectCallbackHandler;
 	mqttInitParams.disconnectHandlerData = NULL;
 
@@ -294,7 +283,7 @@ int subscribe_publish_sensor_values(void)
 	}
 
 	getIoTDeviceConfig(&pDeviceName);
-	connectParams.keepAliveIntervalInSec = 10;//30;
+	connectParams.keepAliveIntervalInSec = 30;
 	connectParams.isCleanSession = true;
 	connectParams.MQTTVersion = MQTT_3_1_1;
 	connectParams.pClientID = (char *) pDeviceName;
@@ -308,7 +297,7 @@ int subscribe_publish_sensor_values(void)
 				connectCounter,
 				MQTT_CONNECT_MAX_ATTEMPT_COUNT);
 		rc = aws_iot_mqtt_connect(&client, &connectParams);
- 	} while((rc != AWS_SUCCESS) && (connectCounter < MQTT_CONNECT_MAX_ATTEMPT_COUNT));
+	} while((rc != AWS_SUCCESS) && (connectCounter < MQTT_CONNECT_MAX_ATTEMPT_COUNT));
 
 	if(AWS_SUCCESS != rc)
 	{
@@ -356,22 +345,19 @@ int subscribe_publish_sensor_values(void)
 	IoT_Publish_Message_Params paramsQOS1 = {QOS1, 0, 0, 0, NULL,0};
 	paramsQOS1.payload = (void *) cPayload;
 
-	if(publishCount != 0)
-	{
-		infinitePublishFlag = false;
-	}
-
-
 	printf("Press the User button (Blue) to publish the LED desired value on the %s topic\n", cPTopicName);
 
-#ifdef SENSOR
-	timeCounter = TIMER_COUNT_FOR_SENSOR_PUBLISH;
-#endif
+	//-- flag that everything is normal and the cycle continues
+	//-- if disconnect, then it is reset.
+	loop_is_normal = true;
 
-	while((NETWORK_ATTEMPTING_RECONNECT == rc || NETWORK_RECONNECTED == rc || AWS_SUCCESS == rc) && (publishCount > 0 || infinitePublishFlag))
+	while((NETWORK_ATTEMPTING_RECONNECT == rc
+			|| NETWORK_RECONNECTED == rc
+			|| AWS_SUCCESS == rc)
+			&& loop_is_normal)
 	{
 		/* Max time the yield function will wait for read messages */
-		rc = aws_iot_mqtt_yield(&client, 10);
+		rc = aws_iot_mqtt_yield(&client, 1);
 
 		if(NETWORK_ATTEMPTING_RECONNECT == rc)
 		{
@@ -386,86 +372,34 @@ int subscribe_publish_sensor_values(void)
 			msg_info("Reconnected.\n");
 		}
 
-		bp_pushed = Button_WaitForMultiPush(1000);
+		//-- send data
+		//-- endless looop
+		sFpgaDataStruct * p = NULL;
+		while(xQueueReceive(fpgaDataQueue, &p, 500/portTICK_PERIOD_MS) == pdTRUE) {
+			if(p != NULL) {
+				printf("Sending the fgpa data to AWS.\n");
 
-		/* exit loop on long push  */
-		if (bp_pushed == BP_MULTIPLE_PUSH )
-		{
-			msg_info("\nPushed button perceived as a *double push*. Terminates the application.\n");
-			infinitePublishFlag = false;
-			publishCount = 0;
-			break;
-		}
+				/* create desired message */
+				memset(cPayload, 0, sizeof(cPayload));
+				strcat(cPayload, aws_json_desired);
+				strcat(cPayload, "{\"Fpga data\":\"");
+				strcat(cPayload, (char*)p->data);
+				strcat(cPayload, "\"}");
+				strcat(cPayload, aws_json_post);
 
-		if (bp_pushed == BP_SINGLE_PUSH)
-		{
-			if(strstr(ledstate, "Off")!= NULL)
-			{
-				strcpy(ledstate, "On");
+				free(p);
+
+				paramsQOS1.payloadLen = strlen(cPayload) + 1;
+
+				do {
+					rc = aws_iot_mqtt_publish(&client, cPTopicName, strlen(cPTopicName), &paramsQOS1);
+					if (rc == AWS_SUCCESS) {
+						printf("\nPublished to topic %s:", cPTopicName);
+						printf("%s\n", cPayload);
+					}
+				} while(MQTT_REQUEST_TIMEOUT_ERROR == rc &&(loop_is_normal));
 			}
-			else
-			{
-				strcpy(ledstate, "Off");
-			}
-
-			printf("Sending the desired LED state to AWS.\n");
-
-			/* create desired message */
-			memset(cPayload, 0, sizeof(cPayload));
-			strcat(cPayload, aws_json_desired);
-			strcat(cPayload, "{\"LED_value\":\"");
-			strcat(cPayload, ledstate);
-			strcat(cPayload, "\"}");
-			strcat(cPayload, aws_json_post);
-
-			paramsQOS1.payloadLen = strlen(cPayload) + 1;
-
-			do
-			{
-				rc = aws_iot_mqtt_publish(&client, cPTopicName, strlen(cPTopicName), &paramsQOS1);
-
-				if (rc == AWS_SUCCESS)
-				{
-					printf("\nPublished to topic %s:", cPTopicName);
-					printf("%s\n", cPayload);
-				}
-
-				if (publishCount > 0)
-				{
-					publishCount--;
-				}
-			} while(MQTT_REQUEST_TIMEOUT_ERROR == rc && (publishCount > 0 || infinitePublishFlag));
 		}
-
-#ifdef  SENSOR
-		timeCounter ++;
-		if (timeCounter >= TIMER_COUNT_FOR_SENSOR_PUBLISH)
-		{
-			timeCounter = 0;
-
-			PrepareSensorsData(cPayload, sizeof(cPayload), NULL);
-
-			paramsQOS1.payloadLen = strlen(cPayload) + 1;
-
-			do
-			{
-				rc = aws_iot_mqtt_publish(&client, cPTopicName, strlen(cPTopicName), &paramsQOS1);
-
-				if (rc == AWS_SUCCESS)
-				{
-					printf("\nPublished to topic %s:\n", cPTopicName);
-					printf("%s\n", cPayload);
-				}
-
-				if (publishCount > 0)
-				{
-					publishCount--;
-				}
-			} while((MQTT_REQUEST_TIMEOUT_ERROR == rc) && (publishCount > 0 || infinitePublishFlag));
-		}
-#endif
-
-
 
 	} /* End of while */
 
@@ -480,3 +414,4 @@ int subscribe_publish_sensor_values(void)
 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+

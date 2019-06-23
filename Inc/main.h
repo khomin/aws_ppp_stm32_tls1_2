@@ -48,14 +48,7 @@ extern int mbedtls_hardware_poll( void *data, unsigned char *output, size_t len,
 
 #define FLASH_PAGE_SIZE                    ((uint32_t)0x800)
 
-enum {BP_NOT_PUSHED=0, BP_SINGLE_PUSH, BP_MULTIPLE_PUSH};
-
 /* Exported functions --------------------------------------------------------*/
-uint8_t Button_WaitForPush(uint32_t timeout);
-uint8_t Button_WaitForMultiPush(uint32_t timeout);
-void    Led_SetState(bool on);
-void    Led_Blink(int period, int duty, int count);
-void    Periph_Config(void);
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

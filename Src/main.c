@@ -192,7 +192,7 @@ int main(void)
 
 	/* Create the thread(s) */
 	/* definition and creation of defaultTask */
-//	xTaskCreate(StartDefaultTask, "defaultTask", 1024, 0, tskIDLE_PRIORITY+1, NULL);
+	xTaskCreate(StartDefaultTask, "defaultTask", 1024, 0, tskIDLE_PRIORITY, NULL);
 
 	gsmTaskInit();
 
@@ -451,7 +451,7 @@ static void MX_GPIO_Init(void)
 
 	/*Configure GPIO pin : USER_BUTTON_Pin */
 	GPIO_InitStruct.Pin = USER_BUTTON_Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	HAL_GPIO_Init(USER_BUTTON_GPIO_Port, &GPIO_InitStruct);
 
@@ -474,108 +474,6 @@ static void MX_GPIO_Init(void)
 
 }
 
-/* USER CODE BEGIN 4 */
-/**
- * @brief Set LED state
- */
-void Led_SetState(bool on)
-{
-	if (on == true)
-	{
-		//    BSP_LED_On(LED_GREEN);
-	}
-	else
-	{
-		//    BSP_LED_Off(LED_GREEN);
-	}
-}
-
-
-/**
- * @brief Blink LED for 'count' cycles of 'period' period and 'duty' ON duration.
- * duty < 0 tells to start with an OFF state.
- */
-void Led_Blink(int period, int duty, int count)
-{
-	if ( (duty > 0) && (period >= duty) )
-	{
-		/*  Shape:   ____
-                  on |_off__ */
-		do
-		{
-			Led_SetState(true);
-			HAL_Delay(duty);
-			Led_SetState(false);
-			HAL_Delay(period - duty);
-		} while (count--);
-	}
-	if ( (duty < 0) && (period >= -duty) )
-	{
-		/*  Shape:         ____
-                __off_| on   */
-		do
-		{
-			Led_SetState(false);
-			HAL_Delay(period + duty);
-			Led_SetState(true);
-			HAL_Delay(-duty);
-		} while (count--);
-	}
-}
-
-/**
- * @brief Update button ISR status
- */
-static void Button_ISR(void)
-{
-	button_flags++;
-}
-
-
-/**
- * @brief Waiting for button to be pushed
- */
-uint8_t Button_WaitForPush(uint32_t delay)
-{
-	uint32_t time_out = HAL_GetTick()+delay;
-	do
-	{
-		if (button_flags > 1)
-		{
-			button_flags = 0;
-			return BP_MULTIPLE_PUSH;
-		}
-
-		if (button_flags == 1)
-		{
-			button_flags = 0;
-			return BP_SINGLE_PUSH;
-		}
-	}
-	while( HAL_GetTick() < time_out);
-	return BP_NOT_PUSHED;
-}
-
-/**
- * @brief Waiting for button to be pushed
- */
-uint8_t Button_WaitForMultiPush(uint32_t delay)
-{
-	HAL_Delay(delay);
-	if (button_flags > 1)
-	{
-		button_flags = 0;
-		return BP_MULTIPLE_PUSH;
-	}
-
-	if (button_flags == 1)
-	{
-		button_flags = 0;
-		return BP_SINGLE_PUSH;
-	}
-	return BP_NOT_PUSHED;
-}
-
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -587,11 +485,13 @@ uint8_t Button_WaitForMultiPush(uint32_t delay)
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument) {
 	/* USER CODE BEGIN 5 */
+
+	xTaskCreate(fpgaTask, "fpgaTask", 1024, 0, tskIDLE_PRIORITY, NULL);
+
 	/* Infinite loop */
 	for(;;)
 	{
-		DBGInfo("-WORK");
-		vTaskDelay(100/portTICK_PERIOD_MS);
+		vTaskDelay(5000/portTICK_PERIOD_MS);
 	}
 	/* USER CODE END 5 */
 }

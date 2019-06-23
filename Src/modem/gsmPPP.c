@@ -69,7 +69,7 @@ typedef struct {
 }sTransmitQueue;
 
 bool gsmPPP_Init(void) {
-	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 8128, 0, tskIDLE_PRIORITY, NULL);
+	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 6128, 0, tskIDLE_PRIORITY+1, NULL);
 
 	gsmPppUartTranmitQueue = xQueueCreate(12, sizeof(sTransmitQueue*));
 
