@@ -36,6 +36,8 @@
 #include "ecp.h"
 #endif
 
+#define MBED_TLS_THRESHOLD_DEBUG		5
+
 #if defined(MBEDTLS_DEBUG_C)
 
 #define MBEDTLS_DEBUG_STRIP_PARENS( ... )   __VA_ARGS__

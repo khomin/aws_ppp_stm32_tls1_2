@@ -143,8 +143,9 @@ int net_sock_open_mbedtls(net_sockhnd_t sockhnd, const char * hostname, int dstp
   {
     mbedtls_pk_init(&tlsData->pkey);
   }
-  mbedtls_debug_set_threshold(5);
-
+#if defined(MBEDTLS_DEBUG_C)
+  mbedtls_debug_set_threshold(MBED_TLS_THRESHOLD_DEBUG);
+#endif
   /* Entropy generator init */
   mbedtls_entropy_init(&tlsData->entropy);
   if( (ret = mbedtls_entropy_add_source(&tlsData->entropy,

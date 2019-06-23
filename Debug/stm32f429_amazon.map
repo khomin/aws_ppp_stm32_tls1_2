@@ -539,7 +539,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Common/AWS/Src/aws_subscribe_publish_sensor_values.o
  .debug_macro   0x0000000000000000       0x2e Common/AWS/Src/aws_subscribe_publish_sensor_values.o
  .debug_macro   0x0000000000000000       0x5e Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000000000       0x34 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000000000       0x3a Common/AWS/Src/aws_subscribe_publish_sensor_values.o
  .debug_macro   0x0000000000000000       0x34 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
  .debug_macro   0x0000000000000000       0x70 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
  .debug_macro   0x0000000000000000       0x34 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
@@ -2488,7 +2488,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Common/AWS/Src/net.o
  .debug_macro   0x0000000000000000       0x2e Common/AWS/Src/net.o
  .debug_macro   0x0000000000000000       0x5e Common/AWS/Src/net.o
- .debug_macro   0x0000000000000000       0x34 Common/AWS/Src/net.o
+ .debug_macro   0x0000000000000000       0x3a Common/AWS/Src/net.o
  .debug_macro   0x0000000000000000       0x10 Common/AWS/Src/net.o
  .debug_macro   0x0000000000000000      0x17b Common/AWS/Src/net.o
  .debug_macro   0x0000000000000000       0x16 Common/AWS/Src/net.o
@@ -2761,7 +2761,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Common/AWS/Src/net_tcp_lwip.o
  .debug_macro   0x0000000000000000       0x2e Common/AWS/Src/net_tcp_lwip.o
  .debug_macro   0x0000000000000000       0x5e Common/AWS/Src/net_tcp_lwip.o
- .debug_macro   0x0000000000000000       0x34 Common/AWS/Src/net_tcp_lwip.o
+ .debug_macro   0x0000000000000000       0x3a Common/AWS/Src/net_tcp_lwip.o
  .debug_macro   0x0000000000000000       0x10 Common/AWS/Src/net_tcp_lwip.o
  .debug_macro   0x0000000000000000      0x17b Common/AWS/Src/net_tcp_lwip.o
  .debug_macro   0x0000000000000000       0x16 Common/AWS/Src/net_tcp_lwip.o
@@ -3033,7 +3033,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Common/AWS/Src/net_tcp_wifi.o
  .debug_macro   0x0000000000000000       0x2e Common/AWS/Src/net_tcp_wifi.o
  .debug_macro   0x0000000000000000       0x5e Common/AWS/Src/net_tcp_wifi.o
- .debug_macro   0x0000000000000000       0x34 Common/AWS/Src/net_tcp_wifi.o
+ .debug_macro   0x0000000000000000       0x3a Common/AWS/Src/net_tcp_wifi.o
  .debug_macro   0x0000000000000000       0x10 Common/AWS/Src/net_tcp_wifi.o
  .debug_macro   0x0000000000000000      0x17b Common/AWS/Src/net_tcp_wifi.o
  .debug_macro   0x0000000000000000       0x16 Common/AWS/Src/net_tcp_wifi.o
@@ -3067,7 +3067,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000      0x4da Common/AWS/Src/net_tcp_wifi.o
  .debug_macro   0x0000000000000000       0x32 Common/AWS/Src/net_tcp_wifi.o
  .debug_line    0x0000000000000000      0xfe5 Common/AWS/Src/net_tcp_wifi.o
- .debug_str     0x0000000000000000    0xeb50d Common/AWS/Src/net_tcp_wifi.o
+ .debug_str     0x0000000000000000    0xeb528 Common/AWS/Src/net_tcp_wifi.o
  .comment       0x0000000000000000       0x7c Common/AWS/Src/net_tcp_wifi.o
  .ARM.attributes
                 0x0000000000000000       0x39 Common/AWS/Src/net_tcp_wifi.o
@@ -3305,7 +3305,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Common/AWS/Src/net_tls_mbedtls.o
  .debug_macro   0x0000000000000000       0x2e Common/AWS/Src/net_tls_mbedtls.o
  .debug_macro   0x0000000000000000       0x5e Common/AWS/Src/net_tls_mbedtls.o
- .debug_macro   0x0000000000000000       0x34 Common/AWS/Src/net_tls_mbedtls.o
+ .debug_macro   0x0000000000000000       0x3a Common/AWS/Src/net_tls_mbedtls.o
  .debug_macro   0x0000000000000000       0x10 Common/AWS/Src/net_tls_mbedtls.o
  .debug_macro   0x0000000000000000      0x17b Common/AWS/Src/net_tls_mbedtls.o
  .debug_macro   0x0000000000000000       0x16 Common/AWS/Src/net_tls_mbedtls.o
@@ -4111,7 +4111,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Common/net_tcp_wifi.o
  .debug_macro   0x0000000000000000       0x2e Common/net_tcp_wifi.o
  .debug_macro   0x0000000000000000       0x5e Common/net_tcp_wifi.o
- .debug_macro   0x0000000000000000       0x34 Common/net_tcp_wifi.o
+ .debug_macro   0x0000000000000000       0x3a Common/net_tcp_wifi.o
  .debug_macro   0x0000000000000000       0x10 Common/net_tcp_wifi.o
  .debug_macro   0x0000000000000000      0x17b Common/net_tcp_wifi.o
  .debug_macro   0x0000000000000000       0x16 Common/net_tcp_wifi.o
@@ -4145,7 +4145,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000      0x4da Common/net_tcp_wifi.o
  .debug_macro   0x0000000000000000       0x32 Common/net_tcp_wifi.o
  .debug_line    0x0000000000000000     0x1039 Common/net_tcp_wifi.o
- .debug_str     0x0000000000000000    0xeb561 Common/net_tcp_wifi.o
+ .debug_str     0x0000000000000000    0xeb57c Common/net_tcp_wifi.o
  .comment       0x0000000000000000       0x7c Common/net_tcp_wifi.o
  .ARM.attributes
                 0x0000000000000000       0x39 Common/net_tcp_wifi.o
@@ -7166,7 +7166,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
  .debug_macro   0x0000000000000000       0x2e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
  .debug_macro   0x0000000000000000       0x5e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
  .debug_macro   0x0000000000000000       0x70 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
  .debug_macro   0x0000000000000000       0x1e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
@@ -7300,7 +7300,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
  .debug_macro   0x0000000000000000       0x2e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
  .debug_macro   0x0000000000000000       0x5e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
  .debug_macro   0x0000000000000000       0x70 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
  .debug_macro   0x0000000000000000       0x1e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
@@ -7436,7 +7436,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
  .debug_macro   0x0000000000000000       0x2e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
  .debug_macro   0x0000000000000000       0x5e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
  .debug_macro   0x0000000000000000       0x70 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
  .debug_macro   0x0000000000000000       0x1e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
@@ -7574,7 +7574,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
  .debug_macro   0x0000000000000000       0x2e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
  .debug_macro   0x0000000000000000       0x5e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
  .debug_macro   0x0000000000000000       0x70 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
  .debug_macro   0x0000000000000000       0x1e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
@@ -7709,7 +7709,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
  .debug_macro   0x0000000000000000       0x2e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
  .debug_macro   0x0000000000000000       0x5e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
  .debug_macro   0x0000000000000000       0x70 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
  .debug_macro   0x0000000000000000       0x1e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
@@ -7858,13 +7858,13 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
  .debug_macro   0x0000000000000000       0x2e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
  .debug_macro   0x0000000000000000       0x5e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
  .debug_macro   0x0000000000000000       0x70 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
  .debug_macro   0x0000000000000000       0x1e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
  .debug_macro   0x0000000000000000       0x1c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
  .debug_line    0x0000000000000000      0xa77 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
- .debug_str     0x0000000000000000    0x12a8a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
+ .debug_str     0x0000000000000000    0x12aa5 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
  .comment       0x0000000000000000       0x7c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
  .debug_frame   0x0000000000000000       0xac Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_unsubscribe.o
  .ARM.attributes
@@ -7999,7 +7999,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
  .debug_macro   0x0000000000000000       0x2e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
  .debug_macro   0x0000000000000000       0x5e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
  .debug_macro   0x0000000000000000       0x70 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
  .debug_macro   0x0000000000000000       0x1e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
@@ -8173,7 +8173,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
  .debug_macro   0x0000000000000000       0x2e Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
  .debug_macro   0x0000000000000000       0x5e Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
  .debug_macro   0x0000000000000000       0x70 Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
  .debug_macro   0x0000000000000000       0x1e Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
@@ -8181,7 +8181,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x52 Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
  .debug_macro   0x0000000000000000       0x16 Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
  .debug_line    0x0000000000000000      0xb3b Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
- .debug_str     0x0000000000000000    0x12f1e Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
+ .debug_str     0x0000000000000000    0x12f39 Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
  .comment       0x0000000000000000       0x7c Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
  .debug_frame   0x0000000000000000      0x1e4 Middlewares/Third_Party/AWS/src/aws_iot_shadow.o
  .ARM.attributes
@@ -8321,14 +8321,14 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
  .debug_macro   0x0000000000000000       0x2e Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
  .debug_macro   0x0000000000000000       0x5e Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
  .debug_macro   0x0000000000000000       0x70 Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
  .debug_macro   0x0000000000000000       0x1e Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
  .debug_macro   0x0000000000000000       0x52 Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
  .debug_line    0x0000000000000000      0xa08 Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
- .debug_str     0x0000000000000000    0x12b90 Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
+ .debug_str     0x0000000000000000    0x12bab Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
  .comment       0x0000000000000000       0x7c Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
  .debug_frame   0x0000000000000000       0x38 Middlewares/Third_Party/AWS/src/aws_iot_shadow_actions.o
  .ARM.attributes
@@ -8645,7 +8645,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
  .debug_macro   0x0000000000000000       0x2e Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
  .debug_macro   0x0000000000000000       0x5e Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
  .debug_macro   0x0000000000000000       0x70 Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
  .debug_macro   0x0000000000000000       0x1e Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
@@ -8654,7 +8654,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
  .debug_macro   0x0000000000000000       0x52 Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
  .debug_line    0x0000000000000000      0xd3c Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
- .debug_str     0x0000000000000000    0x1319e Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
+ .debug_str     0x0000000000000000    0x131b9 Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
  .comment       0x0000000000000000       0x7c Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
  .debug_frame   0x0000000000000000      0x2b8 Middlewares/Third_Party/AWS/src/aws_iot_shadow_records.o
  .ARM.attributes
@@ -24115,7 +24115,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x35 Middlewares/Third_Party/mbedtls/library/debug.o
  .debug_macro   0x0000000000000000       0x10 Middlewares/Third_Party/mbedtls/library/debug.o
  .debug_macro   0x0000000000000000      0x4ff Middlewares/Third_Party/mbedtls/library/debug.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/mbedtls/library/debug.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/mbedtls/library/debug.o
  .debug_macro   0x0000000000000000       0x52 Middlewares/Third_Party/mbedtls/library/debug.o
  .debug_macro   0x0000000000000000       0x16 Middlewares/Third_Party/mbedtls/library/debug.o
  .debug_macro   0x0000000000000000       0x20 Middlewares/Third_Party/mbedtls/library/debug.o
@@ -27002,7 +27002,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x35 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
  .debug_macro   0x0000000000000000       0x10 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
  .debug_macro   0x0000000000000000      0x4ff Middlewares/Third_Party/mbedtls/library/ssl_cli.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/mbedtls/library/ssl_cli.o
  .debug_macro   0x0000000000000000       0x10 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
  .debug_macro   0x0000000000000000       0x10 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
  .debug_macro   0x0000000000000000       0x16 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
@@ -27282,7 +27282,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x35 Middlewares/Third_Party/mbedtls/library/ssl_tls.o
  .debug_macro   0x0000000000000000       0x10 Middlewares/Third_Party/mbedtls/library/ssl_tls.o
  .debug_macro   0x0000000000000000      0x4ff Middlewares/Third_Party/mbedtls/library/ssl_tls.o
- .debug_macro   0x0000000000000000       0x34 Middlewares/Third_Party/mbedtls/library/ssl_tls.o
+ .debug_macro   0x0000000000000000       0x3a Middlewares/Third_Party/mbedtls/library/ssl_tls.o
  .debug_macro   0x0000000000000000       0x10 Middlewares/Third_Party/mbedtls/library/ssl_tls.o
  .debug_macro   0x0000000000000000       0x10 Middlewares/Third_Party/mbedtls/library/ssl_tls.o
  .debug_macro   0x0000000000000000       0xb3 Middlewares/Third_Party/mbedtls/library/ssl_tls.o
@@ -30816,7 +30816,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x4c Src/modem/gsmPPP.o
  .debug_macro   0x0000000000000000       0x2e Src/modem/gsmPPP.o
  .debug_macro   0x0000000000000000       0x5e Src/modem/gsmPPP.o
- .debug_macro   0x0000000000000000       0x34 Src/modem/gsmPPP.o
+ .debug_macro   0x0000000000000000       0x3a Src/modem/gsmPPP.o
  .debug_macro   0x0000000000000000       0x10 Src/modem/gsmPPP.o
  .debug_macro   0x0000000000000000       0x32 Src/modem/gsmPPP.o
  .group         0x0000000000000000        0xc Src/uart/uart_custom.o
@@ -32037,680 +32037,680 @@ LOAD /opt/st/stm32cubeide_1.0.0/plugins/com.st.stm32cube.ide.mcu.externaltools.g
                 0x00000000080011f8                iot_tls_is_connected
  *fill*         0x000000000800120e        0x2 
  .text.iot_tls_connect
-                0x0000000008001210      0xc1c Common/AWS/Src/aws_network_st_wrapper.o
+                0x0000000008001210      0xc20 Common/AWS/Src/aws_network_st_wrapper.o
                 0x0000000008001210                iot_tls_connect
  .text.iot_tls_write
-                0x0000000008001e2c      0x128 Common/AWS/Src/aws_network_st_wrapper.o
-                0x0000000008001e2c                iot_tls_write
+                0x0000000008001e30      0x128 Common/AWS/Src/aws_network_st_wrapper.o
+                0x0000000008001e30                iot_tls_write
  .text.iot_tls_read
-                0x0000000008001f54       0xf0 Common/AWS/Src/aws_network_st_wrapper.o
-                0x0000000008001f54                iot_tls_read
+                0x0000000008001f58       0xf0 Common/AWS/Src/aws_network_st_wrapper.o
+                0x0000000008001f58                iot_tls_read
  .text.iot_tls_disconnect
-                0x0000000008002044       0x9c Common/AWS/Src/aws_network_st_wrapper.o
-                0x0000000008002044                iot_tls_disconnect
+                0x0000000008002048       0x9c Common/AWS/Src/aws_network_st_wrapper.o
+                0x0000000008002048                iot_tls_disconnect
  .text.iot_tls_destroy
-                0x00000000080020e0       0x68 Common/AWS/Src/aws_network_st_wrapper.o
-                0x00000000080020e0                iot_tls_destroy
+                0x00000000080020e4       0x68 Common/AWS/Src/aws_network_st_wrapper.o
+                0x00000000080020e4                iot_tls_destroy
  .text.app_needs_device_keypair
-                0x0000000008002148       0x10 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
-                0x0000000008002148                app_needs_device_keypair
+                0x000000000800214c       0x10 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+                0x000000000800214c                app_needs_device_keypair
  .text.disconnectCallbackHandler
-                0x0000000008002158       0x54 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+                0x000000000800215c       0x54 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
  .text.MQTTcallbackHandler
-                0x00000000080021ac      0x1ac Common/AWS/Src/aws_subscribe_publish_sensor_values.o
-                0x00000000080021ac                MQTTcallbackHandler
+                0x00000000080021b0      0x1ac Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+                0x00000000080021b0                MQTTcallbackHandler
  .text.subscribe_publish_sensor_values
-                0x0000000008002358      0x768 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
-                0x0000000008002358                subscribe_publish_sensor_values
+                0x000000000800235c      0x768 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+                0x000000000800235c                subscribe_publish_sensor_values
  .text.has_timer_expired
-                0x0000000008002ac0       0x2e Common/AWS/Src/aws_timer.o
-                0x0000000008002ac0                has_timer_expired
+                0x0000000008002ac4       0x2e Common/AWS/Src/aws_timer.o
+                0x0000000008002ac4                has_timer_expired
  .text.countdown_ms
-                0x0000000008002aee       0x2a Common/AWS/Src/aws_timer.o
-                0x0000000008002aee                countdown_ms
- .text.left_ms  0x0000000008002b18       0x2e Common/AWS/Src/aws_timer.o
-                0x0000000008002b18                left_ms
+                0x0000000008002af2       0x2a Common/AWS/Src/aws_timer.o
+                0x0000000008002af2                countdown_ms
+ .text.left_ms  0x0000000008002b1c       0x2e Common/AWS/Src/aws_timer.o
+                0x0000000008002b1c                left_ms
  .text.countdown_sec
-                0x0000000008002b46       0x32 Common/AWS/Src/aws_timer.o
-                0x0000000008002b46                countdown_sec
+                0x0000000008002b4a       0x32 Common/AWS/Src/aws_timer.o
+                0x0000000008002b4a                countdown_sec
  .text.init_timer
-                0x0000000008002b78       0x1a Common/AWS/Src/aws_timer.o
-                0x0000000008002b78                init_timer
- *fill*         0x0000000008002b92        0x2 
+                0x0000000008002b7c       0x1a Common/AWS/Src/aws_timer.o
+                0x0000000008002b7c                init_timer
+ *fill*         0x0000000008002b96        0x2 
  .text.CLOUD_Error_Handler
-                0x0000000008002b94       0x88 Common/AWS/Src/cloud.o
-                0x0000000008002b94                CLOUD_Error_Handler
+                0x0000000008002b98       0x88 Common/AWS/Src/cloud.o
+                0x0000000008002b98                CLOUD_Error_Handler
  .text.platform_init
-                0x0000000008002c1c      0x264 Common/AWS/Src/cloud.o
-                0x0000000008002c1c                platform_init
+                0x0000000008002c20      0x264 Common/AWS/Src/cloud.o
+                0x0000000008002c20                platform_init
  .text.platform_deinit
-                0x0000000008002e80       0x30 Common/AWS/Src/cloud.o
-                0x0000000008002e80                platform_deinit
+                0x0000000008002e84       0x30 Common/AWS/Src/cloud.o
+                0x0000000008002e84                platform_deinit
  .text.mbedtls_hardware_poll
-                0x0000000008002eb0       0x58 Common/AWS/Src/entropy_hardware_poll.o
-                0x0000000008002eb0                mbedtls_hardware_poll
+                0x0000000008002eb4       0x58 Common/AWS/Src/entropy_hardware_poll.o
+                0x0000000008002eb4                mbedtls_hardware_poll
  .text.HAL_GetTick
-                0x0000000008002f08       0x10 Common/AWS/Src/firewall.o
-                0x0000000008002f08                HAL_GetTick
+                0x0000000008002f0c       0x10 Common/AWS/Src/firewall.o
+                0x0000000008002f0c                HAL_GetTick
+ *fill*         0x0000000008002f1c        0x4 
  .text.checkTLSRootCA
-                0x0000000008002f18       0x30 Common/AWS/Src/iot_flash_config.o
-                0x0000000008002f18                checkTLSRootCA
+                0x0000000008002f20       0x30 Common/AWS/Src/iot_flash_config.o
+                0x0000000008002f20                checkTLSRootCA
  .text.checkTLSDeviceConfig
-                0x0000000008002f48       0x30 Common/AWS/Src/iot_flash_config.o
-                0x0000000008002f48                checkTLSDeviceConfig
+                0x0000000008002f50       0x30 Common/AWS/Src/iot_flash_config.o
+                0x0000000008002f50                checkTLSDeviceConfig
  .text.getServerAddress
-                0x0000000008002f78       0x54 Common/AWS/Src/iot_flash_config.o
-                0x0000000008002f78                getServerAddress
- *fill*         0x0000000008002fcc        0x4 
+                0x0000000008002f80       0x54 Common/AWS/Src/iot_flash_config.o
+                0x0000000008002f80                getServerAddress
+ *fill*         0x0000000008002fd4        0x4 
  .text.getIoTDeviceConfig
-                0x0000000008002fd0       0x54 Common/AWS/Src/iot_flash_config.o
-                0x0000000008002fd0                getIoTDeviceConfig
- *fill*         0x0000000008003024        0x4 
+                0x0000000008002fd8       0x54 Common/AWS/Src/iot_flash_config.o
+                0x0000000008002fd8                getIoTDeviceConfig
+ *fill*         0x000000000800302c        0x4 
  .text.checkIoTDeviceConfig
-                0x0000000008003028       0x30 Common/AWS/Src/iot_flash_config.o
-                0x0000000008003028                checkIoTDeviceConfig
+                0x0000000008003030       0x30 Common/AWS/Src/iot_flash_config.o
+                0x0000000008003030                checkIoTDeviceConfig
  .text.getTLSKeys
-                0x0000000008003058       0xbc Common/AWS/Src/iot_flash_config.o
-                0x0000000008003058                getTLSKeys
+                0x0000000008003060       0xbc Common/AWS/Src/iot_flash_config.o
+                0x0000000008003060                getTLSKeys
  .text.net_if_init
-                0x0000000008003114       0x16 Common/AWS/Src/lwip_net.o
-                0x0000000008003114                net_if_init
+                0x000000000800311c       0x16 Common/AWS/Src/lwip_net.o
+                0x000000000800311c                net_if_init
  .text.net_if_deinit
-                0x000000000800312a       0x16 Common/AWS/Src/lwip_net.o
-                0x000000000800312a                net_if_deinit
+                0x0000000008003132       0x16 Common/AWS/Src/lwip_net.o
+                0x0000000008003132                net_if_deinit
  .text.mbedtls_net_recv
-                0x0000000008003140       0x7c Common/AWS/Src/mbedtls_net.o
-                0x0000000008003140                mbedtls_net_recv
+                0x0000000008003148       0x7c Common/AWS/Src/mbedtls_net.o
+                0x0000000008003148                mbedtls_net_recv
  .text.mbedtls_net_recv_blocking
-                0x00000000080031bc      0x104 Common/AWS/Src/mbedtls_net.o
-                0x00000000080031bc                mbedtls_net_recv_blocking
+                0x00000000080031c4      0x104 Common/AWS/Src/mbedtls_net.o
+                0x00000000080031c4                mbedtls_net_recv_blocking
  .text.mbedtls_net_send
-                0x00000000080032c0       0x7c Common/AWS/Src/mbedtls_net.o
-                0x00000000080032c0                mbedtls_net_send
+                0x00000000080032c8       0x7c Common/AWS/Src/mbedtls_net.o
+                0x00000000080032c8                mbedtls_net_send
  .text.net_init
-                0x000000000800333c      0x100 Common/AWS/Src/net.o
-                0x000000000800333c                net_init
+                0x0000000008003344      0x100 Common/AWS/Src/net.o
+                0x0000000008003344                net_init
  .text.net_deinit
-                0x000000000800343c       0xa8 Common/AWS/Src/net.o
-                0x000000000800343c                net_deinit
+                0x0000000008003444       0xa8 Common/AWS/Src/net.o
+                0x0000000008003444                net_deinit
  .text.net_get_ip_address
-                0x00000000080034e4       0xb8 Common/AWS/Src/net.o
-                0x00000000080034e4                net_get_ip_address
+                0x00000000080034ec       0xb8 Common/AWS/Src/net.o
+                0x00000000080034ec                net_get_ip_address
  .text.net_get_mac_address
-                0x000000000800359c       0x74 Common/AWS/Src/net.o
-                0x000000000800359c                net_get_mac_address
+                0x00000000080035a4       0x74 Common/AWS/Src/net.o
+                0x00000000080035a4                net_get_mac_address
  .text.net_sock_create
-                0x0000000008003610       0x9c Common/AWS/Src/net.o
-                0x0000000008003610                net_sock_create
+                0x0000000008003618       0x9c Common/AWS/Src/net.o
+                0x0000000008003618                net_sock_create
  .text.net_sock_open
-                0x00000000080036ac       0x2a Common/AWS/Src/net.o
-                0x00000000080036ac                net_sock_open
- *fill*         0x00000000080036d6        0x2 
+                0x00000000080036b4       0x2a Common/AWS/Src/net.o
+                0x00000000080036b4                net_sock_open
+ *fill*         0x00000000080036de        0x2 
  .text.net_sock_setopt
-                0x00000000080036d8      0x1fc Common/AWS/Src/net.o
-                0x00000000080036d8                net_sock_setopt
+                0x00000000080036e0      0x1fc Common/AWS/Src/net.o
+                0x00000000080036e0                net_sock_setopt
  .text.net_sock_recv
-                0x00000000080038d4       0x34 Common/AWS/Src/net.o
-                0x00000000080038d4                net_sock_recv
+                0x00000000080038dc       0x34 Common/AWS/Src/net.o
+                0x00000000080038dc                net_sock_recv
  .text.net_sock_send
-                0x0000000008003908       0x34 Common/AWS/Src/net.o
-                0x0000000008003908                net_sock_send
+                0x0000000008003910       0x34 Common/AWS/Src/net.o
+                0x0000000008003910                net_sock_send
  .text.net_sock_close
-                0x000000000800393c       0x2c Common/AWS/Src/net.o
-                0x000000000800393c                net_sock_close
+                0x0000000008003944       0x2c Common/AWS/Src/net.o
+                0x0000000008003944                net_sock_close
  .text.net_sock_destroy
-                0x0000000008003968       0x2c Common/AWS/Src/net.o
-                0x0000000008003968                net_sock_destroy
+                0x0000000008003970       0x2c Common/AWS/Src/net.o
+                0x0000000008003970                net_sock_destroy
  .text.net_timeout_left_ms
-                0x0000000008003994       0x40 Common/AWS/Src/net.o
-                0x0000000008003994                net_timeout_left_ms
+                0x000000000800399c       0x40 Common/AWS/Src/net.o
+                0x000000000800399c                net_timeout_left_ms
  .text.net_sock_create_lwip
-                0x00000000080039d4      0x120 Common/AWS/Src/net_tcp_lwip.o
-                0x00000000080039d4                net_sock_create_lwip
+                0x00000000080039dc      0x120 Common/AWS/Src/net_tcp_lwip.o
+                0x00000000080039dc                net_sock_create_lwip
  .text.net_sock_open_lwip
-                0x0000000008003af4      0x340 Common/AWS/Src/net_tcp_lwip.o
-                0x0000000008003af4                net_sock_open_lwip
+                0x0000000008003afc      0x340 Common/AWS/Src/net_tcp_lwip.o
+                0x0000000008003afc                net_sock_open_lwip
  .text.net_sock_recv_tcp_lwip
-                0x0000000008003e34       0xb4 Common/AWS/Src/net_tcp_lwip.o
-                0x0000000008003e34                net_sock_recv_tcp_lwip
+                0x0000000008003e3c       0xb4 Common/AWS/Src/net_tcp_lwip.o
+                0x0000000008003e3c                net_sock_recv_tcp_lwip
  .text.net_sock_recvfrom_udp_lwip
-                0x0000000008003ee8      0x118 Common/AWS/Src/net_tcp_lwip.o
-                0x0000000008003ee8                net_sock_recvfrom_udp_lwip
+                0x0000000008003ef0      0x118 Common/AWS/Src/net_tcp_lwip.o
+                0x0000000008003ef0                net_sock_recvfrom_udp_lwip
  .text.net_sock_send_tcp_lwip
-                0x0000000008004000       0x9c Common/AWS/Src/net_tcp_lwip.o
-                0x0000000008004000                net_sock_send_tcp_lwip
+                0x0000000008004008       0x9c Common/AWS/Src/net_tcp_lwip.o
+                0x0000000008004008                net_sock_send_tcp_lwip
  .text.net_sock_sendto_udp_lwip
-                0x000000000800409c       0xe0 Common/AWS/Src/net_tcp_lwip.o
-                0x000000000800409c                net_sock_sendto_udp_lwip
+                0x00000000080040a4       0xe0 Common/AWS/Src/net_tcp_lwip.o
+                0x00000000080040a4                net_sock_sendto_udp_lwip
  .text.net_sock_close_tcp_lwip
-                0x000000000800417c       0xf0 Common/AWS/Src/net_tcp_lwip.o
-                0x000000000800417c                net_sock_close_tcp_lwip
+                0x0000000008004184       0xf0 Common/AWS/Src/net_tcp_lwip.o
+                0x0000000008004184                net_sock_close_tcp_lwip
  .text.net_sock_destroy_tcp_lwip
-                0x000000000800426c       0x72 Common/AWS/Src/net_tcp_lwip.o
-                0x000000000800426c                net_sock_destroy_tcp_lwip
- *fill*         0x00000000080042de        0x2 
+                0x0000000008004274       0x72 Common/AWS/Src/net_tcp_lwip.o
+                0x0000000008004274                net_sock_destroy_tcp_lwip
+ *fill*         0x00000000080042e6        0x2 
  .text.net_sock_create_mbedtls
-                0x00000000080042e0      0x154 Common/AWS/Src/net_tls_mbedtls.o
-                0x00000000080042e0                net_sock_create_mbedtls
+                0x00000000080042e8      0x154 Common/AWS/Src/net_tls_mbedtls.o
+                0x00000000080042e8                net_sock_create_mbedtls
  .text.net_sock_open_mbedtls
-                0x0000000008004434      0xc4c Common/AWS/Src/net_tls_mbedtls.o
-                0x0000000008004434                net_sock_open_mbedtls
+                0x000000000800443c      0xc4c Common/AWS/Src/net_tls_mbedtls.o
+                0x000000000800443c                net_sock_open_mbedtls
  .text.net_sock_recv_mbedtls
-                0x0000000008005080      0x12c Common/AWS/Src/net_tls_mbedtls.o
-                0x0000000008005080                net_sock_recv_mbedtls
+                0x0000000008005088      0x12c Common/AWS/Src/net_tls_mbedtls.o
+                0x0000000008005088                net_sock_recv_mbedtls
  .text.net_sock_send_mbedtls
-                0x00000000080051ac      0x118 Common/AWS/Src/net_tls_mbedtls.o
-                0x00000000080051ac                net_sock_send_mbedtls
+                0x00000000080051b4      0x118 Common/AWS/Src/net_tls_mbedtls.o
+                0x00000000080051b4                net_sock_send_mbedtls
  .text.net_sock_close_mbedtls
-                0x00000000080052c4       0xdc Common/AWS/Src/net_tls_mbedtls.o
-                0x00000000080052c4                net_sock_close_mbedtls
+                0x00000000080052cc       0xdc Common/AWS/Src/net_tls_mbedtls.o
+                0x00000000080052cc                net_sock_close_mbedtls
  .text.net_sock_destroy_mbedtls
-                0x00000000080053a0       0x7c Common/AWS/Src/net_tls_mbedtls.o
-                0x00000000080053a0                net_sock_destroy_mbedtls
+                0x00000000080053a8       0x7c Common/AWS/Src/net_tls_mbedtls.o
+                0x00000000080053a8                net_sock_destroy_mbedtls
  .text.my_debug
-                0x000000000800541c       0x2c Common/AWS/Src/net_tls_mbedtls.o
+                0x0000000008005424       0x2c Common/AWS/Src/net_tls_mbedtls.o
  .text.internal_close
-                0x0000000008005448       0x7c Common/AWS/Src/net_tls_mbedtls.o
+                0x0000000008005450       0x7c Common/AWS/Src/net_tls_mbedtls.o
  .text.init_sensors
-                0x00000000080054c4       0x18 Common/AWS/Src/sensors_data.o
-                0x00000000080054c4                init_sensors
+                0x00000000080054cc       0x18 Common/AWS/Src/sensors_data.o
+                0x00000000080054cc                init_sensors
  .text.PrepareSensorsData
-                0x00000000080054dc       0xa8 Common/AWS/Src/sensors_data.o
-                0x00000000080054dc                PrepareSensorsData
+                0x00000000080054e4       0xa8 Common/AWS/Src/sensors_data.o
+                0x00000000080054e4                PrepareSensorsData
  .text.setRTCTimeDateFromNetwork
-                0x0000000008005584      0x780 Common/AWS/Src/timedate.o
-                0x0000000008005584                setRTCTimeDateFromNetwork
+                0x000000000800558c      0x780 Common/AWS/Src/timedate.o
+                0x000000000800558c                setRTCTimeDateFromNetwork
  .text.HAL_Init
-                0x0000000008005d04       0x44 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x0000000008005d04                HAL_Init
+                0x0000000008005d0c       0x44 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x0000000008005d0c                HAL_Init
  .text.HAL_IncTick
-                0x0000000008005d48       0x28 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x0000000008005d48                HAL_IncTick
+                0x0000000008005d50       0x28 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x0000000008005d50                HAL_IncTick
  .text.HAL_Delay
-                0x0000000008005d70       0x44 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x0000000008005d70                HAL_Delay
+                0x0000000008005d78       0x44 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x0000000008005d78                HAL_Delay
  .text.__NVIC_SetPriorityGrouping
-                0x0000000008005db4       0x48 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x0000000008005dbc       0x48 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .text.__NVIC_GetPriorityGrouping
-                0x0000000008005dfc       0x1c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x0000000008005e04       0x1c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .text.__NVIC_EnableIRQ
-                0x0000000008005e18       0x3c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x0000000008005e20       0x3c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .text.__NVIC_SetPriority
-                0x0000000008005e54       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x0000000008005e5c       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .text.NVIC_EncodePriority
-                0x0000000008005ea8       0x66 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x0000000008005eb0       0x66 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .text.HAL_NVIC_SetPriorityGrouping
-                0x0000000008005f0e       0x16 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
-                0x0000000008005f0e                HAL_NVIC_SetPriorityGrouping
+                0x0000000008005f16       0x16 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x0000000008005f16                HAL_NVIC_SetPriorityGrouping
  .text.HAL_NVIC_SetPriority
-                0x0000000008005f24       0x38 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
-                0x0000000008005f24                HAL_NVIC_SetPriority
+                0x0000000008005f2c       0x38 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x0000000008005f2c                HAL_NVIC_SetPriority
  .text.HAL_NVIC_EnableIRQ
-                0x0000000008005f5c       0x1c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
-                0x0000000008005f5c                HAL_NVIC_EnableIRQ
+                0x0000000008005f64       0x1c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                0x0000000008005f64                HAL_NVIC_EnableIRQ
  .text.HAL_CRC_Init
-                0x0000000008005f78       0x3e Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.o
-                0x0000000008005f78                HAL_CRC_Init
+                0x0000000008005f80       0x3e Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.o
+                0x0000000008005f80                HAL_CRC_Init
  .text.HAL_DMA_Abort_IT
-                0x0000000008005fb6       0x44 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
-                0x0000000008005fb6                HAL_DMA_Abort_IT
- *fill*         0x0000000008005ffa        0x2 
+                0x0000000008005fbe       0x44 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
+                0x0000000008005fbe                HAL_DMA_Abort_IT
+ *fill*         0x0000000008006002        0x2 
  .text.HAL_GPIO_Init
-                0x0000000008005ffc      0x354 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
-                0x0000000008005ffc                HAL_GPIO_Init
+                0x0000000008006004      0x354 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+                0x0000000008006004                HAL_GPIO_Init
  .text.HAL_GPIO_ReadPin
-                0x0000000008006350       0x30 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
-                0x0000000008006350                HAL_GPIO_ReadPin
+                0x0000000008006358       0x30 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+                0x0000000008006358                HAL_GPIO_ReadPin
  .text.HAL_GPIO_WritePin
-                0x0000000008006380       0x32 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
-                0x0000000008006380                HAL_GPIO_WritePin
- *fill*         0x00000000080063b2        0x2 
+                0x0000000008006388       0x32 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+                0x0000000008006388                HAL_GPIO_WritePin
+ *fill*         0x00000000080063ba        0x2 
  .text.HAL_GPIO_EXTI_IRQHandler
-                0x00000000080063b4       0x30 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
-                0x00000000080063b4                HAL_GPIO_EXTI_IRQHandler
+                0x00000000080063bc       0x30 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+                0x00000000080063bc                HAL_GPIO_EXTI_IRQHandler
  .text.HAL_RCC_OscConfig
-                0x00000000080063e4      0x484 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                0x00000000080063e4                HAL_RCC_OscConfig
+                0x00000000080063ec      0x484 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x00000000080063ec                HAL_RCC_OscConfig
  .text.HAL_RCC_ClockConfig
-                0x0000000008006868      0x1c4 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                0x0000000008006868                HAL_RCC_ClockConfig
+                0x0000000008006870      0x1c4 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x0000000008006870                HAL_RCC_ClockConfig
  .text.HAL_RCC_EnableCSS
-                0x0000000008006a2c       0x18 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                0x0000000008006a2c                HAL_RCC_EnableCSS
+                0x0000000008006a34       0x18 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x0000000008006a34                HAL_RCC_EnableCSS
  .text.HAL_RCC_GetSysClockFreq
-                0x0000000008006a44      0x164 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                0x0000000008006a44                HAL_RCC_GetSysClockFreq
+                0x0000000008006a4c      0x164 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x0000000008006a4c                HAL_RCC_GetSysClockFreq
  .text.HAL_RCC_GetHCLKFreq
-                0x0000000008006ba8       0x18 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                0x0000000008006ba8                HAL_RCC_GetHCLKFreq
+                0x0000000008006bb0       0x18 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x0000000008006bb0                HAL_RCC_GetHCLKFreq
  .text.HAL_RCC_GetPCLK1Freq
-                0x0000000008006bc0       0x28 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                0x0000000008006bc0                HAL_RCC_GetPCLK1Freq
+                0x0000000008006bc8       0x28 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x0000000008006bc8                HAL_RCC_GetPCLK1Freq
  .text.HAL_RCC_GetPCLK2Freq
-                0x0000000008006be8       0x28 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                0x0000000008006be8                HAL_RCC_GetPCLK2Freq
+                0x0000000008006bf0       0x28 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x0000000008006bf0                HAL_RCC_GetPCLK2Freq
  .text.HAL_RCC_GetClockConfig
-                0x0000000008006c10       0x64 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                0x0000000008006c10                HAL_RCC_GetClockConfig
+                0x0000000008006c18       0x64 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                0x0000000008006c18                HAL_RCC_GetClockConfig
  .text.HAL_RCCEx_PeriphCLKConfig
-                0x0000000008006c74      0x348 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
-                0x0000000008006c74                HAL_RCCEx_PeriphCLKConfig
+                0x0000000008006c7c      0x348 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
+                0x0000000008006c7c                HAL_RCCEx_PeriphCLKConfig
  .text.HAL_RNG_Init
-                0x0000000008006fbc       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.o
-                0x0000000008006fbc                HAL_RNG_Init
+                0x0000000008006fc4       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.o
+                0x0000000008006fc4                HAL_RNG_Init
  .text.HAL_RNG_GenerateRandomNumber
-                0x0000000008007010       0x9e Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.o
-                0x0000000008007010                HAL_RNG_GenerateRandomNumber
+                0x0000000008007018       0x9e Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.o
+                0x0000000008007018                HAL_RNG_GenerateRandomNumber
  .text.HAL_RTC_Init
-                0x00000000080070ae      0x122 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
-                0x00000000080070ae                HAL_RTC_Init
+                0x00000000080070b6      0x122 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
+                0x00000000080070b6                HAL_RTC_Init
  .text.HAL_RTC_SetTime
-                0x00000000080071d0      0x17a Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
-                0x00000000080071d0                HAL_RTC_SetTime
+                0x00000000080071d8      0x17a Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
+                0x00000000080071d8                HAL_RTC_SetTime
  .text.HAL_RTC_SetDate
-                0x000000000800734a      0x14e Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
-                0x000000000800734a                HAL_RTC_SetDate
+                0x0000000008007352      0x14e Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
+                0x0000000008007352                HAL_RTC_SetDate
  .text.HAL_RTC_WaitForSynchro
-                0x0000000008007498       0x50 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
-                0x0000000008007498                HAL_RTC_WaitForSynchro
+                0x00000000080074a0       0x50 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
+                0x00000000080074a0                HAL_RTC_WaitForSynchro
  .text.RTC_EnterInitMode
-                0x00000000080074e8       0x58 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
-                0x00000000080074e8                RTC_EnterInitMode
+                0x00000000080074f0       0x58 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
+                0x00000000080074f0                RTC_EnterInitMode
  .text.RTC_ByteToBcd2
-                0x0000000008007540       0x3c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
-                0x0000000008007540                RTC_ByteToBcd2
+                0x0000000008007548       0x3c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
+                0x0000000008007548                RTC_ByteToBcd2
  .text.HAL_TIM_Base_Init
-                0x000000000800757c       0x56 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
-                0x000000000800757c                HAL_TIM_Base_Init
+                0x0000000008007584       0x56 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+                0x0000000008007584                HAL_TIM_Base_Init
  .text.HAL_TIM_Base_MspInit
-                0x00000000080075d2       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
-                0x00000000080075d2                HAL_TIM_Base_MspInit
+                0x00000000080075da       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+                0x00000000080075da                HAL_TIM_Base_MspInit
  .text.HAL_TIM_Base_Start_IT
-                0x00000000080075e6       0x48 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
-                0x00000000080075e6                HAL_TIM_Base_Start_IT
+                0x00000000080075ee       0x48 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+                0x00000000080075ee                HAL_TIM_Base_Start_IT
  .text.HAL_TIM_IRQHandler
-                0x000000000800762e      0x210 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
-                0x000000000800762e                HAL_TIM_IRQHandler
+                0x0000000008007636      0x210 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+                0x0000000008007636                HAL_TIM_IRQHandler
  .text.HAL_TIM_OC_DelayElapsedCallback
-                0x000000000800783e       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
-                0x000000000800783e                HAL_TIM_OC_DelayElapsedCallback
+                0x0000000008007846       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+                0x0000000008007846                HAL_TIM_OC_DelayElapsedCallback
  .text.HAL_TIM_IC_CaptureCallback
-                0x0000000008007852       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
-                0x0000000008007852                HAL_TIM_IC_CaptureCallback
+                0x000000000800785a       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+                0x000000000800785a                HAL_TIM_IC_CaptureCallback
  .text.HAL_TIM_PWM_PulseFinishedCallback
-                0x0000000008007866       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
-                0x0000000008007866                HAL_TIM_PWM_PulseFinishedCallback
+                0x000000000800786e       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+                0x000000000800786e                HAL_TIM_PWM_PulseFinishedCallback
  .text.HAL_TIM_TriggerCallback
-                0x000000000800787a       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
-                0x000000000800787a                HAL_TIM_TriggerCallback
- *fill*         0x000000000800788e        0x2 
+                0x0000000008007882       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+                0x0000000008007882                HAL_TIM_TriggerCallback
+ *fill*         0x0000000008007896        0x2 
  .text.TIM_Base_SetConfig
-                0x0000000008007890      0x140 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
-                0x0000000008007890                TIM_Base_SetConfig
+                0x0000000008007898      0x140 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+                0x0000000008007898                TIM_Base_SetConfig
  .text.HAL_TIMEx_CommutCallback
-                0x00000000080079d0       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
-                0x00000000080079d0                HAL_TIMEx_CommutCallback
+                0x00000000080079d8       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
+                0x00000000080079d8                HAL_TIMEx_CommutCallback
  .text.HAL_TIMEx_BreakCallback
-                0x00000000080079e4       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
-                0x00000000080079e4                HAL_TIMEx_BreakCallback
+                0x00000000080079ec       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
+                0x00000000080079ec                HAL_TIMEx_BreakCallback
  .text.HAL_UART_Init
-                0x00000000080079f8       0x9a Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
-                0x00000000080079f8                HAL_UART_Init
+                0x0000000008007a00       0x9a Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008007a00                HAL_UART_Init
  .text.HAL_UART_Transmit_IT
-                0x0000000008007a92       0x8a Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
-                0x0000000008007a92                HAL_UART_Transmit_IT
+                0x0000000008007a9a       0x8a Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008007a9a                HAL_UART_Transmit_IT
  .text.HAL_UART_Receive_IT
-                0x0000000008007b1c       0xaa Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
-                0x0000000008007b1c                HAL_UART_Receive_IT
- *fill*         0x0000000008007bc6        0x2 
+                0x0000000008007b24       0xaa Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008007b24                HAL_UART_Receive_IT
+ *fill*         0x0000000008007bce        0x2 
  .text.HAL_UART_IRQHandler
-                0x0000000008007bc8      0x1f8 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
-                0x0000000008007bc8                HAL_UART_IRQHandler
+                0x0000000008007bd0      0x1f8 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008007bd0                HAL_UART_IRQHandler
  .text.HAL_UART_TxCpltCallback
-                0x0000000008007dc0       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
-                0x0000000008007dc0                HAL_UART_TxCpltCallback
+                0x0000000008007dc8       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008007dc8                HAL_UART_TxCpltCallback
  .text.HAL_UART_ErrorCallback
-                0x0000000008007dd4       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
-                0x0000000008007dd4                HAL_UART_ErrorCallback
+                0x0000000008007ddc       0x14 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008007ddc                HAL_UART_ErrorCallback
  .text.HAL_UART_GetState
-                0x0000000008007de8       0x3c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
-                0x0000000008007de8                HAL_UART_GetState
+                0x0000000008007df0       0x3c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008007df0                HAL_UART_GetState
  .text.UART_EndRxTransfer
-                0x0000000008007e24       0x3c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008007e2c       0x3c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
  .text.UART_DMAAbortOnError
-                0x0000000008007e60       0x28 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008007e68       0x28 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
  .text.UART_Transmit_IT
-                0x0000000008007e88       0xac Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008007e90       0xac Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
  .text.UART_EndTransmit_IT
-                0x0000000008007f34       0x30 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008007f3c       0x30 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
  .text.UART_Receive_IT
-                0x0000000008007f64      0x102 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
- *fill*         0x0000000008008066        0x2 
+                0x0000000008007f6c      0x102 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+ *fill*         0x000000000800806e        0x2 
  .text.UART_SetConfig
-                0x0000000008008068      0x414 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                0x0000000008008070      0x414 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
  .text.aws_iot_mqtt_get_client_state
-                0x000000000800847c       0x22 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
-                0x000000000800847c                aws_iot_mqtt_get_client_state
+                0x0000000008008484       0x22 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
+                0x0000000008008484                aws_iot_mqtt_get_client_state
  .text.aws_iot_mqtt_set_client_state
-                0x000000000800849e       0x48 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
-                0x000000000800849e                aws_iot_mqtt_set_client_state
- *fill*         0x00000000080084e6        0x2 
+                0x00000000080084a6       0x48 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
+                0x00000000080084a6                aws_iot_mqtt_set_client_state
+ *fill*         0x00000000080084ee        0x2 
  .text.aws_iot_mqtt_set_connect_params
-                0x00000000080084e8       0xf4 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
-                0x00000000080084e8                aws_iot_mqtt_set_connect_params
+                0x00000000080084f0       0xf4 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
+                0x00000000080084f0                aws_iot_mqtt_set_connect_params
  .text.aws_iot_mqtt_init
-                0x00000000080085dc      0x19c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
-                0x00000000080085dc                aws_iot_mqtt_init
+                0x00000000080085e4      0x19c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
+                0x00000000080085e4                aws_iot_mqtt_init
  .text.aws_iot_mqtt_get_next_packet_id
-                0x0000000008008778       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
-                0x0000000008008778                aws_iot_mqtt_get_next_packet_id
+                0x0000000008008780       0x34 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
+                0x0000000008008780                aws_iot_mqtt_get_next_packet_id
  .text.aws_iot_mqtt_is_client_connected
-                0x00000000080087ac       0x68 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
-                0x00000000080087ac                aws_iot_mqtt_is_client_connected
+                0x00000000080087b4       0x68 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
+                0x00000000080087b4                aws_iot_mqtt_is_client_connected
  .text.aws_iot_is_autoreconnect_enabled
-                0x0000000008008814       0x22 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
-                0x0000000008008814                aws_iot_is_autoreconnect_enabled
+                0x000000000800881c       0x22 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
+                0x000000000800881c                aws_iot_is_autoreconnect_enabled
  .text.aws_iot_mqtt_autoreconnect_set_status
-                0x0000000008008836       0x2c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
-                0x0000000008008836                aws_iot_mqtt_autoreconnect_set_status
+                0x000000000800883e       0x2c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
+                0x000000000800883e                aws_iot_mqtt_autoreconnect_set_status
  .text.aws_iot_mqtt_internal_write_len_to_buffer
-                0x0000000008008862       0x4e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x0000000008008862                aws_iot_mqtt_internal_write_len_to_buffer
+                0x000000000800886a       0x4e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x000000000800886a                aws_iot_mqtt_internal_write_len_to_buffer
  .text.aws_iot_mqtt_internal_decode_remaining_length_from_buffer
-                0x00000000080088b0       0x70 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x00000000080088b0                aws_iot_mqtt_internal_decode_remaining_length_from_buffer
+                0x00000000080088b8       0x70 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x00000000080088b8                aws_iot_mqtt_internal_decode_remaining_length_from_buffer
  .text.aws_iot_mqtt_internal_get_final_packet_length_from_remaining_length
-                0x0000000008008920       0x50 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x0000000008008920                aws_iot_mqtt_internal_get_final_packet_length_from_remaining_length
+                0x0000000008008928       0x50 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008008928                aws_iot_mqtt_internal_get_final_packet_length_from_remaining_length
  .text.aws_iot_mqtt_internal_read_uint16_t
-                0x0000000008008970       0x46 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x0000000008008970                aws_iot_mqtt_internal_read_uint16_t
+                0x0000000008008978       0x46 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008008978                aws_iot_mqtt_internal_read_uint16_t
  .text.aws_iot_mqtt_internal_write_uint_16
-                0x00000000080089b6       0x44 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x00000000080089b6                aws_iot_mqtt_internal_write_uint_16
+                0x00000000080089be       0x44 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x00000000080089be                aws_iot_mqtt_internal_write_uint_16
  .text.aws_iot_mqtt_internal_read_char
-                0x00000000080089fa       0x28 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x00000000080089fa                aws_iot_mqtt_internal_read_char
+                0x0000000008008a02       0x28 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008008a02                aws_iot_mqtt_internal_read_char
  .text.aws_iot_mqtt_internal_write_char
-                0x0000000008008a22       0x2a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x0000000008008a22                aws_iot_mqtt_internal_write_char
+                0x0000000008008a2a       0x2a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008008a2a                aws_iot_mqtt_internal_write_char
  .text.aws_iot_mqtt_internal_write_utf8_string
-                0x0000000008008a4c       0x40 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x0000000008008a4c                aws_iot_mqtt_internal_write_utf8_string
+                0x0000000008008a54       0x40 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008008a54                aws_iot_mqtt_internal_write_utf8_string
  .text.aws_iot_mqtt_internal_init_header
-                0x0000000008008a8c      0x14c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x0000000008008a8c                aws_iot_mqtt_internal_init_header
+                0x0000000008008a94      0x14c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008008a94                aws_iot_mqtt_internal_init_header
  .text.aws_iot_mqtt_internal_send_packet
-                0x0000000008008bd8       0xa8 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x0000000008008bd8                aws_iot_mqtt_internal_send_packet
+                0x0000000008008be0       0xa8 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008008be0                aws_iot_mqtt_internal_send_packet
  .text._aws_iot_mqtt_internal_decode_packet_remaining_len
-                0x0000000008008c80       0x8a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008008c88       0x8a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
  .text._aws_iot_mqtt_internal_read_packet
-                0x0000000008008d0a      0x19a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008008d12      0x19a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
  .text._aws_iot_mqtt_internal_is_topic_matched
-                0x0000000008008ea4       0xe4 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008008eac       0xe4 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
  .text._aws_iot_mqtt_internal_deliver_message
-                0x0000000008008f88       0xfc Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008008f90       0xfc Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
  .text._aws_iot_mqtt_internal_handle_publish
-                0x0000000008009084       0xfa Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
- *fill*         0x000000000800917e        0x2 
+                0x000000000800908c       0xfa Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+ *fill*         0x0000000008009186        0x2 
  .text.aws_iot_mqtt_internal_cycle_read
-                0x0000000008009180       0xc0 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x0000000008009180                aws_iot_mqtt_internal_cycle_read
+                0x0000000008009188       0xc0 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008009188                aws_iot_mqtt_internal_cycle_read
  .text.aws_iot_mqtt_internal_wait_for_read
-                0x0000000008009240       0x88 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x0000000008009240                aws_iot_mqtt_internal_wait_for_read
+                0x0000000008009248       0x88 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x0000000008009248                aws_iot_mqtt_internal_wait_for_read
  .text.aws_iot_mqtt_internal_serialize_zero
-                0x00000000080092c8       0x94 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                0x00000000080092c8                aws_iot_mqtt_internal_serialize_zero
+                0x00000000080092d0       0x94 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                0x00000000080092d0                aws_iot_mqtt_internal_serialize_zero
  .text._aws_iot_get_connect_packet_length
-                0x000000000800935c       0x70 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+                0x0000000008009364       0x70 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
  .text._aws_iot_mqtt_serialize_connect
-                0x00000000080093cc      0x21c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+                0x00000000080093d4      0x21c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
  .text._aws_iot_mqtt_deserialize_connack
-                0x00000000080095e8      0x148 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+                0x00000000080095f0      0x148 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
  .text._aws_iot_mqtt_is_client_state_valid_for_connect
-                0x0000000008009730       0x7c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+                0x0000000008009738       0x7c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
  .text._aws_iot_mqtt_internal_connect
-                0x00000000080097ac      0x146 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+                0x00000000080097b4      0x146 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
  .text.aws_iot_mqtt_connect
-                0x00000000080098f2       0xae Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
-                0x00000000080098f2                aws_iot_mqtt_connect
+                0x00000000080098fa       0xae Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+                0x00000000080098fa                aws_iot_mqtt_connect
  .text._aws_iot_mqtt_internal_disconnect
-                0x00000000080099a0       0x9c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
-                0x00000000080099a0                _aws_iot_mqtt_internal_disconnect
+                0x00000000080099a8       0x9c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+                0x00000000080099a8                _aws_iot_mqtt_internal_disconnect
  .text.aws_iot_mqtt_disconnect
-                0x0000000008009a3c       0x80 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
-                0x0000000008009a3c                aws_iot_mqtt_disconnect
+                0x0000000008009a44       0x80 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+                0x0000000008009a44                aws_iot_mqtt_disconnect
  .text.aws_iot_mqtt_attempt_reconnect
-                0x0000000008009abc       0x6e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
-                0x0000000008009abc                aws_iot_mqtt_attempt_reconnect
+                0x0000000008009ac4       0x6e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+                0x0000000008009ac4                aws_iot_mqtt_attempt_reconnect
  .text._aws_iot_mqtt_read_string_with_len
-                0x0000000008009b2a       0x62 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
+                0x0000000008009b32       0x62 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
  .text._aws_iot_mqtt_internal_serialize_publish
-                0x0000000008009b8c       0xfe Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
+                0x0000000008009b94       0xfe Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
  .text.aws_iot_mqtt_internal_serialize_ack
-                0x0000000008009c8a       0xba Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
-                0x0000000008009c8a                aws_iot_mqtt_internal_serialize_ack
+                0x0000000008009c92       0xba Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
+                0x0000000008009c92                aws_iot_mqtt_internal_serialize_ack
  .text._aws_iot_mqtt_internal_publish
-                0x0000000008009d44      0x122 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
+                0x0000000008009d4c      0x122 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
  .text.aws_iot_mqtt_publish
-                0x0000000008009e66       0xc0 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
-                0x0000000008009e66                aws_iot_mqtt_publish
+                0x0000000008009e6e       0xc0 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
+                0x0000000008009e6e                aws_iot_mqtt_publish
  .text.aws_iot_mqtt_internal_deserialize_publish
-                0x0000000008009f26      0x12c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
-                0x0000000008009f26                aws_iot_mqtt_internal_deserialize_publish
+                0x0000000008009f2e      0x12c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
+                0x0000000008009f2e                aws_iot_mqtt_internal_deserialize_publish
  .text.aws_iot_mqtt_internal_deserialize_ack
-                0x000000000800a052       0xda Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
-                0x000000000800a052                aws_iot_mqtt_internal_deserialize_ack
+                0x000000000800a05a       0xda Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
+                0x000000000800a05a                aws_iot_mqtt_internal_deserialize_ack
  .text._aws_iot_mqtt_serialize_subscribe
-                0x000000000800a12c      0x122 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
+                0x000000000800a134      0x122 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
  .text._aws_iot_mqtt_deserialize_suback
-                0x000000000800a24e      0x10a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
+                0x000000000800a256      0x10a Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
  .text._aws_iot_mqtt_get_free_message_handler_index
-                0x000000000800a358       0x3e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
+                0x000000000800a360       0x3e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
  .text._aws_iot_mqtt_internal_subscribe
-                0x000000000800a396      0x180 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
+                0x000000000800a39e      0x180 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
  .text.aws_iot_mqtt_subscribe
-                0x000000000800a516       0xca Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
-                0x000000000800a516                aws_iot_mqtt_subscribe
+                0x000000000800a51e       0xca Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
+                0x000000000800a51e                aws_iot_mqtt_subscribe
  .text._aws_iot_mqtt_internal_resubscribe
-                0x000000000800a5e0      0x158 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
+                0x000000000800a5e8      0x158 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
  .text.aws_iot_mqtt_resubscribe
-                0x000000000800a738       0x92 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
-                0x000000000800a738                aws_iot_mqtt_resubscribe
+                0x000000000800a740       0x92 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
+                0x000000000800a740                aws_iot_mqtt_resubscribe
  .text._aws_iot_mqtt_force_client_disconnect
-                0x000000000800a7ca       0x36 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
+                0x000000000800a7d2       0x36 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
  .text._aws_iot_mqtt_handle_disconnect
-                0x000000000800a800       0x4e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
+                0x000000000800a808       0x4e Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
  .text._aws_iot_mqtt_handle_reconnect
-                0x000000000800a84e       0xb6 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
+                0x000000000800a856       0xb6 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
  .text._aws_iot_mqtt_keep_alive
-                0x000000000800a904       0xe0 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
+                0x000000000800a90c       0xe0 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
  .text._aws_iot_mqtt_internal_yield
-                0x000000000800a9e4      0x134 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
+                0x000000000800a9ec      0x134 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
  .text.aws_iot_mqtt_yield
-                0x000000000800ab18       0xc2 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
-                0x000000000800ab18                aws_iot_mqtt_yield
+                0x000000000800ab20       0xc2 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
+                0x000000000800ab20                aws_iot_mqtt_yield
  .text.vListInitialise
-                0x000000000800abda       0x40 Middlewares/Third_Party/FreeRTOS/list.o
-                0x000000000800abda                vListInitialise
+                0x000000000800abe2       0x40 Middlewares/Third_Party/FreeRTOS/list.o
+                0x000000000800abe2                vListInitialise
  .text.vListInitialiseItem
-                0x000000000800ac1a       0x1a Middlewares/Third_Party/FreeRTOS/list.o
-                0x000000000800ac1a                vListInitialiseItem
+                0x000000000800ac22       0x1a Middlewares/Third_Party/FreeRTOS/list.o
+                0x000000000800ac22                vListInitialiseItem
  .text.vListInsertEnd
-                0x000000000800ac34       0x48 Middlewares/Third_Party/FreeRTOS/list.o
-                0x000000000800ac34                vListInsertEnd
+                0x000000000800ac3c       0x48 Middlewares/Third_Party/FreeRTOS/list.o
+                0x000000000800ac3c                vListInsertEnd
  .text.vListInsert
-                0x000000000800ac7c       0x72 Middlewares/Third_Party/FreeRTOS/list.o
-                0x000000000800ac7c                vListInsert
+                0x000000000800ac84       0x72 Middlewares/Third_Party/FreeRTOS/list.o
+                0x000000000800ac84                vListInsert
  .text.uxListRemove
-                0x000000000800acee       0x54 Middlewares/Third_Party/FreeRTOS/list.o
-                0x000000000800acee                uxListRemove
- *fill*         0x000000000800ad42        0x2 
+                0x000000000800acf6       0x54 Middlewares/Third_Party/FreeRTOS/list.o
+                0x000000000800acf6                uxListRemove
+ *fill*         0x000000000800ad4a        0x2 
  .text.xQueueGenericReset
-                0x000000000800ad44       0xb4 Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800ad44                xQueueGenericReset
+                0x000000000800ad4c       0xb4 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800ad4c                xQueueGenericReset
  .text.xQueueGenericCreateStatic
-                0x000000000800adf8       0x3e Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800adf8                xQueueGenericCreateStatic
+                0x000000000800ae00       0x3e Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800ae00                xQueueGenericCreateStatic
  .text.xQueueGenericCreate
-                0x000000000800ae36       0x64 Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800ae36                xQueueGenericCreate
+                0x000000000800ae3e       0x64 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800ae3e                xQueueGenericCreate
  .text.prvInitialiseNewQueue
-                0x000000000800ae9a       0x3e Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800aea2       0x3e Middlewares/Third_Party/FreeRTOS/queue.o
  .text.prvInitialiseMutex
-                0x000000000800aed8       0x34 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800aee0       0x34 Middlewares/Third_Party/FreeRTOS/queue.o
  .text.xQueueCreateMutex
-                0x000000000800af0c       0x30 Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800af0c                xQueueCreateMutex
+                0x000000000800af14       0x30 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800af14                xQueueCreateMutex
  .text.xQueueGenericSend
-                0x000000000800af3c      0x154 Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800af3c                xQueueGenericSend
+                0x000000000800af44      0x154 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800af44                xQueueGenericSend
  .text.xQueueGenericSendFromISR
-                0x000000000800b090       0xb2 Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800b090                xQueueGenericSendFromISR
- *fill*         0x000000000800b142        0x2 
+                0x000000000800b098       0xb2 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b098                xQueueGenericSendFromISR
+ *fill*         0x000000000800b14a        0x2 
  .text.xQueueReceive
-                0x000000000800b144      0x144 Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800b144                xQueueReceive
+                0x000000000800b14c      0x144 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b14c                xQueueReceive
  .text.xQueueSemaphoreTake
-                0x000000000800b288      0x190 Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800b288                xQueueSemaphoreTake
+                0x000000000800b290      0x190 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b290                xQueueSemaphoreTake
  .text.uxQueueMessagesWaiting
-                0x000000000800b418       0x20 Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800b418                uxQueueMessagesWaiting
+                0x000000000800b420       0x20 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b420                uxQueueMessagesWaiting
  .text.vQueueDelete
-                0x000000000800b438       0x2a Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800b438                vQueueDelete
+                0x000000000800b440       0x2a Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b440                vQueueDelete
  .text.prvGetDisinheritPriorityAfterTimeout
-                0x000000000800b462       0x30 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b46a       0x30 Middlewares/Third_Party/FreeRTOS/queue.o
  .text.prvCopyDataToQueue
-                0x000000000800b492       0xd4 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b49a       0xd4 Middlewares/Third_Party/FreeRTOS/queue.o
  .text.prvCopyDataFromQueue
-                0x000000000800b566       0x4c Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b56e       0x4c Middlewares/Third_Party/FreeRTOS/queue.o
  .text.prvUnlockQueue
-                0x000000000800b5b2       0xa4 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b5ba       0xa4 Middlewares/Third_Party/FreeRTOS/queue.o
  .text.prvIsQueueEmpty
-                0x000000000800b656       0x2c Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b65e       0x2c Middlewares/Third_Party/FreeRTOS/queue.o
  .text.prvIsQueueFull
-                0x000000000800b682       0x30 Middlewares/Third_Party/FreeRTOS/queue.o
- *fill*         0x000000000800b6b2        0x2 
+                0x000000000800b68a       0x30 Middlewares/Third_Party/FreeRTOS/queue.o
+ *fill*         0x000000000800b6ba        0x2 
  .text.vQueueAddToRegistry
-                0x000000000800b6b4       0x50 Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800b6b4                vQueueAddToRegistry
+                0x000000000800b6bc       0x50 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b6bc                vQueueAddToRegistry
  .text.vQueueUnregisterQueue
-                0x000000000800b704       0x54 Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800b704                vQueueUnregisterQueue
+                0x000000000800b70c       0x54 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b70c                vQueueUnregisterQueue
  .text.vQueueWaitForMessageRestricted
-                0x000000000800b758       0x68 Middlewares/Third_Party/FreeRTOS/queue.o
-                0x000000000800b758                vQueueWaitForMessageRestricted
+                0x000000000800b760       0x68 Middlewares/Third_Party/FreeRTOS/queue.o
+                0x000000000800b760                vQueueWaitForMessageRestricted
  .text.xTaskCreateStatic
-                0x000000000800b7c0       0x60 Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800b7c0                xTaskCreateStatic
+                0x000000000800b7c8       0x60 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800b7c8                xTaskCreateStatic
  .text.xTaskCreate
-                0x000000000800b820       0x8a Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800b820                xTaskCreate
+                0x000000000800b828       0x8a Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800b828                xTaskCreate
  .text.prvInitialiseNewTask
-                0x000000000800b8aa       0xee Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800b8b2       0xee Middlewares/Third_Party/FreeRTOS/tasks.o
  .text.prvAddNewTaskToReadyList
-                0x000000000800b998       0xd8 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800b9a0       0xd8 Middlewares/Third_Party/FreeRTOS/tasks.o
  .text.vTaskDelay
-                0x000000000800ba70       0x48 Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800ba70                vTaskDelay
+                0x000000000800ba78       0x48 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800ba78                vTaskDelay
  .text.vTaskStartScheduler
-                0x000000000800bab8       0xac Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800bab8                vTaskStartScheduler
+                0x000000000800bac0       0xac Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800bac0                vTaskStartScheduler
  .text.vTaskSuspendAll
-                0x000000000800bb64       0x1c Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800bb64                vTaskSuspendAll
+                0x000000000800bb6c       0x1c Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800bb6c                vTaskSuspendAll
  .text.xTaskResumeAll
-                0x000000000800bb80      0x11c Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800bb80                xTaskResumeAll
+                0x000000000800bb88      0x11c Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800bb88                xTaskResumeAll
  .text.xTaskGetTickCount
-                0x000000000800bc9c       0x20 Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800bc9c                xTaskGetTickCount
+                0x000000000800bca4       0x20 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800bca4                xTaskGetTickCount
  .text.xTaskIncrementTick
-                0x000000000800bcbc      0x150 Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800bcbc                xTaskIncrementTick
+                0x000000000800bcc4      0x150 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800bcc4                xTaskIncrementTick
  .text.vTaskSwitchContext
-                0x000000000800be0c       0xbc Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800be0c                vTaskSwitchContext
+                0x000000000800be14       0xbc Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800be14                vTaskSwitchContext
  .text.vTaskPlaceOnEventList
-                0x000000000800bec8       0x2c Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800bec8                vTaskPlaceOnEventList
+                0x000000000800bed0       0x2c Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800bed0                vTaskPlaceOnEventList
  .text.vTaskPlaceOnEventListRestricted
-                0x000000000800bef4       0x3c Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800bef4                vTaskPlaceOnEventListRestricted
+                0x000000000800befc       0x3c Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800befc                vTaskPlaceOnEventListRestricted
  .text.xTaskRemoveFromEventList
-                0x000000000800bf30       0xac Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800bf30                xTaskRemoveFromEventList
+                0x000000000800bf38       0xac Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800bf38                xTaskRemoveFromEventList
  .text.vTaskInternalSetTimeOutState
-                0x000000000800bfdc       0x2c Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800bfdc                vTaskInternalSetTimeOutState
+                0x000000000800bfe4       0x2c Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800bfe4                vTaskInternalSetTimeOutState
  .text.xTaskCheckForTimeOut
-                0x000000000800c008       0x8c Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800c008                xTaskCheckForTimeOut
+                0x000000000800c010       0x8c Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c010                xTaskCheckForTimeOut
  .text.vTaskMissedYield
-                0x000000000800c094       0x18 Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800c094                vTaskMissedYield
+                0x000000000800c09c       0x18 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c09c                vTaskMissedYield
  .text.prvIdleTask
-                0x000000000800c0ac       0x30 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c0b4       0x30 Middlewares/Third_Party/FreeRTOS/tasks.o
  .text.prvInitialiseTaskLists
-                0x000000000800c0dc       0x80 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c0e4       0x80 Middlewares/Third_Party/FreeRTOS/tasks.o
  .text.prvCheckTasksWaitingTermination
-                0x000000000800c15c       0x58 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c164       0x58 Middlewares/Third_Party/FreeRTOS/tasks.o
  .text.prvDeleteTCB
-                0x000000000800c1b4       0x3c Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c1bc       0x3c Middlewares/Third_Party/FreeRTOS/tasks.o
  .text.prvResetNextTaskUnblockTime
-                0x000000000800c1f0       0x40 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c1f8       0x40 Middlewares/Third_Party/FreeRTOS/tasks.o
  .text.xTaskGetSchedulerState
-                0x000000000800c230       0x3c Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800c230                xTaskGetSchedulerState
+                0x000000000800c238       0x3c Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c238                xTaskGetSchedulerState
  .text.xTaskPriorityInherit
-                0x000000000800c26c       0xd0 Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800c26c                xTaskPriorityInherit
+                0x000000000800c274       0xd0 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c274                xTaskPriorityInherit
  .text.xTaskPriorityDisinherit
-                0x000000000800c33c       0x98 Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800c33c                xTaskPriorityDisinherit
+                0x000000000800c344       0x98 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c344                xTaskPriorityDisinherit
  .text.vTaskPriorityDisinheritAfterTimeout
-                0x000000000800c3d4       0xc0 Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800c3d4                vTaskPriorityDisinheritAfterTimeout
+                0x000000000800c3dc       0xc0 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c3dc                vTaskPriorityDisinheritAfterTimeout
  .text.pvTaskIncrementMutexHeldCount
-                0x000000000800c494       0x28 Middlewares/Third_Party/FreeRTOS/tasks.o
-                0x000000000800c494                pvTaskIncrementMutexHeldCount
+                0x000000000800c49c       0x28 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c49c                pvTaskIncrementMutexHeldCount
  .text.prvAddCurrentTaskToDelayedList
-                0x000000000800c4bc       0xa8 Middlewares/Third_Party/FreeRTOS/tasks.o
+                0x000000000800c4c4       0xa8 Middlewares/Third_Party/FreeRTOS/tasks.o
  .text.xTimerCreateTimerTask
-                0x000000000800c564       0x74 Middlewares/Third_Party/FreeRTOS/timers.o
-                0x000000000800c564                xTimerCreateTimerTask
+                0x000000000800c56c       0x74 Middlewares/Third_Party/FreeRTOS/timers.o
+                0x000000000800c56c                xTimerCreateTimerTask
  .text.xTimerGenericCommand
-                0x000000000800c5d8       0x80 Middlewares/Third_Party/FreeRTOS/timers.o
-                0x000000000800c5d8                xTimerGenericCommand
+                0x000000000800c5e0       0x80 Middlewares/Third_Party/FreeRTOS/timers.o
+                0x000000000800c5e0                xTimerGenericCommand
  .text.prvProcessExpiredTimer
-                0x000000000800c658       0x80 Middlewares/Third_Party/FreeRTOS/timers.o
+                0x000000000800c660       0x80 Middlewares/Third_Party/FreeRTOS/timers.o
  .text.prvTimerTask
-                0x000000000800c6d8       0x24 Middlewares/Third_Party/FreeRTOS/timers.o
+                0x000000000800c6e0       0x24 Middlewares/Third_Party/FreeRTOS/timers.o
  .text.prvProcessTimerOrBlockTask
-                0x000000000800c6fc       0x9c Middlewares/Third_Party/FreeRTOS/timers.o
+                0x000000000800c704       0x9c Middlewares/Third_Party/FreeRTOS/timers.o
  .text.prvGetNextExpireTime
-                0x000000000800c798       0x48 Middlewares/Third_Party/FreeRTOS/timers.o
+                0x000000000800c7a0       0x48 Middlewares/Third_Party/FreeRTOS/timers.o
  .text.prvSampleTimeNow
-                0x000000000800c7e0       0x40 Middlewares/Third_Party/FreeRTOS/timers.o
+                0x000000000800c7e8       0x40 Middlewares/Third_Party/FreeRTOS/timers.o
  .text.prvInsertTimerInActiveList
-                0x000000000800c820       0x84 Middlewares/Third_Party/FreeRTOS/timers.o
+                0x000000000800c828       0x84 Middlewares/Third_Party/FreeRTOS/timers.o
  .text.prvProcessReceivedCommands
-                0x000000000800c8a4      0x150 Middlewares/Third_Party/FreeRTOS/timers.o
+                0x000000000800c8ac      0x150 Middlewares/Third_Party/FreeRTOS/timers.o
  .text.prvSwitchTimerLists
-                0x000000000800c9f4       0xac Middlewares/Third_Party/FreeRTOS/timers.o
+                0x000000000800c9fc       0xac Middlewares/Third_Party/FreeRTOS/timers.o
  .text.prvCheckForValidListAndQueue
-                0x000000000800caa0       0x80 Middlewares/Third_Party/FreeRTOS/timers.o
+                0x000000000800caa8       0x80 Middlewares/Third_Party/FreeRTOS/timers.o
  .text.pxPortInitialiseStack
-                0x000000000800cb20       0x68 Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F/port.o
-                0x000000000800cb20                pxPortInitialiseStack
+                0x000000000800cb28       0x68 Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F/port.o
+                0x000000000800cb28                pxPortInitialiseStack
  .text.prvTaskExitError
-                0x000000000800cb88       0x30 Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F/port.o
- *fill*         0x000000000800cbb8        0x8 
+                0x000000000800cb90       0x30 Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F/port.o
  .text.SVC_Handler
                 0x000000000800cbc0       0x28 Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F/port.o
                 0x000000000800cbc0                SVC_Handler
@@ -38112,7 +38112,7 @@ OUTPUT(stm32f429_amazon.elf elf32-littlearm)
  .debug_ranges  0x00000000000045a8       0x10 Src/uart/uart_custom.o
  .debug_ranges  0x00000000000045b8       0x20 Startup/startup_stm32f429nihx.o
 
-.debug_macro    0x0000000000000000    0x465e5
+.debug_macro    0x0000000000000000    0x465eb
  .debug_macro   0x0000000000000000      0x4b5 Common/AWS/Src/aws_network_st_wrapper.o
  .debug_macro   0x00000000000004b5      0xaba Common/AWS/Src/aws_network_st_wrapper.o
  .debug_macro   0x0000000000000f6f       0x22 Common/AWS/Src/aws_network_st_wrapper.o
@@ -38173,340 +38173,340 @@ OUTPUT(stm32f429_amazon.elf elf32-littlearm)
  .debug_macro   0x0000000000003210       0x4c Common/AWS/Src/aws_network_st_wrapper.o
  .debug_macro   0x000000000000325c       0x2e Common/AWS/Src/aws_network_st_wrapper.o
  .debug_macro   0x000000000000328a       0x5e Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x00000000000032e8       0x34 Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x000000000000331c       0x34 Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x0000000000003350       0x70 Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x00000000000033c0       0x34 Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x00000000000033f4       0x10 Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x0000000000003404       0x34 Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x0000000000003438       0x28 Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x0000000000003460      0x10c Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x000000000000356c      0x15a Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x00000000000036c6       0xbb Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x0000000000003781       0x16 Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x0000000000003797       0x26 Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x00000000000037bd      0x4da Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x0000000000003c97       0xb5 Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x0000000000003d4c       0xaa Common/AWS/Src/aws_network_st_wrapper.o
- .debug_macro   0x0000000000003df6      0x6b2 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000044a8       0x16 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000044be       0x97 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000004555       0xfd Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000004652       0x16 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000004668      0x19c Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000004804       0x32 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000004836       0x28 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x000000000000485e       0x1c Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x000000000000487a       0x22 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x000000000000489c       0xd9 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000004975     0x102d Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000059a2      0x11f Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000005ac1    0x17f81 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x000000000001da42       0x43 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x000000000001da85     0x3644 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000210c9       0x54 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x000000000002111d      0xca5 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000021dc2      0x9fe Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000227c0       0xed Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000228ad      0x117 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000229c4      0x157 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000022b1b       0x27 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000022b42      0x287 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000022dc9       0x5f Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000022e28      0x236 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x000000000002305e       0x22 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000023080      0x132 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000231b2      0x41d Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000235cf       0x2e Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000235fd      0x11a Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000023717       0xe2 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000237f9       0x89 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000023882       0xa4 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000023926      0x31a Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000023c40      0x405 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000024045       0xe4 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000024129      0x87d Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000249a6       0x47 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x00000000000249ed      0x287 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000024c74      0x134 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000024da8       0x58 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000024e00       0x22 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000024e22       0x94 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000024eb6       0x1e Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000024ed4       0x40 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000024f14       0x22 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000024f36       0x34 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000024f6a      0x10c Common/AWS/Src/aws_subscribe_publish_sensor_values.o
- .debug_macro   0x0000000000025076      0x22f Common/AWS/Src/aws_timer.o
- .debug_macro   0x00000000000252a5       0x56 Common/AWS/Src/aws_timer.o
- .debug_macro   0x00000000000252fb       0x51 Common/AWS/Src/aws_timer.o
- .debug_macro   0x000000000002534c       0xdf Common/AWS/Src/aws_timer.o
- .debug_macro   0x000000000002542b       0x5a Common/AWS/Src/aws_timer.o
- .debug_macro   0x0000000000025485      0x4a2 Common/AWS/Src/cloud.o
- .debug_macro   0x0000000000025927       0x28 Common/AWS/Src/cloud.o
- .debug_macro   0x000000000002594f       0x34 Common/AWS/Src/cloud.o
- .debug_macro   0x0000000000025983       0x2e Common/AWS/Src/cloud.o
- .debug_macro   0x00000000000259b1       0x40 Common/AWS/Src/cloud.o
- .debug_macro   0x00000000000259f1      0x2ba Common/AWS/Src/entropy_hardware_poll.o
- .debug_macro   0x0000000000025cab      0x490 Common/AWS/Src/firewall.o
- .debug_macro   0x000000000002613b       0x58 Common/AWS/Src/firewall.o
- .debug_macro   0x0000000000026193       0x70 Common/AWS/Src/firewall.o
- .debug_macro   0x0000000000026203       0x16 Common/AWS/Src/firewall.o
- .debug_macro   0x0000000000026219      0x3c3 Common/AWS/Src/iot_flash_config.o
- .debug_macro   0x00000000000265dc      0x5d5 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000026bb1      0x17b Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000026d2c       0x16 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000026d42       0x10 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000026d52       0x52 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000026da4       0x11 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000026db5       0x10 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000026dc5      0x460 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027225       0x12 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027237       0x4a Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027281       0x66 Common/AWS/Src/lwip_net.o
- .debug_macro   0x00000000000272e7      0x5f1 Common/AWS/Src/lwip_net.o
- .debug_macro   0x00000000000278d8       0x10 Common/AWS/Src/lwip_net.o
- .debug_macro   0x00000000000278e8       0x16 Common/AWS/Src/lwip_net.o
- .debug_macro   0x00000000000278fe       0x87 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027985       0x9a Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027a1f       0x1c Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027a3b       0x90 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027acb       0x10 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027adb       0x6a Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027b45      0x18b Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027cd0      0x14d Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027e1d       0x5b Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027e78       0x10 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027e88       0x10 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027e98       0x3f Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027ed7       0x2b Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027f02       0x22 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000027f24      0x143 Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000028067       0x81 Common/AWS/Src/lwip_net.o
- .debug_macro   0x00000000000280e8       0x16 Common/AWS/Src/lwip_net.o
- .debug_macro   0x00000000000280fe       0x5a Common/AWS/Src/lwip_net.o
- .debug_macro   0x0000000000028158      0x2fe Common/AWS/Src/mbedtls_net.o
- .debug_macro   0x0000000000028456       0x2e Common/AWS/Src/mbedtls_net.o
- .debug_macro   0x0000000000028484      0x70b Common/AWS/Src/net.o
- .debug_macro   0x0000000000028b8f      0x10e Common/AWS/Src/net.o
- .debug_macro   0x0000000000028c9d       0x8d Common/AWS/Src/net.o
- .debug_macro   0x0000000000028d2a       0x10 Common/AWS/Src/net.o
- .debug_macro   0x0000000000028d3a       0x32 Common/AWS/Src/net.o
- .debug_macro   0x0000000000028d6c      0x73f Common/AWS/Src/net_tcp_lwip.o
- .debug_macro   0x00000000000294ab       0xfb Common/AWS/Src/net_tcp_lwip.o
- .debug_macro   0x00000000000295a6      0x320 Common/AWS/Src/net_tcp_lwip.o
- .debug_macro   0x00000000000298c6      0x36e Common/AWS/Src/net_tcp_lwip.o
- .debug_macro   0x0000000000029c34       0xa4 Common/AWS/Src/net_tcp_lwip.o
- .debug_macro   0x0000000000029cd8      0x70b Common/AWS/Src/net_tls_mbedtls.o
- .debug_macro   0x000000000002a3e3      0x35c Common/AWS/Src/sensors_data.o
- .debug_macro   0x000000000002a73f      0x39a Common/AWS/Src/timedate.o
- .debug_macro   0x000000000002aad9      0x25b Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_macro   0x000000000002ad34      0x1fb Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_macro   0x000000000002af2f      0x1fb Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.o
- .debug_macro   0x000000000002b12a      0x201 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
- .debug_macro   0x000000000002b32b      0x231 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_macro   0x000000000002b55c      0x21f Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
- .debug_macro   0x000000000002b77b      0x1fb Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
- .debug_macro   0x000000000002b976      0x201 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.o
- .debug_macro   0x000000000002bb77      0x1fc Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
- .debug_macro   0x000000000002bd73      0x1fc Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
- .debug_macro   0x000000000002bf6f      0x1fb Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
- .debug_macro   0x000000000002c16a      0x1fc Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
- .debug_macro   0x000000000002c366      0x449 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
- .debug_macro   0x000000000002c7af      0x44b Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
- .debug_macro   0x000000000002cbfa       0x1c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
- .debug_macro   0x000000000002cc16      0x449 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
- .debug_macro   0x000000000002d05f      0x44d Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
- .debug_macro   0x000000000002d4ac      0x44d Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
- .debug_macro   0x000000000002d8f9      0x44d Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
- .debug_macro   0x000000000002dd46      0x1ed Middlewares/Third_Party/FreeRTOS/list.o
- .debug_macro   0x000000000002df33      0x268 Middlewares/Third_Party/FreeRTOS/queue.o
- .debug_macro   0x000000000002e19b      0x2d1 Middlewares/Third_Party/FreeRTOS/tasks.o
- .debug_macro   0x000000000002e46c       0x10 Middlewares/Third_Party/FreeRTOS/tasks.o
- .debug_macro   0x000000000002e47c      0x242 Middlewares/Third_Party/FreeRTOS/timers.o
- .debug_macro   0x000000000002e6be       0x97 Middlewares/Third_Party/FreeRTOS/timers.o
- .debug_macro   0x000000000002e755      0x2a3 Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F/port.o
- .debug_macro   0x000000000002e9f8      0x214 Middlewares/Third_Party/FreeRTOS/portable/MemMang/heap_4.o
- .debug_macro   0x000000000002ec0c      0x320 Middlewares/Third_Party/lwip/src/api/err.o
- .debug_macro   0x000000000002ef2c      0x40f Middlewares/Third_Party/lwip/src/api/netdb.o
- .debug_macro   0x000000000002f33b       0xf5 Middlewares/Third_Party/lwip/src/api/netdb.o
- .debug_macro   0x000000000002f430       0x3a Middlewares/Third_Party/lwip/src/api/netdb.o
- .debug_macro   0x000000000002f46a      0x101 Middlewares/Third_Party/lwip/src/api/netdb.o
- .debug_macro   0x000000000002f56b       0x2e Middlewares/Third_Party/lwip/src/api/netdb.o
- .debug_macro   0x000000000002f599      0x5cc Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002fb65       0x8e Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002fbf3       0x28 Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002fc1b       0x2e Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002fc49       0xe3 Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002fd2c       0x70 Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002fd9c       0xdd Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002fe79       0x10 Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002fe89       0x31 Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002feba       0x10 Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002feca       0x46 Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002ff10       0x29 Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002ff39       0x28 Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002ff61       0x70 Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000002ffd1      0x19e Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x000000000003016f       0x22 Middlewares/Third_Party/lwip/src/api/sockets.o
- .debug_macro   0x0000000000030191      0x451 Middlewares/Third_Party/lwip/src/api/tcpip.o
- .debug_macro   0x00000000000305e2       0x5e Middlewares/Third_Party/lwip/src/api/tcpip.o
- .debug_macro   0x0000000000030640       0x16 Middlewares/Third_Party/lwip/src/api/tcpip.o
- .debug_macro   0x0000000000030656       0x16 Middlewares/Third_Party/lwip/src/api/tcpip.o
- .debug_macro   0x000000000003066c       0x10 Middlewares/Third_Party/lwip/src/api/tcpip.o
- .debug_macro   0x000000000003067c      0x25a Middlewares/Third_Party/lwip/src/core/def.o
- .debug_macro   0x00000000000308d6      0x3ba Middlewares/Third_Party/lwip/src/core/dns.o
- .debug_macro   0x0000000000030c90      0x2b3 Middlewares/Third_Party/lwip/src/core/inet_chksum.o
- .debug_macro   0x0000000000030f43       0x16 Middlewares/Third_Party/lwip/src/core/inet_chksum.o
- .debug_macro   0x0000000000030f59      0x593 Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x00000000000314ec       0x40 Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x000000000003152c      0x19b Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x00000000000316c7      0x10d Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x00000000000317d4       0x8f Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x0000000000031863       0xbe Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x0000000000031921       0x4c Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x000000000003196d       0x64 Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x00000000000319d1       0x64 Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x0000000000031a35       0x7d Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x0000000000031ab2       0xba Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x0000000000031b6c       0x6a Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x0000000000031bd6      0x151 Middlewares/Third_Party/lwip/src/core/init.o
- .debug_macro   0x0000000000031d27      0x30f Middlewares/Third_Party/lwip/src/core/ip.o
- .debug_macro   0x0000000000032036      0x3c4 Middlewares/Third_Party/lwip/src/core/mem.o
- .debug_macro   0x00000000000323fa      0x555 Middlewares/Third_Party/lwip/src/core/memp.o
- .debug_macro   0x000000000003294f       0x25 Middlewares/Third_Party/lwip/src/core/memp.o
- .debug_macro   0x0000000000032974      0x107 Middlewares/Third_Party/lwip/src/core/memp.o
- .debug_macro   0x0000000000032a7b       0x23 Middlewares/Third_Party/lwip/src/core/memp.o
- .debug_macro   0x0000000000032a9e       0xaa Middlewares/Third_Party/lwip/src/core/memp.o
- .debug_macro   0x0000000000032b48      0x4a5 Middlewares/Third_Party/lwip/src/core/netif.o
- .debug_macro   0x0000000000032fed       0xc0 Middlewares/Third_Party/lwip/src/core/netif.o
- .debug_macro   0x00000000000330ad      0x39b Middlewares/Third_Party/lwip/src/core/pbuf.o
- .debug_macro   0x0000000000033448      0x2a5 Middlewares/Third_Party/lwip/src/core/stats.o
- .debug_macro   0x00000000000336ed      0x394 Middlewares/Third_Party/lwip/src/core/tcp.o
- .debug_macro   0x0000000000033a81       0x8d Middlewares/Third_Party/lwip/src/core/tcp.o
- .debug_macro   0x0000000000033b0e      0x368 Middlewares/Third_Party/lwip/src/core/tcp_in.o
- .debug_macro   0x0000000000033e76       0x1c Middlewares/Third_Party/lwip/src/core/tcp_in.o
- .debug_macro   0x0000000000033e92      0x38c Middlewares/Third_Party/lwip/src/core/tcp_out.o
- .debug_macro   0x000000000003421e      0x4b0 Middlewares/Third_Party/lwip/src/core/timeouts.o
- .debug_macro   0x00000000000346ce       0x1c Middlewares/Third_Party/lwip/src/core/timeouts.o
- .debug_macro   0x00000000000346ea      0x39e Middlewares/Third_Party/lwip/src/core/udp.o
- .debug_macro   0x0000000000034a88      0x381 Middlewares/Third_Party/lwip/src/core/ipv4/etharp.o
- .debug_macro   0x0000000000034e09      0x185 Middlewares/Third_Party/lwip/src/core/ipv4/etharp.o
- .debug_macro   0x0000000000034f8e      0x359 Middlewares/Third_Party/lwip/src/core/ipv4/icmp.o
- .debug_macro   0x00000000000352e7      0x3c9 Middlewares/Third_Party/lwip/src/core/ipv4/ip4.o
- .debug_macro   0x00000000000356b0       0xe3 Middlewares/Third_Party/lwip/src/core/ipv4/ip4.o
- .debug_macro   0x0000000000035793      0x16a Middlewares/Third_Party/lwip/src/core/ipv4/ip4.o
- .debug_macro   0x00000000000358fd      0x2f3 Middlewares/Third_Party/lwip/src/core/ipv4/ip4_addr.o
- .debug_macro   0x0000000000035bf0      0x36e Middlewares/Third_Party/lwip/src/netif/ethernet.o
- .debug_macro   0x0000000000035f5e      0x4fa Middlewares/Third_Party/lwip/src/netif/ppp/auth.o
- .debug_macro   0x0000000000036458      0x195 Middlewares/Third_Party/lwip/src/netif/ppp/auth.o
- .debug_macro   0x00000000000365ed       0x77 Middlewares/Third_Party/lwip/src/netif/ppp/auth.o
- .debug_macro   0x0000000000036664      0x54d Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
- .debug_macro   0x0000000000036bb1       0x28 Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
- .debug_macro   0x0000000000036bd9       0x28 Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
- .debug_macro   0x0000000000036c01       0x28 Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
- .debug_macro   0x0000000000036c29       0x22 Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
- .debug_macro   0x0000000000036c4b       0x22 Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
- .debug_macro   0x0000000000036c6d      0x51c Middlewares/Third_Party/lwip/src/netif/ppp/chap-new.o
- .debug_macro   0x0000000000037189      0x4f0 Middlewares/Third_Party/lwip/src/netif/ppp/fsm.o
- .debug_macro   0x0000000000037679      0x5a4 Middlewares/Third_Party/lwip/src/netif/ppp/ipcp.o
- .debug_macro   0x0000000000037c1d      0x5fe Middlewares/Third_Party/lwip/src/netif/ppp/lcp.o
- .debug_macro   0x000000000003821b      0x533 Middlewares/Third_Party/lwip/src/netif/ppp/magic.o
- .debug_macro   0x000000000003874e      0x554 Middlewares/Third_Party/lwip/src/netif/ppp/ppp.o
- .debug_macro   0x0000000000038ca2      0x56a Middlewares/Third_Party/lwip/src/netif/ppp/pppos.o
- .debug_macro   0x000000000003920c      0x4ea Middlewares/Third_Party/lwip/src/netif/ppp/upap.o
- .debug_macro   0x00000000000396f6      0x4fe Middlewares/Third_Party/lwip/src/netif/ppp/utils.o
- .debug_macro   0x0000000000039bf4       0x9c Middlewares/Third_Party/lwip/src/netif/ppp/utils.o
- .debug_macro   0x0000000000039c90      0x512 Middlewares/Third_Party/lwip/src/netif/ppp/vj.o
- .debug_macro   0x000000000003a1a2      0x2b1 Middlewares/Third_Party/lwip/src/netif/ppp/polarssl/md5.o
- .debug_macro   0x000000000003a453      0x361 Middlewares/Third_Party/lwip/src/portable/arch/sys_arch.o
- .debug_macro   0x000000000003a7b4      0x33e Middlewares/Third_Party/mbedtls/library/aes.o
- .debug_macro   0x000000000003aaf2      0x27d Middlewares/Third_Party/mbedtls/library/asn1parse.o
- .debug_macro   0x000000000003ad6f      0x276 Middlewares/Third_Party/mbedtls/library/asn1write.o
- .debug_macro   0x000000000003afe5      0x259 Middlewares/Third_Party/mbedtls/library/base64.o
- .debug_macro   0x000000000003b23e       0x10 Middlewares/Third_Party/mbedtls/library/base64.o
- .debug_macro   0x000000000003b24e      0x2c5 Middlewares/Third_Party/mbedtls/library/bignum.o
- .debug_macro   0x000000000003b513       0x26 Middlewares/Third_Party/mbedtls/library/bignum.o
- .debug_macro   0x000000000003b539      0x28d Middlewares/Third_Party/mbedtls/library/cipher.o
- .debug_macro   0x000000000003b7c6       0x22 Middlewares/Third_Party/mbedtls/library/cipher.o
- .debug_macro   0x000000000003b7e8      0x277 Middlewares/Third_Party/mbedtls/library/cipher_wrap.o
- .debug_macro   0x000000000003ba5f       0x28 Middlewares/Third_Party/mbedtls/library/cipher_wrap.o
- .debug_macro   0x000000000003ba87      0x27c Middlewares/Third_Party/mbedtls/library/ctr_drbg.o
- .debug_macro   0x000000000003bd03      0x33c Middlewares/Third_Party/mbedtls/library/debug.o
- .debug_macro   0x000000000003c03f      0x1b8 Middlewares/Third_Party/mbedtls/library/ecdh.o
- .debug_macro   0x000000000003c1f7       0x85 Middlewares/Third_Party/mbedtls/library/ecdh.o
- .debug_macro   0x000000000003c27c      0x2e3 Middlewares/Third_Party/mbedtls/library/ecdsa.o
- .debug_macro   0x000000000003c55f      0x2da Middlewares/Third_Party/mbedtls/library/ecp.o
- .debug_macro   0x000000000003c839       0x16 Middlewares/Third_Party/mbedtls/library/ecp.o
- .debug_macro   0x000000000003c84f      0x23d Middlewares/Third_Party/mbedtls/library/ecp_curves.o
- .debug_macro   0x000000000003ca8c      0x298 Middlewares/Third_Party/mbedtls/library/entropy.o
- .debug_macro   0x000000000003cd24       0x1c Middlewares/Third_Party/mbedtls/library/entropy.o
- .debug_macro   0x000000000003cd40      0x2ab Middlewares/Third_Party/mbedtls/library/gcm.o
- .debug_macro   0x000000000003cfeb      0x252 Middlewares/Third_Party/mbedtls/library/md.o
- .debug_macro   0x000000000003d23d      0x267 Middlewares/Third_Party/mbedtls/library/md_wrap.o
- .debug_macro   0x000000000003d4a4       0x10 Middlewares/Third_Party/mbedtls/library/md_wrap.o
- .debug_macro   0x000000000003d4b4      0x31f Middlewares/Third_Party/mbedtls/library/oid.o
- .debug_macro   0x000000000003d7d3      0x1fa Middlewares/Third_Party/mbedtls/library/oid.o
- .debug_macro   0x000000000003d9cd      0x453 Middlewares/Third_Party/mbedtls/library/oid.o
- .debug_macro   0x000000000003de20      0x2ca Middlewares/Third_Party/mbedtls/library/pem.o
- .debug_macro   0x000000000003e0ea       0x3a Middlewares/Third_Party/mbedtls/library/pem.o
- .debug_macro   0x000000000003e124       0x22 Middlewares/Third_Party/mbedtls/library/pem.o
- .debug_macro   0x000000000003e146      0x169 Middlewares/Third_Party/mbedtls/library/pk.o
- .debug_macro   0x000000000003e2af      0x2c3 Middlewares/Third_Party/mbedtls/library/pk_wrap.o
- .debug_macro   0x000000000003e572      0x322 Middlewares/Third_Party/mbedtls/library/pkparse.o
- .debug_macro   0x000000000003e894      0x21b Middlewares/Third_Party/mbedtls/library/platform.o
- .debug_macro   0x000000000003eaaf      0x258 Middlewares/Third_Party/mbedtls/library/platform_util.o
- .debug_macro   0x000000000003ed07       0x16 Middlewares/Third_Party/mbedtls/library/platform_util.o
- .debug_macro   0x000000000003ed1d       0x3d Middlewares/Third_Party/mbedtls/library/platform_util.o
- .debug_macro   0x000000000003ed5a      0x129 Middlewares/Third_Party/mbedtls/library/platform_util.o
- .debug_macro   0x000000000003ee83       0x35 Middlewares/Third_Party/mbedtls/library/platform_util.o
- .debug_macro   0x000000000003eeb8       0x1c Middlewares/Third_Party/mbedtls/library/platform_util.o
- .debug_macro   0x000000000003eed4      0x35c Middlewares/Third_Party/mbedtls/library/rsa.o
- .debug_macro   0x000000000003f230      0x119 Middlewares/Third_Party/mbedtls/library/rsa_internal.o
- .debug_macro   0x000000000003f349      0x2f3 Middlewares/Third_Party/mbedtls/library/sha1.o
- .debug_macro   0x000000000003f63c      0x2c4 Middlewares/Third_Party/mbedtls/library/sha256.o
- .debug_macro   0x000000000003f900      0x32f Middlewares/Third_Party/mbedtls/library/ssl_ciphersuites.o
- .debug_macro   0x000000000003fc2f      0x366 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
- .debug_macro   0x000000000003ff95       0xb3 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
- .debug_macro   0x0000000000040048      0x3ac Middlewares/Third_Party/mbedtls/library/ssl_tls.o
- .debug_macro   0x00000000000403f4      0x33b Middlewares/Third_Party/mbedtls/library/x509.o
- .debug_macro   0x000000000004072f      0x31a Middlewares/Third_Party/mbedtls/library/x509_crl.o
- .debug_macro   0x0000000000040a49      0x344 Middlewares/Third_Party/mbedtls/library/x509_crt.o
- .debug_macro   0x0000000000040d8d      0x342 Src/debug_print.o
- .debug_macro   0x00000000000410cf      0x6c8 Src/main.o
- .debug_macro   0x0000000000041797       0x16 Src/main.o
- .debug_macro   0x00000000000417ad       0x82 Src/main.o
- .debug_macro   0x000000000004182f       0x22 Src/main.o
- .debug_macro   0x0000000000041851       0x22 Src/main.o
- .debug_macro   0x0000000000041873      0x421 Src/other.o
- .debug_macro   0x0000000000041c94      0x213 Src/stm32f4xx_hal_msp.o
- .debug_macro   0x0000000000041ea7      0x1fb Src/stm32f4xx_hal_timebase_tim.o
- .debug_macro   0x00000000000420a2      0x21d Src/stm32f4xx_it.o
- .debug_macro   0x00000000000422bf      0x2db Src/syscalls.o
- .debug_macro   0x000000000004259a       0xf5 Src/syscalls.o
- .debug_macro   0x000000000004268f      0x31a Src/syscalls.o
- .debug_macro   0x00000000000429a9      0x105 Src/syscalls.o
- .debug_macro   0x0000000000042aae       0x16 Src/syscalls.o
- .debug_macro   0x0000000000042ac4       0x10 Src/syscalls.o
- .debug_macro   0x0000000000042ad4       0x43 Src/syscalls.o
- .debug_macro   0x0000000000042b17      0x201 Src/system_stm32f4xx.o
- .debug_macro   0x0000000000042d18      0x3b8 Src/fpga_buf/fpga_commander.o
- .debug_macro   0x00000000000430d0       0x10 Src/fpga_buf/fpga_commander.o
- .debug_macro   0x00000000000430e0      0x6f5 Src/modem/gsm.o
- .debug_macro   0x00000000000437d5       0x5e Src/modem/gsm.o
- .debug_macro   0x0000000000043833      0x6cd Src/modem/gsmLLR.o
- .debug_macro   0x0000000000043f00      0x407 Src/modem/gsmLLR2.o
- .debug_macro   0x0000000000044307       0x28 Src/modem/gsmLLR2.o
- .debug_macro   0x000000000004432f      0x9a6 Src/modem/gsmPPP.o
- .debug_macro   0x0000000000044cd5       0x88 Src/modem/gsmPPP.o
- .debug_macro   0x0000000000044d5d       0x4c Src/modem/gsmPPP.o
- .debug_macro   0x0000000000044da9       0x46 Src/modem/gsmPPP.o
- .debug_macro   0x0000000000044def     0x1388 Src/modem/gsmPPP.o
- .debug_macro   0x0000000000046177       0x28 Src/modem/gsmPPP.o
- .debug_macro   0x000000000004619f       0x10 Src/modem/gsmPPP.o
- .debug_macro   0x00000000000461af       0x2e Src/modem/gsmPPP.o
- .debug_macro   0x00000000000461dd       0x4c Src/modem/gsmPPP.o
- .debug_macro   0x0000000000046229      0x3bc Src/uart/uart_custom.o
+ .debug_macro   0x00000000000032e8       0x3a Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x0000000000003322       0x34 Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x0000000000003356       0x70 Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x00000000000033c6       0x34 Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x00000000000033fa       0x10 Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x000000000000340a       0x34 Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x000000000000343e       0x28 Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x0000000000003466      0x10c Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x0000000000003572      0x15a Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x00000000000036cc       0xbb Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x0000000000003787       0x16 Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x000000000000379d       0x26 Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x00000000000037c3      0x4da Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x0000000000003c9d       0xb5 Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x0000000000003d52       0xaa Common/AWS/Src/aws_network_st_wrapper.o
+ .debug_macro   0x0000000000003dfc      0x6b2 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000044ae       0x16 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000044c4       0x97 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000000455b       0xfd Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000004658       0x16 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000000466e      0x19c Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000000480a       0x32 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000000483c       0x28 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000004864       0x1c Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000004880       0x22 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000048a2       0xd9 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000000497b     0x102d Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000059a8      0x11f Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000005ac7    0x17f81 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000001da48       0x43 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000001da8b     0x3644 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000210cf       0x54 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000021123      0xca5 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000021dc8      0x9fe Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000227c6       0xed Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000228b3      0x117 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000229ca      0x157 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000022b21       0x27 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000022b48      0x287 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000022dcf       0x5f Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000022e2e      0x236 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000023064       0x22 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000023086      0x132 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000231b8      0x41d Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000235d5       0x2e Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000023603      0x11a Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000002371d       0xe2 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000237ff       0x89 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000023888       0xa4 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000002392c      0x31a Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000023c46      0x405 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000002404b       0xe4 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000002412f      0x87d Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000249ac       0x47 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x00000000000249f3      0x287 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000024c7a      0x134 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000024dae       0x58 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000024e06       0x22 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000024e28       0x94 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000024ebc       0x1e Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000024eda       0x40 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000024f1a       0x22 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000024f3c       0x34 Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x0000000000024f70      0x10c Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+ .debug_macro   0x000000000002507c      0x22f Common/AWS/Src/aws_timer.o
+ .debug_macro   0x00000000000252ab       0x56 Common/AWS/Src/aws_timer.o
+ .debug_macro   0x0000000000025301       0x51 Common/AWS/Src/aws_timer.o
+ .debug_macro   0x0000000000025352       0xdf Common/AWS/Src/aws_timer.o
+ .debug_macro   0x0000000000025431       0x5a Common/AWS/Src/aws_timer.o
+ .debug_macro   0x000000000002548b      0x4a2 Common/AWS/Src/cloud.o
+ .debug_macro   0x000000000002592d       0x28 Common/AWS/Src/cloud.o
+ .debug_macro   0x0000000000025955       0x34 Common/AWS/Src/cloud.o
+ .debug_macro   0x0000000000025989       0x2e Common/AWS/Src/cloud.o
+ .debug_macro   0x00000000000259b7       0x40 Common/AWS/Src/cloud.o
+ .debug_macro   0x00000000000259f7      0x2ba Common/AWS/Src/entropy_hardware_poll.o
+ .debug_macro   0x0000000000025cb1      0x490 Common/AWS/Src/firewall.o
+ .debug_macro   0x0000000000026141       0x58 Common/AWS/Src/firewall.o
+ .debug_macro   0x0000000000026199       0x70 Common/AWS/Src/firewall.o
+ .debug_macro   0x0000000000026209       0x16 Common/AWS/Src/firewall.o
+ .debug_macro   0x000000000002621f      0x3c3 Common/AWS/Src/iot_flash_config.o
+ .debug_macro   0x00000000000265e2      0x5d5 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000026bb7      0x17b Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000026d32       0x16 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000026d48       0x10 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000026d58       0x52 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000026daa       0x11 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000026dbb       0x10 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000026dcb      0x460 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x000000000002722b       0x12 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x000000000002723d       0x4a Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027287       0x66 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x00000000000272ed      0x5f1 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x00000000000278de       0x10 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x00000000000278ee       0x16 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027904       0x87 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x000000000002798b       0x9a Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027a25       0x1c Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027a41       0x90 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027ad1       0x10 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027ae1       0x6a Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027b4b      0x18b Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027cd6      0x14d Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027e23       0x5b Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027e7e       0x10 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027e8e       0x10 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027e9e       0x3f Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027edd       0x2b Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027f08       0x22 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000027f2a      0x143 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x000000000002806d       0x81 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x00000000000280ee       0x16 Common/AWS/Src/lwip_net.o
+ .debug_macro   0x0000000000028104       0x5a Common/AWS/Src/lwip_net.o
+ .debug_macro   0x000000000002815e      0x2fe Common/AWS/Src/mbedtls_net.o
+ .debug_macro   0x000000000002845c       0x2e Common/AWS/Src/mbedtls_net.o
+ .debug_macro   0x000000000002848a      0x70b Common/AWS/Src/net.o
+ .debug_macro   0x0000000000028b95      0x10e Common/AWS/Src/net.o
+ .debug_macro   0x0000000000028ca3       0x8d Common/AWS/Src/net.o
+ .debug_macro   0x0000000000028d30       0x10 Common/AWS/Src/net.o
+ .debug_macro   0x0000000000028d40       0x32 Common/AWS/Src/net.o
+ .debug_macro   0x0000000000028d72      0x73f Common/AWS/Src/net_tcp_lwip.o
+ .debug_macro   0x00000000000294b1       0xfb Common/AWS/Src/net_tcp_lwip.o
+ .debug_macro   0x00000000000295ac      0x320 Common/AWS/Src/net_tcp_lwip.o
+ .debug_macro   0x00000000000298cc      0x36e Common/AWS/Src/net_tcp_lwip.o
+ .debug_macro   0x0000000000029c3a       0xa4 Common/AWS/Src/net_tcp_lwip.o
+ .debug_macro   0x0000000000029cde      0x70b Common/AWS/Src/net_tls_mbedtls.o
+ .debug_macro   0x000000000002a3e9      0x35c Common/AWS/Src/sensors_data.o
+ .debug_macro   0x000000000002a745      0x39a Common/AWS/Src/timedate.o
+ .debug_macro   0x000000000002aadf      0x25b Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_macro   0x000000000002ad3a      0x1fb Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_macro   0x000000000002af35      0x1fb Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.o
+ .debug_macro   0x000000000002b130      0x201 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
+ .debug_macro   0x000000000002b331      0x231 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_macro   0x000000000002b562      0x21f Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_macro   0x000000000002b781      0x1fb Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
+ .debug_macro   0x000000000002b97c      0x201 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.o
+ .debug_macro   0x000000000002bb7d      0x1fc Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
+ .debug_macro   0x000000000002bd79      0x1fc Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+ .debug_macro   0x000000000002bf75      0x1fb Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
+ .debug_macro   0x000000000002c170      0x1fc Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+ .debug_macro   0x000000000002c36c      0x449 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
+ .debug_macro   0x000000000002c7b5      0x44b Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+ .debug_macro   0x000000000002cc00       0x1c Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+ .debug_macro   0x000000000002cc1c      0x449 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+ .debug_macro   0x000000000002d065      0x44d Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
+ .debug_macro   0x000000000002d4b2      0x44d Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
+ .debug_macro   0x000000000002d8ff      0x44d Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
+ .debug_macro   0x000000000002dd4c      0x1ed Middlewares/Third_Party/FreeRTOS/list.o
+ .debug_macro   0x000000000002df39      0x268 Middlewares/Third_Party/FreeRTOS/queue.o
+ .debug_macro   0x000000000002e1a1      0x2d1 Middlewares/Third_Party/FreeRTOS/tasks.o
+ .debug_macro   0x000000000002e472       0x10 Middlewares/Third_Party/FreeRTOS/tasks.o
+ .debug_macro   0x000000000002e482      0x242 Middlewares/Third_Party/FreeRTOS/timers.o
+ .debug_macro   0x000000000002e6c4       0x97 Middlewares/Third_Party/FreeRTOS/timers.o
+ .debug_macro   0x000000000002e75b      0x2a3 Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F/port.o
+ .debug_macro   0x000000000002e9fe      0x214 Middlewares/Third_Party/FreeRTOS/portable/MemMang/heap_4.o
+ .debug_macro   0x000000000002ec12      0x320 Middlewares/Third_Party/lwip/src/api/err.o
+ .debug_macro   0x000000000002ef32      0x40f Middlewares/Third_Party/lwip/src/api/netdb.o
+ .debug_macro   0x000000000002f341       0xf5 Middlewares/Third_Party/lwip/src/api/netdb.o
+ .debug_macro   0x000000000002f436       0x3a Middlewares/Third_Party/lwip/src/api/netdb.o
+ .debug_macro   0x000000000002f470      0x101 Middlewares/Third_Party/lwip/src/api/netdb.o
+ .debug_macro   0x000000000002f571       0x2e Middlewares/Third_Party/lwip/src/api/netdb.o
+ .debug_macro   0x000000000002f59f      0x5cc Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002fb6b       0x8e Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002fbf9       0x28 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002fc21       0x2e Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002fc4f       0xe3 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002fd32       0x70 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002fda2       0xdd Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002fe7f       0x10 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002fe8f       0x31 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002fec0       0x10 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002fed0       0x46 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002ff16       0x29 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002ff3f       0x28 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002ff67       0x70 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x000000000002ffd7      0x19e Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x0000000000030175       0x22 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_macro   0x0000000000030197      0x451 Middlewares/Third_Party/lwip/src/api/tcpip.o
+ .debug_macro   0x00000000000305e8       0x5e Middlewares/Third_Party/lwip/src/api/tcpip.o
+ .debug_macro   0x0000000000030646       0x16 Middlewares/Third_Party/lwip/src/api/tcpip.o
+ .debug_macro   0x000000000003065c       0x16 Middlewares/Third_Party/lwip/src/api/tcpip.o
+ .debug_macro   0x0000000000030672       0x10 Middlewares/Third_Party/lwip/src/api/tcpip.o
+ .debug_macro   0x0000000000030682      0x25a Middlewares/Third_Party/lwip/src/core/def.o
+ .debug_macro   0x00000000000308dc      0x3ba Middlewares/Third_Party/lwip/src/core/dns.o
+ .debug_macro   0x0000000000030c96      0x2b3 Middlewares/Third_Party/lwip/src/core/inet_chksum.o
+ .debug_macro   0x0000000000030f49       0x16 Middlewares/Third_Party/lwip/src/core/inet_chksum.o
+ .debug_macro   0x0000000000030f5f      0x593 Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x00000000000314f2       0x40 Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x0000000000031532      0x19b Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x00000000000316cd      0x10d Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x00000000000317da       0x8f Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x0000000000031869       0xbe Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x0000000000031927       0x4c Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x0000000000031973       0x64 Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x00000000000319d7       0x64 Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x0000000000031a3b       0x7d Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x0000000000031ab8       0xba Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x0000000000031b72       0x6a Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x0000000000031bdc      0x151 Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_macro   0x0000000000031d2d      0x30f Middlewares/Third_Party/lwip/src/core/ip.o
+ .debug_macro   0x000000000003203c      0x3c4 Middlewares/Third_Party/lwip/src/core/mem.o
+ .debug_macro   0x0000000000032400      0x555 Middlewares/Third_Party/lwip/src/core/memp.o
+ .debug_macro   0x0000000000032955       0x25 Middlewares/Third_Party/lwip/src/core/memp.o
+ .debug_macro   0x000000000003297a      0x107 Middlewares/Third_Party/lwip/src/core/memp.o
+ .debug_macro   0x0000000000032a81       0x23 Middlewares/Third_Party/lwip/src/core/memp.o
+ .debug_macro   0x0000000000032aa4       0xaa Middlewares/Third_Party/lwip/src/core/memp.o
+ .debug_macro   0x0000000000032b4e      0x4a5 Middlewares/Third_Party/lwip/src/core/netif.o
+ .debug_macro   0x0000000000032ff3       0xc0 Middlewares/Third_Party/lwip/src/core/netif.o
+ .debug_macro   0x00000000000330b3      0x39b Middlewares/Third_Party/lwip/src/core/pbuf.o
+ .debug_macro   0x000000000003344e      0x2a5 Middlewares/Third_Party/lwip/src/core/stats.o
+ .debug_macro   0x00000000000336f3      0x394 Middlewares/Third_Party/lwip/src/core/tcp.o
+ .debug_macro   0x0000000000033a87       0x8d Middlewares/Third_Party/lwip/src/core/tcp.o
+ .debug_macro   0x0000000000033b14      0x368 Middlewares/Third_Party/lwip/src/core/tcp_in.o
+ .debug_macro   0x0000000000033e7c       0x1c Middlewares/Third_Party/lwip/src/core/tcp_in.o
+ .debug_macro   0x0000000000033e98      0x38c Middlewares/Third_Party/lwip/src/core/tcp_out.o
+ .debug_macro   0x0000000000034224      0x4b0 Middlewares/Third_Party/lwip/src/core/timeouts.o
+ .debug_macro   0x00000000000346d4       0x1c Middlewares/Third_Party/lwip/src/core/timeouts.o
+ .debug_macro   0x00000000000346f0      0x39e Middlewares/Third_Party/lwip/src/core/udp.o
+ .debug_macro   0x0000000000034a8e      0x381 Middlewares/Third_Party/lwip/src/core/ipv4/etharp.o
+ .debug_macro   0x0000000000034e0f      0x185 Middlewares/Third_Party/lwip/src/core/ipv4/etharp.o
+ .debug_macro   0x0000000000034f94      0x359 Middlewares/Third_Party/lwip/src/core/ipv4/icmp.o
+ .debug_macro   0x00000000000352ed      0x3c9 Middlewares/Third_Party/lwip/src/core/ipv4/ip4.o
+ .debug_macro   0x00000000000356b6       0xe3 Middlewares/Third_Party/lwip/src/core/ipv4/ip4.o
+ .debug_macro   0x0000000000035799      0x16a Middlewares/Third_Party/lwip/src/core/ipv4/ip4.o
+ .debug_macro   0x0000000000035903      0x2f3 Middlewares/Third_Party/lwip/src/core/ipv4/ip4_addr.o
+ .debug_macro   0x0000000000035bf6      0x36e Middlewares/Third_Party/lwip/src/netif/ethernet.o
+ .debug_macro   0x0000000000035f64      0x4fa Middlewares/Third_Party/lwip/src/netif/ppp/auth.o
+ .debug_macro   0x000000000003645e      0x195 Middlewares/Third_Party/lwip/src/netif/ppp/auth.o
+ .debug_macro   0x00000000000365f3       0x77 Middlewares/Third_Party/lwip/src/netif/ppp/auth.o
+ .debug_macro   0x000000000003666a      0x54d Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
+ .debug_macro   0x0000000000036bb7       0x28 Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
+ .debug_macro   0x0000000000036bdf       0x28 Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
+ .debug_macro   0x0000000000036c07       0x28 Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
+ .debug_macro   0x0000000000036c2f       0x22 Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
+ .debug_macro   0x0000000000036c51       0x22 Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
+ .debug_macro   0x0000000000036c73      0x51c Middlewares/Third_Party/lwip/src/netif/ppp/chap-new.o
+ .debug_macro   0x000000000003718f      0x4f0 Middlewares/Third_Party/lwip/src/netif/ppp/fsm.o
+ .debug_macro   0x000000000003767f      0x5a4 Middlewares/Third_Party/lwip/src/netif/ppp/ipcp.o
+ .debug_macro   0x0000000000037c23      0x5fe Middlewares/Third_Party/lwip/src/netif/ppp/lcp.o
+ .debug_macro   0x0000000000038221      0x533 Middlewares/Third_Party/lwip/src/netif/ppp/magic.o
+ .debug_macro   0x0000000000038754      0x554 Middlewares/Third_Party/lwip/src/netif/ppp/ppp.o
+ .debug_macro   0x0000000000038ca8      0x56a Middlewares/Third_Party/lwip/src/netif/ppp/pppos.o
+ .debug_macro   0x0000000000039212      0x4ea Middlewares/Third_Party/lwip/src/netif/ppp/upap.o
+ .debug_macro   0x00000000000396fc      0x4fe Middlewares/Third_Party/lwip/src/netif/ppp/utils.o
+ .debug_macro   0x0000000000039bfa       0x9c Middlewares/Third_Party/lwip/src/netif/ppp/utils.o
+ .debug_macro   0x0000000000039c96      0x512 Middlewares/Third_Party/lwip/src/netif/ppp/vj.o
+ .debug_macro   0x000000000003a1a8      0x2b1 Middlewares/Third_Party/lwip/src/netif/ppp/polarssl/md5.o
+ .debug_macro   0x000000000003a459      0x361 Middlewares/Third_Party/lwip/src/portable/arch/sys_arch.o
+ .debug_macro   0x000000000003a7ba      0x33e Middlewares/Third_Party/mbedtls/library/aes.o
+ .debug_macro   0x000000000003aaf8      0x27d Middlewares/Third_Party/mbedtls/library/asn1parse.o
+ .debug_macro   0x000000000003ad75      0x276 Middlewares/Third_Party/mbedtls/library/asn1write.o
+ .debug_macro   0x000000000003afeb      0x259 Middlewares/Third_Party/mbedtls/library/base64.o
+ .debug_macro   0x000000000003b244       0x10 Middlewares/Third_Party/mbedtls/library/base64.o
+ .debug_macro   0x000000000003b254      0x2c5 Middlewares/Third_Party/mbedtls/library/bignum.o
+ .debug_macro   0x000000000003b519       0x26 Middlewares/Third_Party/mbedtls/library/bignum.o
+ .debug_macro   0x000000000003b53f      0x28d Middlewares/Third_Party/mbedtls/library/cipher.o
+ .debug_macro   0x000000000003b7cc       0x22 Middlewares/Third_Party/mbedtls/library/cipher.o
+ .debug_macro   0x000000000003b7ee      0x277 Middlewares/Third_Party/mbedtls/library/cipher_wrap.o
+ .debug_macro   0x000000000003ba65       0x28 Middlewares/Third_Party/mbedtls/library/cipher_wrap.o
+ .debug_macro   0x000000000003ba8d      0x27c Middlewares/Third_Party/mbedtls/library/ctr_drbg.o
+ .debug_macro   0x000000000003bd09      0x33c Middlewares/Third_Party/mbedtls/library/debug.o
+ .debug_macro   0x000000000003c045      0x1b8 Middlewares/Third_Party/mbedtls/library/ecdh.o
+ .debug_macro   0x000000000003c1fd       0x85 Middlewares/Third_Party/mbedtls/library/ecdh.o
+ .debug_macro   0x000000000003c282      0x2e3 Middlewares/Third_Party/mbedtls/library/ecdsa.o
+ .debug_macro   0x000000000003c565      0x2da Middlewares/Third_Party/mbedtls/library/ecp.o
+ .debug_macro   0x000000000003c83f       0x16 Middlewares/Third_Party/mbedtls/library/ecp.o
+ .debug_macro   0x000000000003c855      0x23d Middlewares/Third_Party/mbedtls/library/ecp_curves.o
+ .debug_macro   0x000000000003ca92      0x298 Middlewares/Third_Party/mbedtls/library/entropy.o
+ .debug_macro   0x000000000003cd2a       0x1c Middlewares/Third_Party/mbedtls/library/entropy.o
+ .debug_macro   0x000000000003cd46      0x2ab Middlewares/Third_Party/mbedtls/library/gcm.o
+ .debug_macro   0x000000000003cff1      0x252 Middlewares/Third_Party/mbedtls/library/md.o
+ .debug_macro   0x000000000003d243      0x267 Middlewares/Third_Party/mbedtls/library/md_wrap.o
+ .debug_macro   0x000000000003d4aa       0x10 Middlewares/Third_Party/mbedtls/library/md_wrap.o
+ .debug_macro   0x000000000003d4ba      0x31f Middlewares/Third_Party/mbedtls/library/oid.o
+ .debug_macro   0x000000000003d7d9      0x1fa Middlewares/Third_Party/mbedtls/library/oid.o
+ .debug_macro   0x000000000003d9d3      0x453 Middlewares/Third_Party/mbedtls/library/oid.o
+ .debug_macro   0x000000000003de26      0x2ca Middlewares/Third_Party/mbedtls/library/pem.o
+ .debug_macro   0x000000000003e0f0       0x3a Middlewares/Third_Party/mbedtls/library/pem.o
+ .debug_macro   0x000000000003e12a       0x22 Middlewares/Third_Party/mbedtls/library/pem.o
+ .debug_macro   0x000000000003e14c      0x169 Middlewares/Third_Party/mbedtls/library/pk.o
+ .debug_macro   0x000000000003e2b5      0x2c3 Middlewares/Third_Party/mbedtls/library/pk_wrap.o
+ .debug_macro   0x000000000003e578      0x322 Middlewares/Third_Party/mbedtls/library/pkparse.o
+ .debug_macro   0x000000000003e89a      0x21b Middlewares/Third_Party/mbedtls/library/platform.o
+ .debug_macro   0x000000000003eab5      0x258 Middlewares/Third_Party/mbedtls/library/platform_util.o
+ .debug_macro   0x000000000003ed0d       0x16 Middlewares/Third_Party/mbedtls/library/platform_util.o
+ .debug_macro   0x000000000003ed23       0x3d Middlewares/Third_Party/mbedtls/library/platform_util.o
+ .debug_macro   0x000000000003ed60      0x129 Middlewares/Third_Party/mbedtls/library/platform_util.o
+ .debug_macro   0x000000000003ee89       0x35 Middlewares/Third_Party/mbedtls/library/platform_util.o
+ .debug_macro   0x000000000003eebe       0x1c Middlewares/Third_Party/mbedtls/library/platform_util.o
+ .debug_macro   0x000000000003eeda      0x35c Middlewares/Third_Party/mbedtls/library/rsa.o
+ .debug_macro   0x000000000003f236      0x119 Middlewares/Third_Party/mbedtls/library/rsa_internal.o
+ .debug_macro   0x000000000003f34f      0x2f3 Middlewares/Third_Party/mbedtls/library/sha1.o
+ .debug_macro   0x000000000003f642      0x2c4 Middlewares/Third_Party/mbedtls/library/sha256.o
+ .debug_macro   0x000000000003f906      0x32f Middlewares/Third_Party/mbedtls/library/ssl_ciphersuites.o
+ .debug_macro   0x000000000003fc35      0x366 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
+ .debug_macro   0x000000000003ff9b       0xb3 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
+ .debug_macro   0x000000000004004e      0x3ac Middlewares/Third_Party/mbedtls/library/ssl_tls.o
+ .debug_macro   0x00000000000403fa      0x33b Middlewares/Third_Party/mbedtls/library/x509.o
+ .debug_macro   0x0000000000040735      0x31a Middlewares/Third_Party/mbedtls/library/x509_crl.o
+ .debug_macro   0x0000000000040a4f      0x344 Middlewares/Third_Party/mbedtls/library/x509_crt.o
+ .debug_macro   0x0000000000040d93      0x342 Src/debug_print.o
+ .debug_macro   0x00000000000410d5      0x6c8 Src/main.o
+ .debug_macro   0x000000000004179d       0x16 Src/main.o
+ .debug_macro   0x00000000000417b3       0x82 Src/main.o
+ .debug_macro   0x0000000000041835       0x22 Src/main.o
+ .debug_macro   0x0000000000041857       0x22 Src/main.o
+ .debug_macro   0x0000000000041879      0x421 Src/other.o
+ .debug_macro   0x0000000000041c9a      0x213 Src/stm32f4xx_hal_msp.o
+ .debug_macro   0x0000000000041ead      0x1fb Src/stm32f4xx_hal_timebase_tim.o
+ .debug_macro   0x00000000000420a8      0x21d Src/stm32f4xx_it.o
+ .debug_macro   0x00000000000422c5      0x2db Src/syscalls.o
+ .debug_macro   0x00000000000425a0       0xf5 Src/syscalls.o
+ .debug_macro   0x0000000000042695      0x31a Src/syscalls.o
+ .debug_macro   0x00000000000429af      0x105 Src/syscalls.o
+ .debug_macro   0x0000000000042ab4       0x16 Src/syscalls.o
+ .debug_macro   0x0000000000042aca       0x10 Src/syscalls.o
+ .debug_macro   0x0000000000042ada       0x43 Src/syscalls.o
+ .debug_macro   0x0000000000042b1d      0x201 Src/system_stm32f4xx.o
+ .debug_macro   0x0000000000042d1e      0x3b8 Src/fpga_buf/fpga_commander.o
+ .debug_macro   0x00000000000430d6       0x10 Src/fpga_buf/fpga_commander.o
+ .debug_macro   0x00000000000430e6      0x6f5 Src/modem/gsm.o
+ .debug_macro   0x00000000000437db       0x5e Src/modem/gsm.o
+ .debug_macro   0x0000000000043839      0x6cd Src/modem/gsmLLR.o
+ .debug_macro   0x0000000000043f06      0x407 Src/modem/gsmLLR2.o
+ .debug_macro   0x000000000004430d       0x28 Src/modem/gsmLLR2.o
+ .debug_macro   0x0000000000044335      0x9a6 Src/modem/gsmPPP.o
+ .debug_macro   0x0000000000044cdb       0x88 Src/modem/gsmPPP.o
+ .debug_macro   0x0000000000044d63       0x4c Src/modem/gsmPPP.o
+ .debug_macro   0x0000000000044daf       0x46 Src/modem/gsmPPP.o
+ .debug_macro   0x0000000000044df5     0x1388 Src/modem/gsmPPP.o
+ .debug_macro   0x000000000004617d       0x28 Src/modem/gsmPPP.o
+ .debug_macro   0x00000000000461a5       0x10 Src/modem/gsmPPP.o
+ .debug_macro   0x00000000000461b5       0x2e Src/modem/gsmPPP.o
+ .debug_macro   0x00000000000461e3       0x4c Src/modem/gsmPPP.o
+ .debug_macro   0x000000000004622f      0x3bc Src/uart/uart_custom.o
 
 .debug_line     0x0000000000000000    0x5ffe5
  .debug_line    0x0000000000000000      0xcd4 Common/AWS/Src/aws_network_st_wrapper.o
@@ -38635,256 +38635,256 @@ OUTPUT(stm32f429_amazon.elf elf32-littlearm)
  .debug_line    0x000000000005f403      0xb61 Src/uart/uart_custom.o
  .debug_line    0x000000000005ff64       0x81 Startup/startup_stm32f429nihx.o
 
-.debug_str      0x0000000000000000   0x123608
- .debug_str     0x0000000000000000    0x15611 Common/AWS/Src/aws_network_st_wrapper.o
-                                      0x15bcd (size before relaxing)
- .debug_str     0x0000000000015611    0xd41fc Common/AWS/Src/aws_subscribe_publish_sensor_values.o
-                                      0xe9c98 (size before relaxing)
- .debug_str     0x00000000000e980d       0xde Common/AWS/Src/aws_timer.o
+.debug_str      0x0000000000000000   0x123623
+ .debug_str     0x0000000000000000    0x1562c Common/AWS/Src/aws_network_st_wrapper.o
+                                      0x15be8 (size before relaxing)
+ .debug_str     0x000000000001562c    0xd41fc Common/AWS/Src/aws_subscribe_publish_sensor_values.o
+                                      0xe9cb3 (size before relaxing)
+ .debug_str     0x00000000000e9828       0xde Common/AWS/Src/aws_timer.o
                                       0xd6018 (size before relaxing)
- .debug_str     0x00000000000e98eb      0x64c Common/AWS/Src/cloud.o
+ .debug_str     0x00000000000e9906      0x64c Common/AWS/Src/cloud.o
                                       0xdf93d (size before relaxing)
- .debug_str     0x00000000000e9f37       0x52 Common/AWS/Src/entropy_hardware_poll.o
+ .debug_str     0x00000000000e9f52       0x52 Common/AWS/Src/entropy_hardware_poll.o
                                       0xd8f8e (size before relaxing)
- .debug_str     0x00000000000e9f89      0x4e8 Common/AWS/Src/firewall.o
+ .debug_str     0x00000000000e9fa4      0x4e8 Common/AWS/Src/firewall.o
                                       0xdb8f7 (size before relaxing)
- .debug_str     0x00000000000ea471      0x203 Common/AWS/Src/iot_flash_config.o
+ .debug_str     0x00000000000ea48c      0x203 Common/AWS/Src/iot_flash_config.o
                                       0xdb0a1 (size before relaxing)
- .debug_str     0x00000000000ea674     0x7be2 Common/AWS/Src/lwip_net.o
+ .debug_str     0x00000000000ea68f     0x7be2 Common/AWS/Src/lwip_net.o
                                       0xe5390 (size before relaxing)
- .debug_str     0x00000000000f2256       0x65 Common/AWS/Src/mbedtls_net.o
+ .debug_str     0x00000000000f2271       0x65 Common/AWS/Src/mbedtls_net.o
                                        0xeae4 (size before relaxing)
- .debug_str     0x00000000000f22bb      0x476 Common/AWS/Src/net.o
-                                      0xec46b (size before relaxing)
- .debug_str     0x00000000000f2731     0x212e Common/AWS/Src/net_tcp_lwip.o
-                                      0xee4fe (size before relaxing)
- .debug_str     0x00000000000f485f       0xc8 Common/AWS/Src/net_tls_mbedtls.o
-                                      0xec480 (size before relaxing)
- .debug_str     0x00000000000f4927       0xca Common/AWS/Src/sensors_data.o
+ .debug_str     0x00000000000f22d6      0x476 Common/AWS/Src/net.o
+                                      0xec486 (size before relaxing)
+ .debug_str     0x00000000000f274c     0x212e Common/AWS/Src/net_tcp_lwip.o
+                                      0xee519 (size before relaxing)
+ .debug_str     0x00000000000f487a       0xc8 Common/AWS/Src/net_tls_mbedtls.o
+                                      0xec49b (size before relaxing)
+ .debug_str     0x00000000000f4942       0xca Common/AWS/Src/sensors_data.o
                                       0xd9739 (size before relaxing)
- .debug_str     0x00000000000f49f1      0x34c Common/AWS/Src/timedate.o
+ .debug_str     0x00000000000f4a0c      0x34c Common/AWS/Src/timedate.o
                                       0xd9ebc (size before relaxing)
- .debug_str     0x00000000000f4d3d      0xc57 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_str     0x00000000000f4d58      0xc57 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
                                       0xd6a72 (size before relaxing)
- .debug_str     0x00000000000f5994      0x3e0 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_str     0x00000000000f59af      0x3e0 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
                                       0xd679f (size before relaxing)
- .debug_str     0x00000000000f5d74      0x15e Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.o
+ .debug_str     0x00000000000f5d8f      0x15e Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.o
                                       0xd5ec4 (size before relaxing)
- .debug_str     0x00000000000f5ed2      0x4f3 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
+ .debug_str     0x00000000000f5eed      0x4f3 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
                                       0xd6294 (size before relaxing)
- .debug_str     0x00000000000f63c5      0x275 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_str     0x00000000000f63e0      0x275 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
                                       0xd60d1 (size before relaxing)
- .debug_str     0x00000000000f663a      0x379 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_str     0x00000000000f6655      0x379 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
                                       0xd6274 (size before relaxing)
- .debug_str     0x00000000000f69b3      0x213 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
+ .debug_str     0x00000000000f69ce      0x213 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
                                       0xd6070 (size before relaxing)
- .debug_str     0x00000000000f6bc6      0x197 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.o
+ .debug_str     0x00000000000f6be1      0x197 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.o
                                       0xd5f95 (size before relaxing)
- .debug_str     0x00000000000f6d5d      0x232 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
+ .debug_str     0x00000000000f6d78      0x232 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.o
                                       0xd622c (size before relaxing)
- .debug_str     0x00000000000f6f8f      0xf10 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+ .debug_str     0x00000000000f6faa      0xf10 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
                                       0xd6f8b (size before relaxing)
- .debug_str     0x00000000000f7e9f      0x4ec Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
+ .debug_str     0x00000000000f7eba      0x4ec Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
                                       0xd678b (size before relaxing)
- .debug_str     0x00000000000f838b      0x6d3 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+ .debug_str     0x00000000000f83a6      0x6d3 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
                                       0xd66b2 (size before relaxing)
- .debug_str     0x00000000000f8a5e      0x27d Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
-                                      0x12a2f (size before relaxing)
- .debug_str     0x00000000000f8cdb      0x5f7 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
-                                      0x12da7 (size before relaxing)
- .debug_str     0x00000000000f92d2      0x280 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
-                                      0x12c76 (size before relaxing)
- .debug_str     0x00000000000f9552      0x195 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
-                                      0x12b31 (size before relaxing)
- .debug_str     0x00000000000f96e7      0x1ff Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
-                                      0x12b7a (size before relaxing)
- .debug_str     0x00000000000f98e6       0xf5 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
-                                      0x129f6 (size before relaxing)
- .debug_str     0x00000000000f99db      0x132 Middlewares/Third_Party/FreeRTOS/list.o
+ .debug_str     0x00000000000f8a79      0x27d Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client.o
+                                      0x12a4a (size before relaxing)
+ .debug_str     0x00000000000f8cf6      0x5f7 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_common_internal.o
+                                      0x12dc2 (size before relaxing)
+ .debug_str     0x00000000000f92ed      0x280 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_connect.o
+                                      0x12c91 (size before relaxing)
+ .debug_str     0x00000000000f956d      0x195 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_publish.o
+                                      0x12b4c (size before relaxing)
+ .debug_str     0x00000000000f9702      0x1ff Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_subscribe.o
+                                      0x12b95 (size before relaxing)
+ .debug_str     0x00000000000f9901       0xf5 Middlewares/Third_Party/AWS/src/aws_iot_mqtt_client_yield.o
+                                      0x12a11 (size before relaxing)
+ .debug_str     0x00000000000f99f6      0x132 Middlewares/Third_Party/FreeRTOS/list.o
                                        0xae51 (size before relaxing)
- .debug_str     0x00000000000f9b0d      0x9ad Middlewares/Third_Party/FreeRTOS/queue.o
+ .debug_str     0x00000000000f9b28      0x9ad Middlewares/Third_Party/FreeRTOS/queue.o
                                        0xc6da (size before relaxing)
- .debug_str     0x00000000000fa4ba     0x1a0c Middlewares/Third_Party/FreeRTOS/tasks.o
+ .debug_str     0x00000000000fa4d5     0x1a0c Middlewares/Third_Party/FreeRTOS/tasks.o
                                        0xd0bc (size before relaxing)
- .debug_str     0x00000000000fbec6      0x558 Middlewares/Third_Party/FreeRTOS/timers.o
+ .debug_str     0x00000000000fbee1      0x558 Middlewares/Third_Party/FreeRTOS/timers.o
                                        0xcbf0 (size before relaxing)
- .debug_str     0x00000000000fc41e      0x730 Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F/port.o
+ .debug_str     0x00000000000fc439      0x730 Middlewares/Third_Party/FreeRTOS/portable/GCC/ARM_CM4F/port.o
                                        0xbad0 (size before relaxing)
- .debug_str     0x00000000000fcb4e      0x267 Middlewares/Third_Party/FreeRTOS/portable/MemMang/heap_4.o
+ .debug_str     0x00000000000fcb69      0x267 Middlewares/Third_Party/FreeRTOS/portable/MemMang/heap_4.o
                                        0xb642 (size before relaxing)
- .debug_str     0x00000000000fcdb5       0x65 Middlewares/Third_Party/lwip/src/api/err.o
+ .debug_str     0x00000000000fcdd0       0x65 Middlewares/Third_Party/lwip/src/api/err.o
                                       0x10a3a (size before relaxing)
- .debug_str     0x00000000000fce1a      0xd36 Middlewares/Third_Party/lwip/src/api/netdb.o
+ .debug_str     0x00000000000fce35      0xd36 Middlewares/Third_Party/lwip/src/api/netdb.o
                                       0x1593a (size before relaxing)
- .debug_str     0x00000000000fdb50     0x44f1 Middlewares/Third_Party/lwip/src/api/sockets.o
+ .debug_str     0x00000000000fdb6b     0x44f1 Middlewares/Third_Party/lwip/src/api/sockets.o
                                       0x1a0e5 (size before relaxing)
- .debug_str     0x0000000000102041      0x70f Middlewares/Third_Party/lwip/src/api/tcpip.o
+ .debug_str     0x000000000010205c      0x70f Middlewares/Third_Party/lwip/src/api/tcpip.o
                                       0x1497e (size before relaxing)
- .debug_str     0x0000000000102750       0xbe Middlewares/Third_Party/lwip/src/core/def.o
+ .debug_str     0x000000000010276b       0xbe Middlewares/Third_Party/lwip/src/core/def.o
                                        0xb021 (size before relaxing)
- .debug_str     0x000000000010280e      0x87b Middlewares/Third_Party/lwip/src/core/dns.o
+ .debug_str     0x0000000000102829      0x87b Middlewares/Third_Party/lwip/src/core/dns.o
                                        0xf3b6 (size before relaxing)
- .debug_str     0x0000000000103089      0x1e8 Middlewares/Third_Party/lwip/src/core/inet_chksum.o
+ .debug_str     0x00000000001030a4      0x1e8 Middlewares/Third_Party/lwip/src/core/inet_chksum.o
                                        0xc9f8 (size before relaxing)
- .debug_str     0x0000000000103271     0x2700 Middlewares/Third_Party/lwip/src/core/init.o
+ .debug_str     0x000000000010328c     0x2700 Middlewares/Third_Party/lwip/src/core/init.o
                                       0x1b073 (size before relaxing)
- .debug_str     0x0000000000105971       0x2e Middlewares/Third_Party/lwip/src/core/ip.o
+ .debug_str     0x000000000010598c       0x2e Middlewares/Third_Party/lwip/src/core/ip.o
                                        0xe715 (size before relaxing)
- .debug_str     0x000000000010599f      0x244 Middlewares/Third_Party/lwip/src/core/mem.o
+ .debug_str     0x00000000001059ba      0x244 Middlewares/Third_Party/lwip/src/core/mem.o
                                       0x11693 (size before relaxing)
- .debug_str     0x0000000000105be3      0x527 Middlewares/Third_Party/lwip/src/core/memp.o
+ .debug_str     0x0000000000105bfe      0x527 Middlewares/Third_Party/lwip/src/core/memp.o
                                       0x19582 (size before relaxing)
- .debug_str     0x000000000010610a      0x6a1 Middlewares/Third_Party/lwip/src/core/netif.o
+ .debug_str     0x0000000000106125      0x6a1 Middlewares/Third_Party/lwip/src/core/netif.o
                                       0x16465 (size before relaxing)
- .debug_str     0x00000000001067ab      0x2f7 Middlewares/Third_Party/lwip/src/core/pbuf.o
+ .debug_str     0x00000000001067c6      0x2f7 Middlewares/Third_Party/lwip/src/core/pbuf.o
                                       0x11962 (size before relaxing)
- .debug_str     0x0000000000106aa2       0x95 Middlewares/Third_Party/lwip/src/core/stats.o
+ .debug_str     0x0000000000106abd       0x95 Middlewares/Third_Party/lwip/src/core/stats.o
                                        0xbe7b (size before relaxing)
- .debug_str     0x0000000000106b37      0x5af Middlewares/Third_Party/lwip/src/core/tcp.o
+ .debug_str     0x0000000000106b52      0x5af Middlewares/Third_Party/lwip/src/core/tcp.o
                                       0x10a77 (size before relaxing)
- .debug_str     0x00000000001070e6      0x1e1 Middlewares/Third_Party/lwip/src/core/tcp_in.o
+ .debug_str     0x0000000000107101      0x1e1 Middlewares/Third_Party/lwip/src/core/tcp_in.o
                                       0x1069e (size before relaxing)
- .debug_str     0x00000000001072c7      0x2c4 Middlewares/Third_Party/lwip/src/core/tcp_out.o
+ .debug_str     0x00000000001072e2      0x2c4 Middlewares/Third_Party/lwip/src/core/tcp_out.o
                                       0x10877 (size before relaxing)
- .debug_str     0x000000000010758b      0x174 Middlewares/Third_Party/lwip/src/core/timeouts.o
+ .debug_str     0x00000000001075a6      0x174 Middlewares/Third_Party/lwip/src/core/timeouts.o
                                       0x16115 (size before relaxing)
- .debug_str     0x00000000001076ff      0x2b7 Middlewares/Third_Party/lwip/src/core/udp.o
+ .debug_str     0x000000000010771a      0x2b7 Middlewares/Third_Party/lwip/src/core/udp.o
                                        0xf390 (size before relaxing)
- .debug_str     0x00000000001079b6      0x52e Middlewares/Third_Party/lwip/src/core/ipv4/etharp.o
+ .debug_str     0x00000000001079d1      0x52e Middlewares/Third_Party/lwip/src/core/ipv4/etharp.o
                                        0xecef (size before relaxing)
- .debug_str     0x0000000000107ee4       0xdb Middlewares/Third_Party/lwip/src/core/ipv4/icmp.o
+ .debug_str     0x0000000000107eff       0xdb Middlewares/Third_Party/lwip/src/core/ipv4/icmp.o
                                        0xeb1e (size before relaxing)
- .debug_str     0x0000000000107fbf      0x5a6 Middlewares/Third_Party/lwip/src/core/ipv4/ip4.o
+ .debug_str     0x0000000000107fda      0x5a6 Middlewares/Third_Party/lwip/src/core/ipv4/ip4.o
                                       0x10c71 (size before relaxing)
- .debug_str     0x0000000000108565      0x1eb Middlewares/Third_Party/lwip/src/core/ipv4/ip4_addr.o
+ .debug_str     0x0000000000108580      0x1eb Middlewares/Third_Party/lwip/src/core/ipv4/ip4_addr.o
                                        0xdc7b (size before relaxing)
- .debug_str     0x0000000000108750       0x90 Middlewares/Third_Party/lwip/src/netif/ethernet.o
+ .debug_str     0x000000000010876b       0x90 Middlewares/Third_Party/lwip/src/netif/ethernet.o
                                        0xf644 (size before relaxing)
- .debug_str     0x00000000001087e0      0x109 Middlewares/Third_Party/lwip/src/netif/ppp/auth.o
+ .debug_str     0x00000000001087fb      0x109 Middlewares/Third_Party/lwip/src/netif/ppp/auth.o
                                       0x182c7 (size before relaxing)
- .debug_str     0x00000000001088e9      0x41b Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
+ .debug_str     0x0000000000108904      0x41b Middlewares/Third_Party/lwip/src/netif/ppp/chap-md5.o
                                       0x18687 (size before relaxing)
- .debug_str     0x0000000000108d04      0x147 Middlewares/Third_Party/lwip/src/netif/ppp/chap-new.o
+ .debug_str     0x0000000000108d1f      0x147 Middlewares/Third_Party/lwip/src/netif/ppp/chap-new.o
                                       0x1842b (size before relaxing)
- .debug_str     0x0000000000108e4b      0x16f Middlewares/Third_Party/lwip/src/netif/ppp/fsm.o
+ .debug_str     0x0000000000108e66      0x16f Middlewares/Third_Party/lwip/src/netif/ppp/fsm.o
                                       0x18361 (size before relaxing)
- .debug_str     0x0000000000108fba     0x12c2 Middlewares/Third_Party/lwip/src/netif/ppp/ipcp.o
+ .debug_str     0x0000000000108fd5     0x12c2 Middlewares/Third_Party/lwip/src/netif/ppp/ipcp.o
                                       0x1953b (size before relaxing)
- .debug_str     0x000000000010a27c     0x14c9 Middlewares/Third_Party/lwip/src/netif/ppp/lcp.o
+ .debug_str     0x000000000010a297     0x14c9 Middlewares/Third_Party/lwip/src/netif/ppp/lcp.o
                                       0x19837 (size before relaxing)
- .debug_str     0x000000000010b745       0xdb Middlewares/Third_Party/lwip/src/netif/ppp/magic.o
+ .debug_str     0x000000000010b760       0xdb Middlewares/Third_Party/lwip/src/netif/ppp/magic.o
                                       0x18687 (size before relaxing)
- .debug_str     0x000000000010b820      0x272 Middlewares/Third_Party/lwip/src/netif/ppp/ppp.o
+ .debug_str     0x000000000010b83b      0x272 Middlewares/Third_Party/lwip/src/netif/ppp/ppp.o
                                       0x19627 (size before relaxing)
- .debug_str     0x000000000010ba92      0x364 Middlewares/Third_Party/lwip/src/netif/ppp/pppos.o
+ .debug_str     0x000000000010baad      0x364 Middlewares/Third_Party/lwip/src/netif/ppp/pppos.o
                                       0x197e4 (size before relaxing)
- .debug_str     0x000000000010bdf6       0xde Middlewares/Third_Party/lwip/src/netif/ppp/upap.o
+ .debug_str     0x000000000010be11       0xde Middlewares/Third_Party/lwip/src/netif/ppp/upap.o
                                       0x183b4 (size before relaxing)
- .debug_str     0x000000000010bed4      0x554 Middlewares/Third_Party/lwip/src/netif/ppp/utils.o
+ .debug_str     0x000000000010beef      0x554 Middlewares/Third_Party/lwip/src/netif/ppp/utils.o
                                       0x1872f (size before relaxing)
- .debug_str     0x000000000010c428      0x437 Middlewares/Third_Party/lwip/src/netif/ppp/vj.o
+ .debug_str     0x000000000010c443      0x437 Middlewares/Third_Party/lwip/src/netif/ppp/vj.o
                                       0x186ed (size before relaxing)
- .debug_str     0x000000000010c85f      0x2b5 Middlewares/Third_Party/lwip/src/netif/ppp/polarssl/md5.o
+ .debug_str     0x000000000010c87a      0x2b5 Middlewares/Third_Party/lwip/src/netif/ppp/polarssl/md5.o
                                        0xb4d4 (size before relaxing)
- .debug_str     0x000000000010cb14      0x1d5 Middlewares/Third_Party/lwip/src/portable/arch/sys_arch.o
+ .debug_str     0x000000000010cb2f      0x1d5 Middlewares/Third_Party/lwip/src/portable/arch/sys_arch.o
                                       0x11620 (size before relaxing)
- .debug_str     0x000000000010cce9     0x2ac4 Middlewares/Third_Party/mbedtls/library/aes.o
+ .debug_str     0x000000000010cd04     0x2ac4 Middlewares/Third_Party/mbedtls/library/aes.o
                                        0xafc4 (size before relaxing)
- .debug_str     0x000000000010f7ad      0x1a7 Middlewares/Third_Party/mbedtls/library/asn1parse.o
+ .debug_str     0x000000000010f7c8      0x1a7 Middlewares/Third_Party/mbedtls/library/asn1parse.o
                                        0x8d58 (size before relaxing)
- .debug_str     0x000000000010f954      0x2a9 Middlewares/Third_Party/mbedtls/library/asn1write.o
+ .debug_str     0x000000000010f96f      0x2a9 Middlewares/Third_Party/mbedtls/library/asn1write.o
                                        0x8df6 (size before relaxing)
- .debug_str     0x000000000010fbfd      0x144 Middlewares/Third_Party/mbedtls/library/base64.o
+ .debug_str     0x000000000010fc18      0x144 Middlewares/Third_Party/mbedtls/library/base64.o
                                        0x8483 (size before relaxing)
- .debug_str     0x000000000010fd41      0x89a Middlewares/Third_Party/mbedtls/library/bignum.o
+ .debug_str     0x000000000010fd5c      0x89a Middlewares/Third_Party/mbedtls/library/bignum.o
                                        0x9041 (size before relaxing)
- .debug_str     0x00000000001105db     0x1187 Middlewares/Third_Party/mbedtls/library/cipher.o
+ .debug_str     0x00000000001105f6     0x1187 Middlewares/Third_Party/mbedtls/library/cipher.o
                                        0x97ea (size before relaxing)
- .debug_str     0x0000000000111762      0x264 Middlewares/Third_Party/mbedtls/library/cipher_wrap.o
+ .debug_str     0x000000000011177d      0x264 Middlewares/Third_Party/mbedtls/library/cipher_wrap.o
                                        0x9650 (size before relaxing)
- .debug_str     0x00000000001119c6      0x2c1 Middlewares/Third_Party/mbedtls/library/ctr_drbg.o
+ .debug_str     0x00000000001119e1      0x2c1 Middlewares/Third_Party/mbedtls/library/ctr_drbg.o
                                        0x8ad9 (size before relaxing)
- .debug_str     0x0000000000111c87      0x23b Middlewares/Third_Party/mbedtls/library/debug.o
-                                       0xfb80 (size before relaxing)
- .debug_str     0x0000000000111ec2      0x38d Middlewares/Third_Party/mbedtls/library/ecdh.o
+ .debug_str     0x0000000000111ca2      0x23b Middlewares/Third_Party/mbedtls/library/debug.o
+                                       0xfb9b (size before relaxing)
+ .debug_str     0x0000000000111edd      0x38d Middlewares/Third_Party/mbedtls/library/ecdh.o
                                        0x84b9 (size before relaxing)
- .debug_str     0x000000000011224f      0x2f0 Middlewares/Third_Party/mbedtls/library/ecdsa.o
+ .debug_str     0x000000000011226a      0x2f0 Middlewares/Third_Party/mbedtls/library/ecdsa.o
                                        0x95a7 (size before relaxing)
- .debug_str     0x000000000011253f      0x9ef Middlewares/Third_Party/mbedtls/library/ecp.o
+ .debug_str     0x000000000011255a      0x9ef Middlewares/Third_Party/mbedtls/library/ecp.o
                                        0x9654 (size before relaxing)
- .debug_str     0x0000000000112f2e      0x6de Middlewares/Third_Party/mbedtls/library/ecp_curves.o
+ .debug_str     0x0000000000112f49      0x6de Middlewares/Third_Party/mbedtls/library/ecp_curves.o
                                        0x8856 (size before relaxing)
- .debug_str     0x000000000011360c      0x268 Middlewares/Third_Party/mbedtls/library/entropy.o
+ .debug_str     0x0000000000113627      0x268 Middlewares/Third_Party/mbedtls/library/entropy.o
                                        0x89b2 (size before relaxing)
- .debug_str     0x0000000000113874      0x365 Middlewares/Third_Party/mbedtls/library/gcm.o
+ .debug_str     0x000000000011388f      0x365 Middlewares/Third_Party/mbedtls/library/gcm.o
                                        0x96f9 (size before relaxing)
- .debug_str     0x0000000000113bd9      0x2b3 Middlewares/Third_Party/mbedtls/library/md.o
+ .debug_str     0x0000000000113bf4      0x2b3 Middlewares/Third_Party/mbedtls/library/md.o
                                        0x7e7a (size before relaxing)
- .debug_str     0x0000000000113e8c      0x1c8 Middlewares/Third_Party/mbedtls/library/md_wrap.o
+ .debug_str     0x0000000000113ea7      0x1c8 Middlewares/Third_Party/mbedtls/library/md_wrap.o
                                        0x87bb (size before relaxing)
- .debug_str     0x0000000000114054     0x301a Middlewares/Third_Party/mbedtls/library/oid.o
+ .debug_str     0x000000000011406f     0x301a Middlewares/Third_Party/mbedtls/library/oid.o
                                        0xde79 (size before relaxing)
- .debug_str     0x000000000011706e      0x2e4 Middlewares/Third_Party/mbedtls/library/pem.o
+ .debug_str     0x0000000000117089      0x2e4 Middlewares/Third_Party/mbedtls/library/pem.o
                                        0x8a3a (size before relaxing)
- .debug_str     0x0000000000117352      0x2de Middlewares/Third_Party/mbedtls/library/pk.o
+ .debug_str     0x000000000011736d      0x2de Middlewares/Third_Party/mbedtls/library/pk.o
                                        0x703e (size before relaxing)
- .debug_str     0x0000000000117630      0x22e Middlewares/Third_Party/mbedtls/library/pk_wrap.o
+ .debug_str     0x000000000011764b      0x22e Middlewares/Third_Party/mbedtls/library/pk_wrap.o
                                        0x97c6 (size before relaxing)
- .debug_str     0x000000000011785e      0x161 Middlewares/Third_Party/mbedtls/library/pkparse.o
+ .debug_str     0x0000000000117879      0x161 Middlewares/Third_Party/mbedtls/library/pkparse.o
                                        0xcccb (size before relaxing)
- .debug_str     0x00000000001179bf       0xe9 Middlewares/Third_Party/mbedtls/library/platform.o
+ .debug_str     0x00000000001179da       0xe9 Middlewares/Third_Party/mbedtls/library/platform.o
                                        0x7a71 (size before relaxing)
- .debug_str     0x0000000000117aa8      0x254 Middlewares/Third_Party/mbedtls/library/platform_util.o
+ .debug_str     0x0000000000117ac3      0x254 Middlewares/Third_Party/mbedtls/library/platform_util.o
                                        0x7cab (size before relaxing)
- .debug_str     0x0000000000117cfc      0x97b Middlewares/Third_Party/mbedtls/library/rsa.o
+ .debug_str     0x0000000000117d17      0x97b Middlewares/Third_Party/mbedtls/library/rsa.o
                                        0xd1f0 (size before relaxing)
- .debug_str     0x0000000000118677       0xdc Middlewares/Third_Party/mbedtls/library/rsa_internal.o
+ .debug_str     0x0000000000118692       0xdc Middlewares/Third_Party/mbedtls/library/rsa_internal.o
                                        0x6514 (size before relaxing)
- .debug_str     0x0000000000118753      0x37a Middlewares/Third_Party/mbedtls/library/sha1.o
+ .debug_str     0x000000000011876e      0x37a Middlewares/Third_Party/mbedtls/library/sha1.o
                                        0x8965 (size before relaxing)
- .debug_str     0x0000000000118acd      0x5ac Middlewares/Third_Party/mbedtls/library/sha256.o
+ .debug_str     0x0000000000118ae8      0x5ac Middlewares/Third_Party/mbedtls/library/sha256.o
                                        0x8a39 (size before relaxing)
- .debug_str     0x0000000000119079      0x39d Middlewares/Third_Party/mbedtls/library/ssl_ciphersuites.o
+ .debug_str     0x0000000000119094      0x39d Middlewares/Third_Party/mbedtls/library/ssl_ciphersuites.o
                                        0xf87d (size before relaxing)
- .debug_str     0x0000000000119416      0xe15 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
-                                      0x1144e (size before relaxing)
- .debug_str     0x000000000011a22b     0x1001 Middlewares/Third_Party/mbedtls/library/ssl_tls.o
-                                      0x14436 (size before relaxing)
- .debug_str     0x000000000011b22c      0x2da Middlewares/Third_Party/mbedtls/library/x509.o
+ .debug_str     0x0000000000119431      0xe15 Middlewares/Third_Party/mbedtls/library/ssl_cli.o
+                                      0x11469 (size before relaxing)
+ .debug_str     0x000000000011a246     0x1001 Middlewares/Third_Party/mbedtls/library/ssl_tls.o
+                                      0x14451 (size before relaxing)
+ .debug_str     0x000000000011b247      0x2da Middlewares/Third_Party/mbedtls/library/x509.o
                                        0xde73 (size before relaxing)
- .debug_str     0x000000000011b506      0x197 Middlewares/Third_Party/mbedtls/library/x509_crl.o
+ .debug_str     0x000000000011b521      0x197 Middlewares/Third_Party/mbedtls/library/x509_crl.o
                                        0xcbf2 (size before relaxing)
- .debug_str     0x000000000011b69d      0x774 Middlewares/Third_Party/mbedtls/library/x509_crt.o
+ .debug_str     0x000000000011b6b8      0x774 Middlewares/Third_Party/mbedtls/library/x509_crt.o
                                        0xd88f (size before relaxing)
- .debug_str     0x000000000011be11      0x22b Src/debug_print.o
+ .debug_str     0x000000000011be2c      0x22b Src/debug_print.o
                                       0xd9749 (size before relaxing)
- .debug_str     0x000000000011c03c      0x470 Src/main.o
+ .debug_str     0x000000000011c057      0x470 Src/main.o
                                       0xeb027 (size before relaxing)
- .debug_str     0x000000000011c4ac       0x9f Src/other.o
+ .debug_str     0x000000000011c4c7       0x9f Src/other.o
                                       0xde9a4 (size before relaxing)
- .debug_str     0x000000000011c54b       0x1b Src/stm32f4xx_hal_msp.o
+ .debug_str     0x000000000011c566       0x1b Src/stm32f4xx_hal_msp.o
                                       0xd6d56 (size before relaxing)
- .debug_str     0x000000000011c566       0x50 Src/stm32f4xx_hal_timebase_tim.o
+ .debug_str     0x000000000011c581       0x50 Src/stm32f4xx_hal_timebase_tim.o
                                       0xd6867 (size before relaxing)
- .debug_str     0x000000000011c5b6       0xdd Src/stm32f4xx_it.o
+ .debug_str     0x000000000011c5d1       0xdd Src/stm32f4xx_it.o
                                       0xd656d (size before relaxing)
- .debug_str     0x000000000011c693      0x7b2 Src/syscalls.o
+ .debug_str     0x000000000011c6ae      0x7b2 Src/syscalls.o
                                        0xbafb (size before relaxing)
- .debug_str     0x000000000011ce45       0x5a Src/system_stm32f4xx.o
+ .debug_str     0x000000000011ce60       0x5a Src/system_stm32f4xx.o
                                       0xd5e8d (size before relaxing)
- .debug_str     0x000000000011ce9f       0xc3 Src/fpga_buf/fpga_commander.o
+ .debug_str     0x000000000011ceba       0xc3 Src/fpga_buf/fpga_commander.o
                                       0xdd5f4 (size before relaxing)
- .debug_str     0x000000000011cf62      0x32c Src/modem/gsm.o
+ .debug_str     0x000000000011cf7d      0x32c Src/modem/gsm.o
                                       0xea226 (size before relaxing)
- .debug_str     0x000000000011d28e      0x60c Src/modem/gsmLLR.o
+ .debug_str     0x000000000011d2a9      0x60c Src/modem/gsmLLR.o
                                       0xea7aa (size before relaxing)
- .debug_str     0x000000000011d89a      0x111 Src/modem/gsmLLR2.o
+ .debug_str     0x000000000011d8b5      0x111 Src/modem/gsmLLR2.o
                                       0xdec18 (size before relaxing)
- .debug_str     0x000000000011d9ab     0x5c12 Src/modem/gsmPPP.o
-                                      0xfa0a7 (size before relaxing)
- .debug_str     0x00000000001235bd       0x1a Src/uart/uart_custom.o
+ .debug_str     0x000000000011d9c6     0x5c12 Src/modem/gsmPPP.o
+                                      0xfa0c2 (size before relaxing)
+ .debug_str     0x00000000001235d8       0x1a Src/uart/uart_custom.o
                                       0xde7b5 (size before relaxing)
- .debug_str     0x00000000001235d7       0x31 Startup/startup_stm32f429nihx.o
+ .debug_str     0x00000000001235f2       0x31 Startup/startup_stm32f429nihx.o
                                          0x69 (size before relaxing)
 
 .comment        0x0000000000000000       0x7b

@@ -176,7 +176,9 @@ IoT_Error_t iot_tls_connect(Network *pNetwork, TLSConnectParams *params)
   mbedtls_x509_crt_init(&(tlsDataParams->cacert));
   mbedtls_x509_crt_init(&(tlsDataParams->clicert));
   mbedtls_pk_init(&(tlsDataParams->pkey));
-  mbedtls_debug_set_threshold(5);
+#if defined(MBEDTLS_DEBUG_C)
+  mbedtls_debug_set_threshold(MBED_TLS_THRESHOLD_DEBUG);
+#endif
   mbedtls_ssl_conf_dbg( &(tlsDataParams->conf), my_debug, stdout );
 
 
