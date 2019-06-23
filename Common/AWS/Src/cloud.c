@@ -64,6 +64,7 @@
 #include "aws_clientcredential_keys.h"
 #include "aws_clientcredential.h"
 #include "sensors_data.h"
+#include "../Common/AWS/Inc/net.h"
 
 /* Private defines -----------------------------------------------------------*/
 #define CLOUD_TIMEDATE_TLS_VERIFICATION_IGNORE  /**< Accept to connect to a server which is not verified by TLS */

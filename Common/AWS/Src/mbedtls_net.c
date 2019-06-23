@@ -46,7 +46,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "mbedtls_net.h"
 #include "mbedtls/ssl.h"
-#include "net.h"
+#include "../Common/AWS/Inc/net.h"
 #include "msg.h"
 #include <string.h>
 

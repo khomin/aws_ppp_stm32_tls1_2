@@ -48,6 +48,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stdlib.h>   /* atoi() */
 #include <stdbool.h>
+#include <string.h>
 #include "main.h"
 #include "msg.h"
 #include "net.h"

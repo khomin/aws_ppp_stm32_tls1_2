@@ -48,7 +48,7 @@
 #include <stdio.h>
 #include "main.h"
 #include "timedate.h"
-#include "net.h"
+#include "../Common/AWS/Inc/net.h"
 #include "msg.h"
 
 /** Host from which the time/date will be retrieved.*/

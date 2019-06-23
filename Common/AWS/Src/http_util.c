@@ -49,7 +49,7 @@
 #include "main.h"
 #include "http_util.h"
 #include "msg.h"
-#include "net.h"
+#include "../Common/AWS/Inc/net.h"
 #include "iot_flash_config.h"
 
 extern net_hnd_t hnet;

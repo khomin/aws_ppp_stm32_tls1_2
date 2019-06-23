@@ -82,8 +82,8 @@ static int wsa_init_done = 0;
 
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+//#include <netinet/in.h>
+#include <lwip/inet.h>
 #include <sys/time.h>
 #include <unistd.h>
 #include <signal.h>

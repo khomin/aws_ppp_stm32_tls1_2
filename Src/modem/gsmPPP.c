@@ -23,8 +23,12 @@
 #include "netif/ppp/pppoe.h"
 #include "netif/ppp/pppol2tp.h"
 #include "aws_system_init.h"
-#include "net.h"
+#include "../Common/AWS/Inc/net.h"
 #include "cloud.h"
+#include "aws_dev_mode_key_provisioning.h"
+#include "aws_hello_world.h"
+#include "./aws_system_init.h"
+#include "net_internal.h"
 
 extern xSemaphoreHandle sioWriteSemaphore;
 extern sGsmUartParcer uartParcerStruct;
@@ -72,11 +76,6 @@ bool gsmPPP_Init(void) {
 	return true;
 }
 
-#include "aws_dev_mode_key_provisioning.h"
-#include "aws_hello_world.h"
-#include "./aws_system_init.h"
-#include "net_internal.h"
-
 void gsmPPP_Tsk(void *pvParamter) {
 	uint8_t setup = 0;
 	tcpip_init(tcpip_init_done, &setup);
@@ -120,8 +119,10 @@ void gsmPPP_Tsk(void *pvParamter) {
 			DBGLog("AWS PPP: module initialized.\r\n");
 
 			platform_init();
+
 			subscribe_publish_sensor_values();
-			//			platform_deinit();
+
+			platform_deinit();
 
 			while(1) {
 				vTaskDelay(500/portTICK_RATE_MS);

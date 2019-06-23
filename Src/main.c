@@ -31,7 +31,7 @@
 #include "task.h"
 #include "stats.h"
 #include "gsmPPP.h"
-#include "net.h"
+#include "../Common/AWS/Inc/net.h"
 #include "cloud.h"
 
 /* USER CODE END Includes */
