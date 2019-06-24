@@ -27,4 +27,26 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>SW4STM32/startup_stm32f769xx.s</name>
+			<type>1</type>
+			<locationURI>copy_PARENT1/startup_stm32f769xx.s</locationURI>
+		</link>
+		<link>
+			<name>SW4STM32/syscalls.c</name>
+			<type>1</type>
+			<locationURI>copy_PARENT1/syscalls.c</locationURI>
+		</link>
+	</linkedResources>
+	<variableList>
+		<variable>
+			<name>copy_PARENT</name>
+			<value>$%7BPARENT-1-PROJECT_LOC%7D/TRASH/STM32CubeExpansion_Cloud_AWS_V1.2.1/Projects</value>
+		</variable>
+		<variable>
+			<name>copy_PARENT1</name>
+			<value>$%7Bcopy_PARENT%7D/STM32F769I-Discovery/Applications/Cloud/AWS/SW4STM32</value>
+		</variable>
+	</variableList>
 </projectDescription>

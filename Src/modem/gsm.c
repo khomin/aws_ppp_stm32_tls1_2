@@ -9,7 +9,6 @@
 #include "gsmLLR2.h"
 #include "gsmPPP.h"
 #include "main.h"
-#include "cmsis_os.h"
 #include <stdlib.h>
 #include "debug_print.h"
 #include "time.h"
@@ -32,7 +31,7 @@ extern sGsmUartParcer uartParcerStruct;
 extern bool pppIsOpen;
 
 sGsmSettings gsmSettings = {0, "internet", "gdata", "gdata"};
-sConnectSettings connectSettings = {{"31.10.4.146", "111", 45454}};
+sConnectSettings connectSettings = {"31.10.4.146", "111", 45454};
 
 void vGsmTask( void * pvParameters );
 

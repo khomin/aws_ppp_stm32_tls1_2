@@ -20,7 +20,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -28,11 +27,17 @@
 #include "fpga_commander.h"
 #include "debug_print.h"
 #include "gsm.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "stats.h"
+#include "gsmPPP.h"
+#include "../Common/AWS/Inc/net.h"
+#include "cloud.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -48,12 +53,17 @@
 /* Private variables ---------------------------------------------------------*/
 CRC_HandleTypeDef hcrc;
 
+RNG_HandleTypeDef hrng;
+
+RTC_HandleTypeDef hrtc;
+
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
-osThreadId_t defaultTaskHandle;
 /* USER CODE BEGIN PV */
-
+extern ePppState pppState;
+net_hnd_t hnet;
+static volatile uint8_t button_flags = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -62,9 +72,57 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_CRC_Init(void);
 static void MX_USART3_UART_Init(void);
+static void MX_RTC_Init(void);
+static void MX_RNG_Init(void);
 void StartDefaultTask(void *argument); // for v2
 
 /* USER CODE BEGIN PFP */
+void vApplicationStackOverflowHook( TaskHandle_t xTask,
+		signed char *pcTaskName ) {
+	ICMP_STATS_DISPLAY();
+	LINK_STATS_DISPLAY();
+	MEM_STATS_DISPLAY();
+	MEM_STATS_DISPLAY();
+	SYS_STATS_DISPLAY();
+	for(uint8_t i=0; i<MEMP_MAX; i++) {
+		MEMP_STATS_DISPLAY(i);
+	}
+	DBGInfo("STACK OVERFLOW in task %s!!!!!!", pcTaskName);
+}
+
+void vApplicationMallocFailedHook(void) {
+	DBGInfo("STACK vApplicationMallocFailedHook !!!!!!");
+}
+
+void vApplicationDaemonTaskStartupHook( void ) {
+	DBGInfo("ApplicationDaemonTaskStartUpHook")
+}
+
+/* configUSE_STATIC_ALLOCATION is set to 1, so the application must provide an
+ * implementation of vApplicationGetTimerTaskMemory() to provide the memory that is
+ * used by the RTOS daemon/time task. */
+void vApplicationGetTimerTaskMemory( StaticTask_t ** ppxTimerTaskTCBBuffer,
+		StackType_t ** ppxTimerTaskStackBuffer,
+		uint32_t * pulTimerTaskStackSize ) {
+	/* If the buffers to be provided to the Timer task are declared inside this
+	 * function then they must be declared static - otherwise they will be allocated on
+	 * the stack and so not exists after this function exits. */
+	static StaticTask_t xTimerTaskTCB;
+	static StackType_t uxTimerTaskStack[ configTIMER_TASK_STACK_DEPTH ];
+
+	/* Pass out a pointer to the StaticTask_t structure in which the Idle
+	 * task's state will be stored. */
+	*ppxTimerTaskTCBBuffer = &xTimerTaskTCB;
+
+	/* Pass out the array that will be used as the Timer task's stack. */
+	*ppxTimerTaskStackBuffer = uxTimerTaskStack;
+
+	/* Pass out the size of the array pointed to by *ppxTimerTaskStackBuffer.
+	 * Note that, as the array is necessarily of type StackType_t,
+	 * configMINIMAL_STACK_SIZE is specified in words, not bytes. */
+	*pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+}
+
 
 /* USER CODE END PFP */
 
@@ -105,6 +163,8 @@ int main(void)
 	MX_USART2_UART_Init();
 	MX_CRC_Init();
 	MX_USART3_UART_Init();
+	MX_RTC_Init();
+	MX_RNG_Init();
 	/* USER CODE BEGIN 2 */
 
 	ITM_Init(1000);
@@ -112,7 +172,7 @@ int main(void)
 
 	/* USER CODE END 2 */
 
-	osKernelInitialize(); // Initialize CMSIS-RTOS
+	// Initialize CMSIS-RTOS
 
 	/* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
@@ -132,28 +192,14 @@ int main(void)
 
 	/* Create the thread(s) */
 	/* definition and creation of defaultTask */
-	//  const osThreadAttr_t defaultTask_attributes = {
-	//    .name = "defaultTask",
-	//    .priority = (osPriority_t) osPriorityNormal,
-	//    .stack_size = 128
-	//  };
-	//  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
-
-	/* USER CODE BEGIN RTOS_THREADS */
-	/* definition and creation task */
-	//	osThreadAttr_t attributes = {
-	//			.name = "fpgaTask",
-	//			.priority = (osPriority_t) osPriorityNormal7,
-	//			.stack_size = 1024
-	//	};
-	//	osThreadNew(fpgaTask, NULL, &attributes);
+	xTaskCreate(StartDefaultTask, "defaultTask", 1024, 0, tskIDLE_PRIORITY, NULL);
 
 	gsmTaskInit();
 
 	/* USER CODE END RTOS_THREADS */
 
 	/* Start scheduler */
-	osKernelStart();
+	vTaskStartScheduler();
 
 	/* We should never get here as control is now taken by the scheduler */
 
@@ -176,21 +222,23 @@ void SystemClock_Config(void)
 {
 	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
 	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+	RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
 	/** Configure the main internal regulator output voltage
 	 */
 	__HAL_RCC_PWR_CLK_ENABLE();
-	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
 	/** Initializes the CPU, AHB and APB busses clocks
 	 */
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
 	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+	RCC_OscInitStruct.LSIState = RCC_LSI_ON;
 	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
 	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
 	RCC_OscInitStruct.PLL.PLLM = 15;
-	RCC_OscInitStruct.PLL.PLLN = 192;
+	RCC_OscInitStruct.PLL.PLLN = 144;
 	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-	RCC_OscInitStruct.PLL.PLLQ = 4;
+	RCC_OscInitStruct.PLL.PLLQ = 5;
 	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
 	{
 		Error_Handler();
@@ -204,7 +252,13 @@ void SystemClock_Config(void)
 	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
 	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
+	PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
+	if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
 	{
 		Error_Handler();
 	}
@@ -236,6 +290,66 @@ static void MX_CRC_Init(void)
 	/* USER CODE BEGIN CRC_Init 2 */
 
 	/* USER CODE END CRC_Init 2 */
+
+}
+
+/**
+ * @brief RNG Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_RNG_Init(void)
+{
+
+	/* USER CODE BEGIN RNG_Init 0 */
+
+	/* USER CODE END RNG_Init 0 */
+
+	/* USER CODE BEGIN RNG_Init 1 */
+
+	/* USER CODE END RNG_Init 1 */
+	hrng.Instance = RNG;
+	if (HAL_RNG_Init(&hrng) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	/* USER CODE BEGIN RNG_Init 2 */
+
+	/* USER CODE END RNG_Init 2 */
+
+}
+
+/**
+ * @brief RTC Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_RTC_Init(void)
+{
+
+	/* USER CODE BEGIN RTC_Init 0 */
+
+	/* USER CODE END RTC_Init 0 */
+
+	/* USER CODE BEGIN RTC_Init 1 */
+
+	/* USER CODE END RTC_Init 1 */
+	/** Initialize RTC Only
+	 */
+	hrtc.Instance = RTC;
+	hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+	hrtc.Init.AsynchPrediv = 127;
+	hrtc.Init.SynchPrediv = 255;
+	hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+	hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+	hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+	if (HAL_RTC_Init(&hrtc) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	/* USER CODE BEGIN RTC_Init 2 */
+
+	/* USER CODE END RTC_Init 2 */
 
 }
 
@@ -337,7 +451,7 @@ static void MX_GPIO_Init(void)
 
 	/*Configure GPIO pin : USER_BUTTON_Pin */
 	GPIO_InitStruct.Pin = USER_BUTTON_Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	HAL_GPIO_Init(USER_BUTTON_GPIO_Port, &GPIO_InitStruct);
 
@@ -360,8 +474,6 @@ static void MX_GPIO_Init(void)
 
 }
 
-/* USER CODE BEGIN 4 */
-
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -371,15 +483,15 @@ static void MX_GPIO_Init(void)
  * @retval None
  */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
-{
-
+void StartDefaultTask(void *argument) {
 	/* USER CODE BEGIN 5 */
+
+	xTaskCreate(fpgaTask, "fpgaTask", 1024, 0, tskIDLE_PRIORITY, NULL);
+
 	/* Infinite loop */
 	for(;;)
 	{
-		DBGInfo("-WORK");
-		vTaskDelay(100/portTICK_PERIOD_MS);
+		vTaskDelay(5000/portTICK_PERIOD_MS);
 	}
 	/* USER CODE END 5 */
 }
@@ -416,12 +528,6 @@ void Error_Handler(void)
 
 	/* USER CODE END Error_Handler_Debug */
 }
-
-void vApplicationStackOverflowHook( TaskHandle_t xTask,
-		signed char *pcTaskName ){
-	DBGInfo("STACK OVERFLOW in task %s!!!!!!", pcTaskName);
-}
-
 
 #ifdef  USE_FULL_ASSERT
 /**

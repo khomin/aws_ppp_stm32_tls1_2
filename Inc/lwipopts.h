@@ -71,7 +71,7 @@ a lot of data that needs to be copied, this should be set high. */
 #define MEMP_NUM_UDP_PCB        4
 /* MEMP_NUM_TCP_PCB: the number of simulatenously active TCP
    connections. */
-#define MEMP_NUM_TCP_PCB        18
+#define MEMP_NUM_TCP_PCB        4
 /* MEMP_NUM_TCP_PCB_LISTEN: the number of listening TCP
    connections. */
 #define MEMP_NUM_TCP_PCB_LISTEN 2
@@ -82,6 +82,10 @@ a lot of data that needs to be copied, this should be set high. */
    timeouts. */
 #define MEMP_NUM_SYS_TIMEOUT    10
 
+#define LWIP_SO_RCVTIMEO                1
+#define LWIP_SO_RCVRCVTIMEO_NONSTANDARD 1   /* Pass an integer number of ms instead of a timeval struct. */
+#define LWIP_SO_SNDTIMEO                1
+#define LWIP_SO_SNDRCVTIMEO_NONSTANDARD 1   /* Pass an integer number of ms instead of a timeval struct. */
 
 /* ---------- Pbuf options ---------- */
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool. */
@@ -117,10 +121,6 @@ a lot of data that needs to be copied, this should be set high. */
 /* ---------- ICMP options ---------- */
 #define LWIP_ICMP                       1
 
-
-#define LWIP_STATS_DISPLAY				1
-
-
 /* ---------- DHCP options ---------- */
 /* Define LWIP_DHCP to 1 if you want DHCP configuration of
    interfaces. DHCP is not implemented in lwIP 0.5.1, however, so
@@ -134,14 +134,17 @@ a lot of data that needs to be copied, this should be set high. */
 
 
 /* ---------- Statistics options ---------- */
-#define LWIP_STATS 							0
-#define LWIP_PROVIDE_ERRNO					0
+#define LWIP_STATS 							1
+#define MEM_STATS							1
+#define LWIP_STATS_DISPLAY					1
 
 /* ---------- link callback options ---------- */
 /* LWIP_NETIF_LINK_CALLBACK==1: Support a callback function from an interface
  * whenever the link changes (i.e., link down)
  */
 #define LWIP_NETIF_LINK_CALLBACK        1
+
+#define MEMP_OVERFLOW_CHECK				0
 
 /*
    --------------------------------------
@@ -208,7 +211,7 @@ The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
 /**
  * LWIP_SOCKET==1: Enable Socket API (require to use sockets.c)
  */
-#define LWIP_SOCKET                     0
+#define LWIP_SOCKET                     1
 
 /*
    -----------------------------------
@@ -232,7 +235,7 @@ The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
 #define DEFAULT_TCP_RECVMBOX_SIZE       2000
 #define DEFAULT_ACCEPTMBOX_SIZE         2000
 #define DEFAULT_THREAD_STACKSIZE        500
-#define TCPIP_THREAD_PRIO               (configMAX_PRIORITIES - 2)
+#define TCPIP_THREAD_PRIO               (tskIDLE_PRIORITY + 1)
 #define LWIP_COMPAT_MUTEX               1
 
 

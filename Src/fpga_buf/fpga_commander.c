@@ -7,38 +7,37 @@
 #include "fpga_buf/fpga_commander.h"
 #include "fpga_buf.h"
 #include <stm32f4xx_it.h>
-#include "cmsis_os2.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include "debug_print.h"
 #include "string.h"
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "main.h"
 
 extern UART_HandleTypeDef huart2;
 static bool isActiveUart = false;
 
-static uint8_t fpga_temp_buff[FPGA_BUFFER_RECORD_MAX_SIZE] = {0};
-static int fpga_temp_buff_count = 0;
+xQueueHandle fpgaDataQueue;
 
-// detect user button
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-	if(!HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_7)) {
-		HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);
-	} else {
-		HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_RESET);
-	}
-}
+static uint8_t fpga_temp_buff[FPGA_BUFFER_RECORD_MAX_SIZE] = {0};
+static uint16_t fpga_temp_buff_count = 0;
 
 void fpgaTask(void *argument) {
 	/* USER CODE BEGIN 5 */
-//	init_fpga();
+	init_fpga();
 
-//	HAL_UART_Receive_IT(&huart2, fpga_temp_buff, 1);
+	fpgaDataQueue = xQueueCreate(4, sizeof(sFpgaDataStruct*));
+
+	HAL_UART_Receive_IT(&huart2, fpga_temp_buff, 1);
 
 	/* Infinite loop */
 	for(;;) {
 		// detect new data uart
 		if(isActiveUart) {
-			osDelay(500);
+			vTaskDelay(500/portTICK_RATE_MS);
 			isActiveUart = false;
-			osDelay(500);
+			vTaskDelay(500/portTICK_RATE_MS);
 			if(!isActiveUart) {
 				if(fpga_temp_buff_count != 0) {
 					DBGLog("FPGA: new data, size %d", fpga_temp_buff_count);
@@ -50,9 +49,18 @@ void fpgaTask(void *argument) {
 			}
 		}
 
-		osDelay(500);
+		vTaskDelay(500/portTICK_RATE_MS);
 	}
 	/* USER CODE END 5 */
+}
+
+//--- detect user button
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+	if(!HAL_GPIO_ReadPin(USER_BUTTON_GPIO_Port, USER_BUTTON_Pin)) {
+		HAL_GPIO_WritePin(FPGA_CS_LINE_GPIO_Port, FPGA_CS_LINE_Pin, GPIO_PIN_SET);
+	} else {
+		HAL_GPIO_WritePin(FPGA_CS_LINE_GPIO_Port, FPGA_CS_LINE_Pin, GPIO_PIN_RESET);
+	}
 }
 
 void fpgaRxUartHandler(UART_HandleTypeDef *huart) {

@@ -1,0 +1,25 @@
+Project: aws_tests
+Converter: ST System Workbench for STM32 project converter
+Date: 20190615
+
+Warning: Failed to find matching board for STM32L475VG
+Unknown value type "" for id gnu.c.compiler.option.include.files on tool fr.ac6.managedbuild.tool.gnu.cross.c.compiler
+Option gnu.c.compiler.option.misc.verbose is no longer supported
+Unknown value type "" for id gnu.c.link.option.libs on tool fr.ac6.managedbuild.tool.gnu.cross.c.linker
+Unknown value type "" for id gnu.c.link.option.paths on tool fr.ac6.managedbuild.tool.gnu.cross.c.linker
+Option fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.noexceptions is no longer supported
+Option fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.nortti is no longer supported
+Warning: Failed to find matching mcu for 
+Warning: Failed to find matching board for 
+No map found for id: 
+No map found for id: 
+No map found for id: 
+Option fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.noexceptions is no longer supported
+Option fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.nortti is no longer supported
+Warning: Failed to find matching mcu for 
+Warning: Failed to find matching board for 
+No map found for id: 
+No map found for id: 
+No map found for id: 
+Option fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.noexceptions is no longer supported
+Option fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.nortti is no longer supported

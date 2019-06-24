@@ -9,13 +9,12 @@
 #include "gsmPPP.h"
 #include "string.h"
 #include "main.h"
-#include "cmsis_os.h"
-#include "cmsis_os.h"
 #include "debug_print.h"
 #include <stdlib.h>
 
 extern sConnectSettings connectSettings;
 extern sGsmSettings gsmSettings;
+extern sConnectionPppStruct connectionPppStruct;
 
 #define CTRL_Z	0x1A
 extern UART_HandleTypeDef huart3;
@@ -66,7 +65,7 @@ static bool gsmLLR_SemaphoreInit(void);
 static bool gsmLLR_GetMutex();
 static bool gsmLLR_GiveMutex();
 static eRetComm runAtCommand(const char* pCommand, sResultCommand *resultCommand);
-
+static eRetComm getParameter(uint8_t paramNum, char *pStartChar, char *strInput, char *strOutput);
 /**************************************************/
 /* 	Настройка переферии, создание мьютексов 			*/
 /**************************************************/
@@ -200,45 +199,17 @@ eRetComm gsmLLR_StartPPP(sGsmSettings *pProperty) {
 		if(pData != NULL) {
 			memset(pData, 0, GSM_MALLOC_COMMAND_SIZE);
 
-//			sprintf((char*)pData, "%s", "AT+COPS=?"); // empty
-//			runAtCommand((char*)pData, &resultCommand);
-
 			sprintf((char*)pData, "%s", "AT+CFUN=1");
 			runAtCommand((char*)pData, &resultCommand);
 
-//			sprintf((char*)pData, "%s", "AT+COPS=?");
-//			runAtCommand((char*)pData, &resultCommand);
-//
-//			sprintf((char*)pData, "%s", "AT+CMNB=1");		// AT+CMNB=1...OK......
-//			runAtCommand((char*)pData, &resultCommand);
-//
-//			sprintf((char*)pData, "%s", "AT+CBANDCFG=\"CAT-M\",8");
-//			runAtCommand((char*)pData, &resultCommand);		// .AT+CBANDCFG="CAT-M",8...OK
-//
-//			sprintf((char*)pData, "%s", "AT+CBANDCFG=?");
-//			runAtCommand((char*)pData, &resultCommand);		// .AT+CBANDCFG=?...+CBANDC FG: (CAT-M,NB-IOT),(3,5,8,20,28)....OK
-//
-//			sprintf((char*)pData, "%s", "AT+CNMP=38");
-//			runAtCommand((char*)pData, &resultCommand);
-//
-//			sprintf((char*)pData, "%s", "AT+CSTT?");		// .AT+CNMP=38...OK........
-//			runAtCommand((char*)pData, &resultCommand);
-//
-//			sprintf((char*)pData, "%s", "AT+CPSI?");
-//			runAtCommand((char*)pData, &resultCommand);
-//
-//			sprintf((char*)pData, "%s", "AT+COPS=?");		 // .AT+COPS=?..
-//			runAtCommand((char*)pData, &resultCommand);
-
 			vTaskDelay(2000/portTICK_RATE_MS);
 
-			sprintf((char*)pData, "%s\"%s\"", "AT+CSTT=", "internet");	// AT+CSTT="internet"...OK
+			sprintf((char*)pData, "%s\"%s\"", "AT+CSTT=", "internet");
 			runAtCommand((char*)pData, &resultCommand);
 
-			sprintf((char*)pData, "%s", "AT+CGDCONT=1,\"IP\",\"internet\"");	/// .
+			sprintf((char*)pData, "%s", "AT+CGDCONT=1,\"IP\",\"internet\"");
 			runAtCommand((char*)pData, &resultCommand);
 
-//			sprintf((char*)pData, "%s", "AT+CUSD=1,\"*99#\"");
 			sprintf((char*)pData, "%s", "ATD*99#");
 			runAtCommand(*comPPP_1, &resultCommand);
 
@@ -252,30 +223,6 @@ eRetComm gsmLLR_StartPPP(sGsmSettings *pProperty) {
 	}
 	return eOk;
 }
-
-//sResultCommand resultCommand;
-//char **comPPP_Mass[3] = {comPPP_2, comPPP_3, comPPP_4};
-//uint8_t *pData = NULL;
-//if(gsmLLR_GetMutex() == true) {
-//	pData = pvPortMalloc(GSM_MALLOC_COMMAND_SIZE);
-//	if(pData != NULL) {
-//		memset(pData, 0, GSM_MALLOC_COMMAND_SIZE);
-//		sprintf((char*)pData, "%s%s", comPPP_0[0], "\"internet\"");
-//		runAtCommand((char*)pData, &resultCommand);
-//
-//		uint8_t stepIndex = 0;
-//		while(stepIndex != (3)) {
-//			uint16_t len = strlen((char*)*comPPP_Mass[stepIndex]);
-//			sprintf((char*)pData, "%s\0", (char*)*comPPP_Mass[stepIndex]);
-//			runAtCommand((char*)pData, &resultCommand);
-//			stepIndex++;
-//		}
-//		memset(pData, 0, GSM_MALLOC_COMMAND_SIZE);
-//		vPortFree(pData);
-//	}
-//	gsmLLR_GiveMutex();
-//}
-//return eOk;
 
 eRetComm gsmLLR_FlowControl(void) {
 	eRetComm ret;
@@ -498,15 +445,12 @@ eRetComm gsmLLR_SmsGetLastMessage(char *pMessage, char *pNumber) {
 }
 
 /**********************************************************************/
-/**											TCP 																				 **/
+/**						----										 **/
 /**********************************************************************/
 eRetComm gsmLLR_ConnectService(uint8_t numConnect) {
 	eRetComm ret = eError;
 	if(gsmLLR_GetMutex() == true) {
-		if(gsmPPP_Connect(
-				numConnect,
-				connectSettings[0].srvAddr,
-				connectSettings[0].srvPort) == true) {
+		if(gsmPPP_Connect(connectSettings.srvAddr, connectSettings.srvPort) == true) {
 			ret = eOk;
 		}
 		gsmLLR_GiveMutex();
@@ -523,6 +467,13 @@ eRetComm gsmLLR_DisconnectService(uint8_t numConnect) {
 		gsmLLR_GiveMutex();
 	}
 	return ret;
+}
+
+bool gsmPPP_ConnectStatus(uint8_t numConnect) {
+	if(connectionPppStruct.tcpClient->state == ESTABLISHED) {
+		return true;
+	}
+	return false;
 }
 
 eRetComm gsmLLR_ConnectServiceStatus(uint8_t numConnect) {
@@ -578,22 +529,15 @@ eRetComm gsmLLR_TcpSend(uint8_t serviceNum, uint8_t *pData, uint16_t sendSize) {
 	return ret;
 }
 
-/**
- * @brief: Чтение Tcp сообщения.
- * @param uint8_t serviceNum: - номер интернет-сервиса
- * @param uint8_t *rxBuffer: - указатель куда будет считаны данные
- * @param uint8_t size - размер буфера данных
- * @return Ошибка/Размер считанных данных
- */
-int gsmLLR_TcpReadData(uint8_t serviceNum, uint8_t **ppData, uint16_t buffSize) {
-	uint16_t retLen = 0;
-	if(serviceNum > SERVERS_COUNT) {
-		retLen = 0;
-	} else { // копируем в буфер протокола
-		retLen = gsmPPP_ReadRxData(serviceNum, ppData);
-	}
-	return retLen;
-}
+///**
+// * @brief: Чтение Tcp сообщения.
+// * @param uint8_t *rxBuffer: - указатель куда будет считаны данные
+// * @param uint8_t size - размер буфера данных
+// * @return Ошибка/Размер считанных данных
+// */
+//int gsmLLR_TcpReadData(uint8_t **ppData, uint16_t buffSize) {
+//	return gsmPPP_ReadRxData(ppData);
+//}
 
 eRetComm gsmLLR_CallNumber(uint8_t *phoneNumber) {
 	return eOk;
