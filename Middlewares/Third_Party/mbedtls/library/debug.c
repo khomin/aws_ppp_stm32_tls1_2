@@ -76,12 +76,7 @@ static inline void debug_send_line( const mbedtls_ssl_context *ssl, int level,
     mbedtls_snprintf( idstr, sizeof( idstr ), "%p: %s", (void*)ssl, str );
     ssl->conf->f_dbg( ssl->conf->p_dbg, level, file, line, idstr );
 #else
-
-#if USE_DEBUG_OUT_MBEDTLS == 1
     ssl->conf->f_dbg( ssl->conf->p_dbg, level, file, line, str );
-#else
-    vTaskDelay(10/portTICK_PERIOD_MS);
-#endif
 #endif
 }
 

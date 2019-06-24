@@ -52,7 +52,6 @@
 #include "net.h"
 #include "timedate.h"
 #include "heap.h"
-#include "rfu.h"
 #include "cloud.h"
 #include "version.h"
 #include "iot_flash_config.h"

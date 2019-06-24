@@ -61,7 +61,7 @@ static void status_cb(ppp_pcb *pcb, int err_code, void *ctx);
 static void ctx_cb_callback(void *p);
 static u32_t output_cb(ppp_pcb *pcb, u8_t *data, u32_t len, void *ctx);
 
-#define TRANSMIT_QUEUE_BUFF_LEN	1128
+#define TRANSMIT_QUEUE_BUFF_LEN	2048
 
 typedef struct {
 	uint8_t data[TRANSMIT_QUEUE_BUFF_LEN];
@@ -69,7 +69,7 @@ typedef struct {
 }sTransmitQueue;
 
 bool gsmPPP_Init(void) {
-	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 6128, 0, tskIDLE_PRIORITY+1, NULL);
+	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 2048, 0, tskIDLE_PRIORITY, NULL);
 
 	gsmPppUartTranmitQueue = xQueueCreate(12, sizeof(sTransmitQueue*));
 
@@ -120,13 +120,15 @@ void gsmPPP_Tsk(void *pvParamter) {
 
 			platform_init();
 
-			subscribe_publish_sensor_values();
-
-			platform_deinit();
+			xTaskCreate(subscribe_publish_sensor_values,
+					"subscribe_publish_sensor_values", 2048, 0,
+					tskIDLE_PRIORITY, NULL);
 
 			while(1) {
 				vTaskDelay(500/portTICK_RATE_MS);
 			}
+
+			platform_deinit();
 		}
 
 		vTaskDelay(1000/portTICK_RATE_MS);
@@ -145,7 +147,7 @@ void gsmPPP_rawInput(void *pvParamter) {
 	while(1) {
 		if(uartParcerStruct.ppp.pppModeEnable) {
 			//--- receive
-			while(xQueueReceive(uartParcerStruct.uart.rxQueue, &tbuf[tbuf_len], 2/portTICK_PERIOD_MS) == pdTRUE) {
+			while(xQueueReceive(uartParcerStruct.uart.rxQueue, &tbuf[tbuf_len], 0) == pdTRUE) {
 				tbuf_len++;
 				if(tbuf_len >=  sizeof(tbuf)-1) {
 					break;

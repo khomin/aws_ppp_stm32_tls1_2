@@ -48,7 +48,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "main.h"
-#include "rfu.h"
 #ifdef USE_FIREWALL
 #include "firewall_wrapper.h"
 #endif
@@ -614,38 +613,38 @@ int updateFirmwareVersion()
 	printf("\n*** Firmware version management ***\n");
 	printf("\nPress the BLUE user button within the next 5 seconds\nto change the firmware version\n");
 
-	if (Button_WaitForPush(5000))
-	{
-		char fw_url[MAX_FW_URL_LENGTH];
-		strncpy(fw_url, DEFAULT_FW_URL, sizeof(fw_url));
-
-		printf("\nEnter the URL of the new firmware file:(By default: %s) :", fw_url);
-		getInputString(fw_url, sizeof(fw_url));
-		msg_info("read: --->\n%s\n<---\n", fw_url);
-
-		printf("Downloading and programming the new firmware into the alternate FLASH bank.\n");
-
-		int ret = rfu_update(fw_url);
-		switch (ret)
-		{
-		case RFU_OK:
-			printf("\nProgramming done. Now you can reset the board.\n\n");
-			break;
-		case RFU_ERR_HTTP:
-			printf("\nError: Programming failed. Reason: HTTP error - check your network connection, "
-					"and that the HTTP server supports HTTP/1.1 and the progressive download.\n\n");
-			break;
-		case RFU_ERR_FF:
-			printf("\nError: Programming failed. Reason: Invalid firmware fileformat - check that the IAR simple-code format is used.\n\n");
-			break;
-		case RFU_ERR_FLASH:
-			printf("\nError: Programming failed. Reason: FLASH memory erase/write - check that the firmware file matches the SoC FLASH memory mapping"
-					"and write protection settings. Double check that there is no illegal write to the FLASH address range.\n\n");
-			break;
-		default:
-			printf("\nError: Programming failed. Unknown reason.\n\n");
-		}
-	}
+//	if (Button_WaitForPush(5000))
+//	{
+//		char fw_url[MAX_FW_URL_LENGTH];
+//		strncpy(fw_url, DEFAULT_FW_URL, sizeof(fw_url));
+//
+//		printf("\nEnter the URL of the new firmware file:(By default: %s) :", fw_url);
+//		getInputString(fw_url, sizeof(fw_url));
+//		msg_info("read: --->\n%s\n<---\n", fw_url);
+//
+//		printf("Downloading and programming the new firmware into the alternate FLASH bank.\n");
+//
+//		int ret = rfu_update(fw_url);
+//		switch (ret)
+//		{
+//		case RFU_OK:
+//			printf("\nProgramming done. Now you can reset the board.\n\n");
+//			break;
+//		case RFU_ERR_HTTP:
+//			printf("\nError: Programming failed. Reason: HTTP error - check your network connection, "
+//					"and that the HTTP server supports HTTP/1.1 and the progressive download.\n\n");
+//			break;
+//		case RFU_ERR_FF:
+//			printf("\nError: Programming failed. Reason: Invalid firmware fileformat - check that the IAR simple-code format is used.\n\n");
+//			break;
+//		case RFU_ERR_FLASH:
+//			printf("\nError: Programming failed. Reason: FLASH memory erase/write - check that the firmware file matches the SoC FLASH memory mapping"
+//					"and write protection settings. Double check that there is no illegal write to the FLASH address range.\n\n");
+//			break;
+//		default:
+//			printf("\nError: Programming failed. Unknown reason.\n\n");
+//		}
+//	}
 
 	return 0;
 }
