@@ -12,70 +12,46 @@
 #include <FreeRTOS.h>
 #include <semphr.h>
 #include <string.h>
+#include <stdlib.h>
 #include "debug_print.h"
 
-static sFpgaData fpgaData;
 static xSemaphoreHandle xLogFpga;
 
+extern xQueueHandle fpgaDataQueue;
+
 void init_fpga() {
-	fpgaData.records_count = 0;
 	xLogFpga = xSemaphoreCreateMutex();
 }
 
 bool putFpgaRecord(uint8_t* pdata, int len) {
 	bool res = false;
+	sFpgaDataStruct *p = NULL;
 	if(xSemaphoreTake(xLogFpga, (TickType_t)100) == true) {
-		if(fpgaData.records_count == 0) {
-			memcpy(fpgaData.p_buffer[fpgaData.records_count], pdata, len);
-			fpgaData.records_count ++;
-			DBGInfo("putFpgaRecord: record add -OK");
-			res = true;
+		if((len * 2 + strlen("\r\n")) >= sizeof(p->data)) {
+			DBGErr("putFpgaRecord - buffer overflow");
 		} else {
-			if(fpgaData.records_count < FPGA_BUFFER_RECORD_MAX_COUNT) {
-				memcpy(fpgaData.p_buffer[fpgaData.records_count], pdata, len);
-				fpgaData.records_count ++;
-				DBGInfo("putFpgaRecord: record add -OK");
-				res = true;
-			} else {
-				DBGErr("putFpgaRecord: overflow");
-				fpgaData.records_count = 0;
+			p = malloc(sizeof(sFpgaDataStruct));
+			if(p != NULL) {
+				uint16_t count_str = 0;
+				for(uint16_t count=0; count < len; count ++) {
+					sprintf((p->data+count_str), "%02x", *(pdata+count));
+					count_str += 2;
+				}
+				sprintf(p->data[count_str], "%s", "\r\n");
+
+				if(xQueueSend(fpgaDataQueue, &p, 1000/portTICK_PERIOD_MS) == pdTRUE) {
+					DBGInfo("putFpgaRecord: record add -OK");
+					res = true;
+				} else {
+					DBGErr("putFpgaRecord -send data to queue -ERROR (queue full");
+				}
 			}
 		}
 		xSemaphoreGive(xLogFpga);
-	}
-
-	return res;
-}
-
-int getFpgaLastRecord(uint8_t* pdata, int max_len) {
-	uint8_t * pstart_rec_data = NULL;
-	int res_rec_len = 0;
-
-	xSemaphoreTake(xLogFpga, portMAX_DELAY);
-	if(fpgaData.records_count == 0) {
-		pstart_rec_data = fpgaData.p_buffer[0];
 	} else {
-		int cout = fpgaData.records_count * FPGA_BUFFER_RECORD_MAX_SIZE;
-		if(cout < sizeof(fpgaData.p_buffer)) {
-			pstart_rec_data = fpgaData.p_buffer[fpgaData.records_count * FPGA_BUFFER_RECORD_MAX_SIZE];
-		}
+		DBGErr("putFpgaRecord - buffer malloc error");
 	}
-
-	if(pstart_rec_data != NULL) {
-		memcpy(pdata, pstart_rec_data, max_len);
-		res_rec_len = ((sRecord*)(pstart_rec_data))->data_len;
-	}
-
-	xSemaphoreGive(xLogFpga);
-
-	return res_rec_len;
-}
-
-void flushFpgaAll() {
-	xSemaphoreTake(xLogFpga, portMAX_DELAY);
-	fpgaData.records_count = 0;
-	memset(fpgaData.p_buffer[0], 0, FPGA_BUFFER_RECORD_MAX_SIZE);
-	xSemaphoreGive(xLogFpga);
+	return res;
 }
 
 #endif /* FPGA_BUF_FPGA_BUF_C_ */

@@ -7,8 +7,6 @@
 #include "gsmLLR2.h"
 #include "gsmLLR.h"
 #include "gsm.h"
-#include "cmsis_os.h"
-#include "cmsis_os2.h"
 #include "FreeRTOS.h"
 #include "FreeRTOSConfig.h"
 #include "queue.h"
@@ -20,7 +18,7 @@
 extern sGsmState gsmState;
 extern xSemaphoreHandle sioWriteSemaphore;
 extern xSemaphoreHandle xGsmSemaphoreReplayReceived;
-extern osStatus osPoolCFree (osPoolId pool_id, void *block);
+
 sGsmUartParcer uartParcerStruct;
 xTaskHandle gsmParcerTaskHandle;
 xQueueHandle uartRxQueue = NULL;
@@ -70,13 +68,11 @@ void gsm_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	// принимаем, проверка парсинга, если ничего не нашли принимаем дальше
 	if (uartParcerStruct.uart.receiveState == true) {
 		if(xQueueSendFromISR(uartParcerStruct.uart.rxQueue,&(uartParcerStruct.uart.rxCh), NULL) != pdTRUE) {
-			DBGInfo("UART: HAL_UART_RxCpltCallback Queue - FULL!!!");
-			//			SystemReset(_Reset_Error_UartLLR2);
+			DBGInfo("UART: HAL_UART_RxCpltCallback Queue - FULL");
 		}
 	}
 	if(HAL_UART_Receive_IT(huart, &(uartParcerStruct.uart.rxCh), 1) != HAL_OK) {
-		DBGInfo("HAL ERROR: (HAL_UART_Receive_IT != HAL OK)");
-		//		SystemReset(_Reset_Error_UartLLR2);
+		DBGInfo("HAL ERROR: (HAL_UART_Receive_IT - HAL ERR)");
 	}
 }
 

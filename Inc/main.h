@@ -32,7 +32,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stdbool.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -42,7 +42,13 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
+#ifdef USE_MBED_TLS
+extern int mbedtls_hardware_poll( void *data, unsigned char *output, size_t len, size_t *olen );
+#endif /* USE_MBED_TLS */
 
+#define FLASH_PAGE_SIZE                    ((uint32_t)0x800)
+
+/* Exported functions --------------------------------------------------------*/
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
