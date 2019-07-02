@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------
- * Name:    Serial.c
+ * Name:    serial.c
  * Purpose: Low Level Serial Routines
  * Note(s): possible defines select the used communication interface:
  *            __DBG_ITM   - ITM SWO interface
@@ -14,8 +14,9 @@
  * Copyright (c) 2008-2011 Keil - An ARM Company. All rights reserved.
  *----------------------------------------------------------------------------*/
 
+#include "serial.h"
+
 #include <stm32f4xx.h>                  /* STM32F4xx Definitions              */
-#include "Serial.h"
 
 #ifdef __DBG_ITM
 volatile int ITM_RxBuffer = ITM_RXBUFFER_EMPTY;  /*  CMSIS Debug Input        */

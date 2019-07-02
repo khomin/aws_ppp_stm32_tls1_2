@@ -39,9 +39,6 @@ ppp_pcb *ppp;
 struct netif ppp_netif;
 extern net_hnd_t hnet;
 
-//-- destination address
-extern sConnectSettings connectSettings;
-
 //-- security structure
 sConnectionPppStruct connectionPppStruct = {0};
 
@@ -50,28 +47,27 @@ ePppState pppState = ppp_not_inited;
 
 static xQueueHandle gsmPppUartTranmitQueue;
 
+//-- static raw ppp buffer template
+static u8_t rawPppInBuf[TRANSMIT_QUEUE_BUFF_LEN] = {0};
+static u16_t rawPppInBufLen = 0;
+
 //-- static functions
 static void gsmPPP_rawInput(void *pvParamters);
 static void gsmPPP_rawOutput(void *pvParamters);
 
-void gsmPPP_Tsk(void *pvParamter);
 
+//-- private function
+void gsmPPP_Tsk(void *pvParamter);
 static void tcpip_init_done(void * arg);
 static void status_cb(ppp_pcb *pcb, int err_code, void *ctx);
 static void ctx_cb_callback(void *p);
 static u32_t output_cb(ppp_pcb *pcb, u8_t *data, u32_t len, void *ctx);
 
-#define TRANSMIT_QUEUE_BUFF_LEN	1128
-
-typedef struct {
-	uint8_t data[TRANSMIT_QUEUE_BUFF_LEN];
-	uint16_t len;
-}sTransmitQueue;
-
+//-- public function
 bool gsmPPP_Init(void) {
-	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", 6128, 0, tskIDLE_PRIORITY+1, NULL);
+	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", GSM_PPP_RX_TASK_STACK_SIZE, 0, tskIDLE_PRIORITY, NULL);
 
-	gsmPppUartTranmitQueue = xQueueCreate(12, sizeof(sTransmitQueue*));
+	gsmPppUartTranmitQueue = xQueueCreate(GSM_PPP_UART_QUEUE_LENGTH, sizeof(sTransmitQueue*));
 
 	return true;
 }
@@ -80,8 +76,8 @@ void gsmPPP_Tsk(void *pvParamter) {
 	uint8_t setup = 0;
 	tcpip_init(tcpip_init_done, &setup);
 
-	xTaskCreate(gsmPPP_rawInput, "pppRxDataRx", 1024, 0, tskIDLE_PRIORITY, NULL);
-	xTaskCreate(gsmPPP_rawOutput, "pppRxDataTx", 1024, 0, tskIDLE_PRIORITY, NULL);
+	xTaskCreate(gsmPPP_rawInput, "pppRxDataRx", GSM_PPP_RAW_INPUT_TASK_STACK_SIZE, 0, tskIDLE_PRIORITY, NULL);
+	xTaskCreate(gsmPPP_rawOutput, "pppRxDataTx", GSM_PPP_RAW_INPUT_TASK_STACK_SIZE, 0, tskIDLE_PRIORITY, NULL);
 
 	sioWriteSemaphore = xSemaphoreCreateBinary();
 	connectionPppStruct.semphr = xSemaphoreCreateBinary();
@@ -123,18 +119,11 @@ void gsmPPP_Tsk(void *pvParamter) {
 			subscribe_publish_sensor_values();
 
 			platform_deinit();
-
-			while(1) {
-				vTaskDelay(500/portTICK_RATE_MS);
-			}
 		}
 
 		vTaskDelay(1000/portTICK_RATE_MS);
 	}
 }
-
-static u8_t tbuf[TRANSMIT_QUEUE_BUFF_LEN] = {0};
-static u16_t tbuf_len = 0;
 
 //----------------------------
 //--	private functions
@@ -145,15 +134,15 @@ void gsmPPP_rawInput(void *pvParamter) {
 	while(1) {
 		if(uartParcerStruct.ppp.pppModeEnable) {
 			//--- receive
-			while(xQueueReceive(uartParcerStruct.uart.rxQueue, &tbuf[tbuf_len], 2/portTICK_PERIOD_MS) == pdTRUE) {
-				tbuf_len++;
-				if(tbuf_len >=  sizeof(tbuf)-1) {
+			while(xQueueReceive(uartParcerStruct.uart.rxQueue, &rawPppInBuf[rawPppInBufLen], 2/portTICK_PERIOD_MS) == pdTRUE) {
+				rawPppInBufLen++;
+				if(rawPppInBufLen >=  sizeof(rawPppInBuf)-1) {
 					break;
 				}
 			}
-			if(tbuf_len) {
-				pppos_input(ppp, tbuf, tbuf_len);
-				tbuf_len = 0;
+			if(rawPppInBufLen) {
+				pppos_input(ppp, rawPppInBuf, rawPppInBufLen);
+				rawPppInBufLen = 0;
 			}
 		} else {
 			vTaskDelay(10/portTICK_RATE_MS);
@@ -225,8 +214,6 @@ void ctx_cb_callback(void *p) {}
 static void status_cb(ppp_pcb *pcb, int err_code, void *ctx) {
 	struct netif *pppif = ppp_netif(pcb);
 	LWIP_UNUSED_ARG(ctx);
-
-	pppState = ppp_not_inited;
 
 	switch(err_code) {
 	case PPPERR_NONE: {
@@ -308,6 +295,11 @@ static void status_cb(ppp_pcb *pcb, int err_code, void *ctx) {
 		DBGInfo("PPP: status_cb: Unknown error code %d", err_code);
 		break;
 	}
+	}
+
+	//-- if not ok, when set not inited
+	if(err_code != PPPERR_NONE) {
+		pppState = ppp_not_inited;
 	}
 
 	/*

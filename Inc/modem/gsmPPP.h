@@ -20,6 +20,11 @@
 #include <stdbool.h>
 #include "gsmLLR.h"
 
+#define TRANSMIT_QUEUE_BUFF_LEN					1128
+#define GSM_PPP_RX_TASK_STACK_SIZE				6128
+#define GSM_PPP_UART_QUEUE_LENGTH				12
+#define GSM_PPP_RAW_INPUT_TASK_STACK_SIZE		1024
+
 typedef struct {
 	xSemaphoreHandle semphr;
 	ip_addr_t ipRemoteAddr;
@@ -31,6 +36,11 @@ typedef struct {
 	}rxData;
 	bool connected;
 }sConnectionPppStruct;
+
+typedef struct {
+	uint8_t data[TRANSMIT_QUEUE_BUFF_LEN];
+	uint16_t len;
+}sTransmitQueue;
 
 typedef enum {
 	ppp_not_inited,
@@ -45,15 +55,5 @@ typedef struct {
 }sGetDnsResult;
 
 bool gsmPPP_Init(void);
-
-sGetDnsResult getIpByDns(const char *pDnsName, uint8_t len);
-
-bool gsmPPP_Connect(uint8_t* destIp, uint16_t port);
-bool gsmPPP_Disconnect(uint8_t numConnect);
-bool gsmPPP_SendData(uint8_t numConnect, uint8_t *pData, uint16_t len);
-uint16_t gsmPPP_GetRxLenData();
-uint16_t gsmPPP_ReadRxData(uint8_t *pData, uint16_t maxLen, uint32_t timeout);
-bool gsmPPP_ConnectStatus(uint8_t numConnect);
-xSemaphoreHandle * gsmPPP_GetRxSemaphorePoint(uint8_t numService);
 
 #endif

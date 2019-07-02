@@ -121,13 +121,6 @@ int FireWallCallGate(funcid_t funcid,...)
     return res;
 }
 
-
-uint32_t HAL_GetTick(void)
-{
-  return 0;
-}
-
-
 int     ProtectedStack(int      funcid,va_list(ap))
 {
        int res;

@@ -132,29 +132,23 @@ typedef struct __attribute__((packed)) {
 	char gprsPass[MAX_GPRS_PASS_LEN];//пароль
 }sGsmSettings;
 
-typedef struct __attribute__((packed)) {
-	char srvAddr[MAX_SRV_ADDR_LEN];
-	char srvPass[MAX_SRV_PASS_LEN];
-	uint16_t srvPort;
-}sConnectSettings;
-
 typedef struct {
 	eRetComm state;
 	uint8_t *pData;
 }sResultCommand;
 
 /**************************************************/
-/* 							СИМ КАРТА					 								*/
+/* 		sim card							  	  */
 /**************************************************/
 typedef enum
 {
 	sim_ready,	//
-	sim_pin,		//MT is not pending for any password
-	sim_puk,		//MT is waiting SIM PIN to be given //MT is waiting for SIM PUK to be
+	sim_pin,	//MT is not pending for any password
+	sim_puk,	//MT is waiting SIM PIN to be given //MT is waiting for SIM PUK to be
 	ph_sim_pin, // ME is waiting for phone to SIM card (antitheft)
 	ph_sim_puk,	// ME is waiting for SIM PUK (antitheft)
 	sim_pin2, 	//PIN2, e.g. for editing the FDN book possible only 
-	sim_puk2,		//Poss ible only    if    preceding    Command    was  acknowledged with error +CME ERROR
+	sim_puk2,	//Poss ible only    if    preceding    Command    was  acknowledged with error +CME ERROR
 	error,
 }ePinCode;
 
@@ -257,14 +251,5 @@ uint8_t* gsmLLR_GetImsiPoint(void);
 eRetComm gsmLLR_GetModuleSoftWareVersion(char *strSoftwareVersion);
 eRetComm gsmLLR_AtCREG(void);
 eRetComm gsmLLR_GetNameOperator(char *strNameOperator);
-eRetComm gsmLLR_ConnectService(uint8_t numConnect);
-eRetComm gsmLLR_DisconnectService(uint8_t numConnect);
-eRetComm gsmLLR_ConnectServiceStatus(uint8_t numConnect);
-//uint16_t gsmLLR_TcpGetRxCount(uint8_t serviceNum);
-//eRetComm gsmLLR_TcpSend(uint8_t serviceNum, uint8_t *pData, uint16_t size);
-//int	gsmLLR_TcpReadData(uint8_t **ppData, uint16_t buffSize);
-//xSemaphoreHandle* gsmLLR_GetRxSemphorePoint(uint8_t num);
-//
-//eRetComm getParameter(uint8_t paramNum, char *pStartChar, char *strInput, char *strOutput);
 
 #endif /* __AT_PARAM_STRUCT_H */
