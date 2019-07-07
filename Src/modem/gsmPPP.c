@@ -118,9 +118,9 @@ void gsmPPP_Tsk(void *pvParamter) {
 
 			setDisplayStatus(E_Status_Display_wait_unitl_connect);
 
-			if((keyCLIENT_CERTIFICATE_PEM_IsExist())
-					&& (keyCLIENT_PRIVATE_KEY_PEM_IsExist())
-					&& (keyCLIENT_PRIVATE_DEVICE_CERT_PEM_IsExist())) {
+			if((getKeyCLIENT_CERTIFICATE_PEM_IsExist())
+					&& (getKeyCLIENT_PRIVATE_KEY_PEM_IsExist())
+					&& (getKeyCLIENT_PRIVATE_DEVICE_CERT_PEM_IsExist())) {
 				platform_init();
 
 				subscribe_publish_sensor_values();
@@ -129,6 +129,7 @@ void gsmPPP_Tsk(void *pvParamter) {
 
 				setDisplayStatus(E_Status_Display_connect_lost);
 			} else {
+				vTaskDelay(3000/portTICK_RATE_MS);
 				setDisplayStatus(E_Status_Display_cert_empty);
 			}
 		}

@@ -17,12 +17,12 @@ static const char statusMessages [8][25]  = {
 		{"Connected"},
 		{"Connected and send"},
 		{"Connect was lost"},
-		{"Connecing - cert empty"}
+		{"Connecing -cert er"}
 };
 
 void setDisplayStatus(eStatusDisplayTypes status) {
-	ssd1306_DisplayOn();
 	ssd1306_Clear();
-	ssd1306_SetCursor(0, 0);
-	ssd1306_WriteString((char*) statusMessages[status], Font_16x26);
+	ssd1306_SetCursor(0, 8);
+	ssd1306_WriteString((char*) statusMessages[status], Font_7x10);
+	ssd1306_UpdateScreen();
 }

@@ -77,6 +77,8 @@ void Error_Handler(void);
 #define GSM_RESET_GPIO_Port GPIOH
 #define GSM_PWRKY_Pin GPIO_PIN_9
 #define GSM_PWRKY_GPIO_Port GPIOH
+#define OLED_RESET_Pin GPIO_PIN_11
+#define OLED_RESET_GPIO_Port GPIOH
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

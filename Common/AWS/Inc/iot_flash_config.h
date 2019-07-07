@@ -90,8 +90,8 @@ typedef struct {
 
 typedef struct {
   uint64_t magic;                                     /**< The USER_CONF_MAGIC magic word signals that the structure was once written to FLASH. */
-  char device_name[USER_CONF_DEVICE_NAME_LENGTH];
-  char server_name[USER_CONF_SERVER_NAME_LENGTH];
+  uint8_t * device_name;
+  uint8_t * server_name;
 } iot_config_t;
  
 /** Static user configuration data which must survive reboot and firmware update.
@@ -101,11 +101,11 @@ typedef struct {
  * Depending on the available board peripherals, the c2c_config and wifi_config fields may not be used.
  */
 typedef struct {
-  char * tls_root_ca_cert; /* Allow room for 3 root CA certificates */
-  char * tls_device_cert;
+  uint8_t * tls_root_ca_cert; /* Allow room for 3 root CA certificates */
+  uint8_t * tls_device_cert;
   /* Above structure member must be aligned on 256 byte boundary
      to match firewall constraint , same for the size. */
-  char * tls_device_key;
+  uint8_t * tls_device_key;
 #ifdef USE_C2C
   c2c_config_t c2c_config;
 #endif

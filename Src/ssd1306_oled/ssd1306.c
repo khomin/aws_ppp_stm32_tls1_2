@@ -57,6 +57,8 @@ void ssd1306_SetColor(SSD1306_COLOR color)
 //	Initialize the oled screen
 uint8_t ssd1306_Init(void)
 {
+	HAL_GPIO_WritePin(OLED_RESET_GPIO_Port, OLED_RESET_Pin, GPIO_PIN_SET);
+
 	/* Check if LCD connected to I2C */
 	if (HAL_I2C_IsDeviceReady(&SSD1306_I2C_PORT, SSD1306_I2C_ADDR, 5, 1000) != HAL_OK)
 	{

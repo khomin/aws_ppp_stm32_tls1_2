@@ -11,6 +11,6 @@
 #include <stdint.h>
 
 void commanderInit();
-void commanderAppendInByte(uint8_t byte);
+void commanderAppendData(uint8_t * data, uint16_t len);
 
 #endif /* COMMANDER_COMMANDER_H_ */

@@ -65,6 +65,9 @@
 
 extern xQueueHandle fpgaDataQueue;
 
+extern uint8_t __attribute__((section (".rodata"))) mqttDestEndpoint[USER_CONF_TLS_OBJECT_MAX_SIZE];
+extern uint8_t __attribute__((section (".rodata"))) mqttThingName[USER_CONF_DEVICE_NAME_LENGTH];
+
 void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topicNameLen, IoT_Publish_Message_Params *params, void *pData);
 int subscribe_publish_sensor_values(void);
 
@@ -97,20 +100,14 @@ int cloud_device_enter_credentials(void)
 	printf("\nEnter server address: (example: xxx.iot.region.amazonaws.com) \n");
 
 	//  getInputString(iot_config.server_name, USER_CONF_SERVER_NAME_LENGTH);
-	memcpy(iot_config.server_name,
-			clientcredentialMQTT_BROKER_ENDPOINT,
-			strlen(clientcredentialMQTT_BROKER_ENDPOINT)
-	);
+	iot_config.server_name = mqttDestEndpoint;
 
 	msg_info("read: --->\n%s\n<---\n", iot_config.server_name);
 
 	printf("\nEnter device name: (example: mything1) \n");
 
 	//	getInputString(iot_config.device_name, USER_CONF_DEVICE_NAME_LENGTH);
-	memcpy(iot_config.device_name,
-			clientcredentialIOT_THING_NAME,
-			strlen(clientcredentialIOT_THING_NAME)
-	);
+	iot_config.device_name = mqttThingName;
 
 	msg_info("read: --->\n%s\n<---\n", iot_config.device_name);
 
