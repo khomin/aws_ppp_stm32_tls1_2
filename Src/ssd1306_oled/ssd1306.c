@@ -8,7 +8,7 @@
  */
 
 /* CODE BEGIN Includes */
-#include "ssd1306.h"
+#include "ssd1306_oled/ssd1306.h"
 /* CODE END Includes */
 
 /* CODE BEGIN Private defines */

@@ -29,6 +29,8 @@
 #include "aws_hello_world.h"
 #include "./aws_system_init.h"
 #include "net_internal.h"
+#include "status/display_status.h"
+#include "settings/settings.h"
 
 extern xSemaphoreHandle sioWriteSemaphore;
 extern sGsmUartParcer uartParcerStruct;
@@ -114,14 +116,24 @@ void gsmPPP_Tsk(void *pvParamter) {
 		if(pppState == ppp_ready_work) {
 			DBGLog("AWS PPP: module initialized.\r\n");
 
-			platform_init();
+			setDisplayStatus(E_Status_Display_wait_unitl_connect);
 
-			subscribe_publish_sensor_values();
+			if((keyCLIENT_CERTIFICATE_PEM_IsExist())
+					&& (keyCLIENT_PRIVATE_KEY_PEM_IsExist())
+					&& (keyCLIENT_PRIVATE_DEVICE_CERT_PEM_IsExist())) {
+				platform_init();
 
-			platform_deinit();
+				subscribe_publish_sensor_values();
+
+				platform_deinit();
+
+				setDisplayStatus(E_Status_Display_connect_lost);
+			} else {
+				setDisplayStatus(E_Status_Display_cert_empty);
+			}
 		}
 
-		vTaskDelay(1000/portTICK_RATE_MS);
+		vTaskDelay(3000/portTICK_RATE_MS);
 	}
 }
 
