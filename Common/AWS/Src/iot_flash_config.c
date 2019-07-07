@@ -59,6 +59,11 @@
 #include "aws_clientcredential_keys.h"
 #include "aws_clientcredential.h"
 
+extern uint8_t __attribute__((section (".rodata"))) CLIENT_CERTIFICATE_PEM_addr [USER_CONF_TLS_ROOT_CA_CERT];
+extern uint8_t __attribute__((section (".rodata"))) keyCLIENT_PRIVATE_DEVICE_CERT_PEM_addr [USER_CONF_TLS_OBJECT_MAX_SIZE];
+extern uint8_t __attribute__((section (".rodata"))) keyCLIENT_PRIVATE_KEY_PEM_addr [USER_CONF_TLS_OBJECT_MAX_SIZE];
+
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private defines -----------------------------------------------------------*/
 #define PEM_READ_LINE_SIZE    120
@@ -91,9 +96,9 @@ user_config_t __uninited_region_start__ __attribute__((section("UNINIT_FIXED_LOC
 //const  user_config_t	*lUserConfigPtr = &__uninited_region_start__;
 
 const  user_config_t lUserConfigPtr = {
-		{keyCLIENT_CERTIFICATE_PEM},	// tls_root_ca_cert
-		{keyCLIENT_PRIVATE_DEVICE_CERT_PEM},	// tls_device_cert
-		{keyCLIENT_PRIVATE_KEY_PEM},	// tls_device_key
+		{CLIENT_CERTIFICATE_PEM_addr},	// tls_root_ca_cert
+		{keyCLIENT_PRIVATE_DEVICE_CERT_PEM_addr},	// tls_device_cert
+		{keyCLIENT_PRIVATE_KEY_PEM_addr},	// tls_device_key
 		{
 				// iot_config
 				USER_CONF_MAGIC,

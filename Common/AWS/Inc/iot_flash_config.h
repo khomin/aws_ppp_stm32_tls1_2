@@ -62,6 +62,7 @@
 #define USER_CONF_DEVICE_NAME_LENGTH    300   /**< Must be large enough to hold a complete connection string */
 #define USER_CONF_SERVER_NAME_LENGTH    128
 #define USER_CONF_TLS_OBJECT_MAX_SIZE   2048
+#define USER_CONF_TLS_ROOT_CA_CERT		(USER_CONF_TLS_OBJECT_MAX_SIZE * 3)
 #define USER_CONF_MAGIC                 0x0123456789ABCDEFuLL
    
 typedef struct {
@@ -100,11 +101,11 @@ typedef struct {
  * Depending on the available board peripherals, the c2c_config and wifi_config fields may not be used.
  */
 typedef struct {
-  char tls_root_ca_cert[USER_CONF_TLS_OBJECT_MAX_SIZE * 3]; /* Allow room for 3 root CA certificates */
-  char tls_device_cert[USER_CONF_TLS_OBJECT_MAX_SIZE];
+  char * tls_root_ca_cert; /* Allow room for 3 root CA certificates */
+  char * tls_device_cert;
   /* Above structure member must be aligned on 256 byte boundary
      to match firewall constraint , same for the size. */
-  char tls_device_key[USER_CONF_TLS_OBJECT_MAX_SIZE];
+  char * tls_device_key;
 #ifdef USE_C2C
   c2c_config_t c2c_config;
 #endif

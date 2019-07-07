@@ -20,7 +20,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "cmsis_os.h"
 #include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -35,7 +34,9 @@
 #include "gsmPPP.h"
 #include "../Common/AWS/Inc/net.h"
 #include "cloud.h"
-
+#include "commander/commander.h"
+#include "settings/settings.h"
+#include "ssd1306_oled/ssd1306.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,7 +63,6 @@ RTC_HandleTypeDef hrtc;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
-osThreadId_t defaultTaskHandle;
 /* USER CODE BEGIN PV */
 extern ePppState pppState;
 net_hnd_t hnet;
@@ -170,8 +170,11 @@ int main(void)
   MX_RNG_Init();
   /* USER CODE BEGIN 2 */
 
-	ITM_Init(1000);
-	DBGLog("Started");
+  ITM_Init(1000);
+  DBGLog("Started");
+
+  settingsInit();
+  ssd1306_Init();
 
 	/* USER CODE END 2 */
 
@@ -198,6 +201,8 @@ int main(void)
 	xTaskCreate(StartDefaultTask, "defaultTask", 1024, 0, tskIDLE_PRIORITY, NULL);
 
 	gsmTaskInit();
+
+	commanderInit();
 
 	/* USER CODE END RTOS_THREADS */
 
