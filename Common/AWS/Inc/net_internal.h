@@ -72,7 +72,7 @@
 #include "mbedtls/timing.h"
 #include "mbedtls_net.h"  /* mbedTLS data callbacks, implemented on WiFi_LL */
 #include "heap.h"         /* memory allocator overloading */
-
+#include "../Common/AWS/Inc/net.h"
 #endif /* USE_MBED_TLS */
 
 

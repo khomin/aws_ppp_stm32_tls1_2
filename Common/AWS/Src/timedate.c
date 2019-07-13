@@ -50,6 +50,7 @@
 #include "timedate.h"
 #include "../Common/AWS/Inc/net.h"
 #include "msg.h"
+#include "settings/settings.h"
 
 /** Host from which the time/date will be retrieved.*/
 #ifdef USE_CLEAR_TIMEDATE
@@ -61,8 +62,6 @@
 #define TIME_SOURCE_HTTP_PORT   443
 #define TIME_SOURCE_HTTP_PROTO  NET_PROTO_TLS
 #endif
-
-#include "iot_flash_config.h"
 
 extern net_hnd_t hnet;
 extern const user_config_t lUserConfigPtr;
