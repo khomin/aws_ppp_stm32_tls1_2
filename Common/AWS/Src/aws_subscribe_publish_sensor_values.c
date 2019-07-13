@@ -99,15 +99,17 @@ int cloud_device_enter_credentials(void)
 
 	printf("\nEnter server address: (example: xxx.iot.region.amazonaws.com) \n");
 
-	//  getInputString(iot_config.server_name, USER_CONF_SERVER_NAME_LENGTH);
+	getInputString(iot_config.server_name, USER_CONF_SERVER_NAME_LENGTH);
+
 	iot_config.server_name = mqttDestEndpoint;
 
 	msg_info("read: --->\n%s\n<---\n", iot_config.server_name);
 
 	printf("\nEnter device name: (example: mything1) \n");
 
-	//	getInputString(iot_config.device_name, USER_CONF_DEVICE_NAME_LENGTH);
-	iot_config.device_name = mqttThingName;
+	getInputString(iot_config.device_name, USER_CONF_DEVICE_NAME_LENGTH);
+
+	iot_config.device_name = mqttDeviceName;
 
 	msg_info("read: --->\n%s\n<---\n", iot_config.device_name);
 
@@ -237,7 +239,6 @@ int subscribe_publish_sensor_values(void)
 	const char *pDeviceName;
 	char cPayload[AWS_IOT_MQTT_TX_BUF_LEN];
 	char const * deviceName;
-	int i = 0;
 	int connectCounter;
 	IoT_Error_t rc = FAILURE;
 
@@ -252,8 +253,8 @@ int subscribe_publish_sensor_values(void)
 		return -1;
 	}
 
-	snprintf(cPTopicName, sizeof(cPTopicName), "$aws/things/%s/shadow/update", deviceName);
-	snprintf(cSTopicName, sizeof(cSTopicName), "$aws/things/%s/shadow/update/accepted", deviceName);
+	snprintf(cPTopicName, sizeof(cPTopicName), "%s", deviceName);
+	snprintf(cSTopicName, sizeof(cSTopicName), "%s", deviceName);
 
 	msg_info("AWS IoT SDK Version %d.%d.%d-%s\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_TAG);
 
@@ -337,8 +338,6 @@ int subscribe_publish_sensor_values(void)
 		msg_info("Subscribed to topic %s\n", cSTopicName);
 	}
 
-	sprintf(cPayload, "%s : %d ", "hello from STM", i);
-
 	IoT_Publish_Message_Params paramsQOS1 = {QOS1, 0, 0, 0, NULL,0};
 	paramsQOS1.payload = (void *) cPayload;
 
@@ -372,18 +371,13 @@ int subscribe_publish_sensor_values(void)
 		//-- send data
 		//-- endless looop
 		sFpgaDataStruct * p = NULL;
-		while(xQueueReceive(fpgaDataQueue, &p, 500/portTICK_PERIOD_MS) == pdTRUE) {
+		while((xQueueReceive(fpgaDataQueue, &p, 1000/portTICK_PERIOD_MS) == pdTRUE) && rc == AWS_SUCCESS) {
 			if(p != NULL) {
-				printf("Sending the fgpa data to AWS.\n");
+				printf("Sending data to AWS.\n");
 
 				/* create desired message */
 				memset(cPayload, 0, sizeof(cPayload));
-				strcat(cPayload, aws_json_desired);
-				strcat(cPayload, "{\"Fpga data\":\"");
 				strcat(cPayload, (char*)p->data);
-				strcat(cPayload, "\"}");
-				strcat(cPayload, aws_json_post);
-
 				free(p);
 
 				paramsQOS1.payloadLen = strlen(cPayload) + 1;
@@ -394,6 +388,10 @@ int subscribe_publish_sensor_values(void)
 						printf("\nPublished to topic %s:", cPTopicName);
 						printf("%s\n", cPayload);
 					}
+					if (rc == FAILURE) {
+						break;
+					}
+					vTaskDelay(3000/portTICK_PERIOD_MS);
 				} while(MQTT_REQUEST_TIMEOUT_ERROR == rc &&(loop_is_normal));
 			}
 		}

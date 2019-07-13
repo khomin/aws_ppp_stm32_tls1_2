@@ -11,8 +11,25 @@
 #include "iot_flash_config.h"
 #include "debug_print.h"
 
-#define SETTINGS_SECTOR 					FLASH_SECTOR_19
+#define ADDR_FLASH_SECTOR_0     ((uint32_t)0x08000000) /* Base @ of Sector 0, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_1     ((uint32_t)0x08004000) /* Base @ of Sector 1, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_2     ((uint32_t)0x08008000) /* Base @ of Sector 2, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_3     ((uint32_t)0x0800C000) /* Base @ of Sector 3, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_4     ((uint32_t)0x08010000) /* Base @ of Sector 4, 64 Kbytes */
+#define ADDR_FLASH_SECTOR_5     ((uint32_t)0x08020000) /* Base @ of Sector 5, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_6     ((uint32_t)0x08040000) /* Base @ of Sector 6, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_7     ((uint32_t)0x08060000) /* Base @ of Sector 7, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_8     ((uint32_t)0x08080000) /* Base @ of Sector 8, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_9     ((uint32_t)0x080A0000) /* Base @ of Sector 9, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_10    ((uint32_t)0x080C0000) /* Base @ of Sector 10, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_11 	((uint32_t)0x080E0000) /* Base @ of Sector 11, 128 Kbytes */
+#define FLASH_USER_START_ADDR	((uint32_t)0x080E0000)
+#define FLASH_USER_END_ADDR		((uint32_t)0x080FFFFF)
+#define DATA_32 				((uint32_t)0xFFFFFFFF)
 
+#define USE_OLD_CONF_CERTIFICATES	1
+
+//-- root CA
 uint8_t __attribute__((section (".SettingsData"))) CLIENT_ROOT_CA[USER_CONF_TLS_ROOT_CA_CERT] =
 		"-----BEGIN CERTIFICATE-----\r\n" \
 		"MIIDQTCCAimgAwIBAgITBmyfz5m/jAo54vB4ikPmljZbyjANBgkqhkiG9w0BAQsF\r\n" \
@@ -35,6 +52,8 @@ uint8_t __attribute__((section (".SettingsData"))) CLIENT_ROOT_CA[USER_CONF_TLS_
 		"rqXRfboQnoZsG4q5WTP468SQvvG5\r\n" \
 		"-----END CERTIFICATE-----\r\n";
 
+//-- device certificate
+#ifdef USE_OLD_CONF_CERTIFICATES
 uint8_t __attribute__((section (".SettingsData"))) CLIENT_PRIVATE_DEVICE_CERT[USER_CONF_TLS_OBJECT_MAX_SIZE] =
 		"-----BEGIN CERTIFICATE-----\r\n" \
 		"MIIDWjCCAkKgAwIBAgIVAK8Wxv0/RRakxZ1Fq9FqYCtcvxQ9MA0GCSqGSIb3DQEB\r\n" \
@@ -56,7 +75,32 @@ uint8_t __attribute__((section (".SettingsData"))) CLIENT_PRIVATE_DEVICE_CERT[US
 		"ksbSaqkTE7P+T5KbEVaO5MyutadXtCU6OvgN0DANUmqt3M9kFl+CBLg1jgc/bq28\r\n" \
 		"u9ypwNFLq7MbXIKZ0lO+qZXVgufOSnKmaAXV58jAolMljegVeWd15xtEx3vVGg==\r\n" \
 		"-----END CERTIFICATE-----\r\n";
+#else
+uint8_t __attribute__((section (".SettingsData"))) CLIENT_PRIVATE_DEVICE_CERT[USER_CONF_TLS_OBJECT_MAX_SIZE] =
+		"-----BEGIN CERTIFICATE-----\r\n" \
+		"MIIDPDCCAiQCCQCgOhOgS4gRDTANBgkqhkiG9w0BAQsFADBgMQswCQYDVQQGEwJS\r\n" \
+		"VTEMMAoGA1UECAwDU3BiMQwwCgYDVQQHDANTcGIxETAPBgNVBAoMCEJlbGxzb2Z0\r\n" \
+		"MQwwCgYDVQQLDANEZXYxFDASBgNVBAMMC2JlbGwtc3cuY29tMB4XDTE5MDYyNzEw\r\n" \
+		"NTczOVoXDTIwMDYyNjEwNTczOVowYDELMAkGA1UEBhMCUlUxDDAKBgNVBAgMA1Nw\r\n" \
+		"YjEMMAoGA1UEBwwDU3BiMREwDwYDVQQKDAhCZWxsc29mdDEMMAoGA1UECwwDRGV2\r\n" \
+		"MRQwEgYDVQQDDAtiZWxsLXN3LmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC\r\n" \
+		"AQoCggEBAMjMo7ScqN+ehLun+4F5msh8KZ6YEH04ou4hlV488TgojJNMvEhToalY\r\n" \
+		"/m8xPTwZBLlFkYue/7OTu1oXHQpYSIwtqn2KTcctvttUh6rD89biprxVGItCe9t/\r\n" \
+		"8VCj3o3+m7Rrd1toZLjaSR8cMUkJ5qk7+1kEV8zqdUU/iZ5qXwK63BYHv82P68uM\r\n" \
+		"9Xfn+5HybFD5KdBi5HgnhrVzl2+Ctu7c5nxJqFD3aGq/SuD2Gmd3NbS4F/fEhd7N\r\n" \
+		"uF4JtdJhZniju+OdvuHrL2wF59J+Qi5FLniE6K4WkAAmmgJQN40novAR4QW+O+og\r\n" \
+		"rV6j5zxhYs9snOsWa5SDRaGLlHj7DTkCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEA\r\n" \
+		"NTpfRta92S171U3EhyMzDW53lwchKRyIbr4Zgi+rpPq+Yb8U3+WE6OhfuFu9/b8z\r\n" \
+		"eTzewpR2OBK9dO2Ae+pIp5mKpRB+AUrzknwZccFtM6QgsrczaMaRiNSDqkm5F6Ip\r\n" \
+		"WQGzmEV1JBD50MSZdT19nJGBRmT6VPgwDBdv+xds+3VCNEgadNVikWC4m4hCs5jS\r\n" \
+		"CbbGLpoGVp/NHNtHbhXBOxDpN4BMm49s02iMdV2Z+4fgJudmUa6jdqhTda3gxLt7\r\n" \
+		"yK3LBHbz+nmS/Vb1OtH8HlykqcRWdx4+TeI3kJsCvqxk+u3XVyJNRJliZ2Ls2pv2\r\n" \
+		"rtMf+pNtlW6bM/wsUGlHhw==\r\n" \
+		"-----END CERTIFICATE-----\r\n";
+#endif
 
+//-- device key
+#ifdef USE_OLD_CONF_CERTIFICATES
 uint8_t __attribute__((section (".SettingsData"))) CLIENT_PRIVATE_KEY[USER_CONF_TLS_OBJECT_MAX_SIZE] =
 		"-----BEGIN RSA PRIVATE KEY-----\r\n" \
 		"MIIEowIBAAKCAQEAwroygPb+DrqOTrbFGv9W3A0bm41uXD2WjDV13vUVsY1xvBOf\r\n" \
@@ -85,15 +129,57 @@ uint8_t __attribute__((section (".SettingsData"))) CLIENT_PRIVATE_KEY[USER_CONF_
 		"KB41gbcmXPpg/C61SOjOMEcLlYFGpLNLyYt9TB+15oQh3t8PVuVTSBqFu7tSr0DJ\r\n" \
 		"8/1n9peHWl01Om/PMjv0PxDl3urVlVPo+ZRdga/ATZL3geDEZCCj\r\n" \
 		"-----END RSA PRIVATE KEY-----\r\n";
+#else
+uint8_t __attribute__((section (".SettingsData"))) CLIENT_PRIVATE_KEY[USER_CONF_TLS_OBJECT_MAX_SIZE] =
+		"-----BEGIN RSA PRIVATE KEY-----\r\n" \
+		"MIIEpAIBAAKCAQEAyMyjtJyo356Eu6f7gXmayHwpnpgQfTii7iGVXjzxOCiMk0y8\r\n" \
+		"SFOhqVj+bzE9PBkEuUWRi57/s5O7WhcdClhIjC2qfYpNxy2+21SHqsPz1uKmvFUY\r\n" \
+		"i0J723/xUKPejf6btGt3W2hkuNpJHxwxSQnmqTv7WQRXzOp1RT+JnmpfArrcFge/\r\n" \
+		"zY/ry4z1d+f7kfJsUPkp0GLkeCeGtXOXb4K27tzmfEmoUPdoar9K4PYaZ3c1tLgX\r\n" \
+		"98SF3s24Xgm10mFmeKO7452+4esvbAXn0n5CLkUueITorhaQACaaAlA3jSei8BHh\r\n" \
+		"Bb476iCtXqPnPGFiz2yc6xZrlINFoYuUePsNOQIDAQABAoIBAHj2jkfnd/P+UoeZ\r\n" \
+		"knFVCGFuKsRXZteInt5FbO3wWIA0LTsvJt2LQ//4lI33Y6QojifuONebWP6dKGgF\r\n" \
+		"NIFe3ZVUjThDcMdkT21hZrkAgowYzcj2mmqKCoMYeA7UKOXxU2tEsgpmwQZ6uUH8\r\n" \
+		"gdQ2GrYoZCoj66COPUcSF51PBx1k0cR5ffWcVuyeBpSKJK1gc3RhhCP9UpYZaDQ5\r\n" \
+		"AeJRG/xs/IvJG8voMYq3kW3W7CjVFwvGQ8hYA1J9p1MSNfPnTHMk5m5iOAHkyWwZ\r\n" \
+		"UMEegO0l9f9hFY67qLodzttRsKF1yY2Q6SerMn25DNwCSGgIBXMNldaex2051Pm1\r\n" \
+		"sBCkUAECgYEA9lxIx3aVose7BFEeuhecqnXe6Ss+bMC3+9EopeR0gM7J/et+0Qx4\r\n" \
+		"P4o65teCycPraERECKr4uaP1rfFmu4d8TiTlAaoX/ruvOEe95Q5lymGX3hJbG/7c\r\n" \
+		"a5JXlxxLh5UdxAP8V2umqBaYgmrDTa6eiowbDiRUmhgk8ikjjjDep/kCgYEA0Kf7\r\n" \
+		"2tQ9RwmZESQwEBi53pAcoqbljaMgfzxDiatNTTmxiLJeyg8XlUaL/UplFqUYH5pI\r\n" \
+		"EruTOx77Jdx3wnzra+GCSJk5+PocJRi/V53edYuU9u7bslVfcYdXH5Ply+ikYo6/\r\n" \
+		"BPSVq4bj9/qtrrQX72EF3gNeSLgRVIlnY/pFX0ECgYEAvXpKy4ZsHg9pyi8t58ij\r\n" \
+		"SQNxF3qX/4LVvoqmrbig1jS1bGMEXXouvgftt3/HarERzFa80MHWnMj6+vZwogjZ\r\n" \
+		"VSzRKU+ONvBZGnsrFRHWvioDaNxLUKPbGa0rSuCLQtMwWoMKQJ5eRmdikuPUJFoK\r\n" \
+		"O9r4MA9HNmEdgVacrw7tINkCgYAPj/fg4mOPoM+hz6kmCjISv3zjRL9qSPhrhPsk\r\n" \
+		"kXo6gEsVfvhC6c1AfPqD8cCIZ9fcw40MmKDqj+z7be4gu2Bzs2YcNBF22HCw85+R\r\n" \
+		"0Vx+N+LsZ/RK4MM1nHqLCGTjSH66OxtUK0neeTkXjcLWfOgsGnhtjqLBmbjxLS5g\r\n" \
+		"7pGuAQKBgQCY1QEVX3HaP3ROczWFEa4ZSaG+4urOjsliLNe0IK49D6gXCKuWh/Y6\r\n" \
+		"cjzk2KFeeAR+mNDDRiuj2DOtN9qimYLfcHtHfazn7SPANukDE3R56xt58QWLgS26\r\n" \
+		"uDpNJu9BIADbRlIbXa5HvLbqJZOGtgvYkXk03bCYdMlZmjNI/ZFmuQ==\r\n" \
+		"-----END RSA PRIVATE KEY-----\r\n";
+#endif
 
+//-- connect properies
+#ifdef USE_OLD_CONF_CERTIFICATES
 //-- mqtt topic - example: a39gt7zyg3mya3-ats.iot.us-east-2.amazonaws.com
-uint8_t __attribute__((section (".SettingsData"))) mqttDestEndpoint[USER_CONF_SERVER_NAME_LENGTH] = "a39gt7zyg3mya3-ats.iot.us-east-2.amazonaws.com";
+uint8_t __attribute__((section (".SettingsData"))) mqttDestEndpoint[USER_CONF_SERVER_NAME_LENGTH] = "ajdhfkws66ilz-ats.iot.us-east-2.amazonaws.com";
 //-- device name
-uint8_t __attribute__((section (".SettingsData"))) mqttDeviceName[USER_CONF_DEVICE_NAME_LENGTH] = "USB_Printer_Board";
-//-- thing name
-uint8_t __attribute__((section (".SettingsData"))) mqttThingName[USER_CONF_DEVICE_NAME_LENGTH] = "USB_Printer_Board";
+uint8_t __attribute__((section (".SettingsData"))) mqttDeviceName[USER_CONF_DEVICE_NAME_LENGTH] = "$aws/things/USB_Printer_Board/shadow/update";
+//-- reserv
+uint8_t __attribute__((section (".SettingsData"))) reserv[0xFFFFF] = {0};
+#else
+//-- mqtt topic - example: a39gt7zyg3mya3-ats.iot.us-east-2.amazonaws.com
+uint8_t __attribute__((section (".SettingsData"))) mqttDestEndpoint[USER_CONF_SERVER_NAME_LENGTH] = "ajdhfkws66ilz-ats.iot.us-east-2.amazonaws.com";
+//-- device name
+uint8_t __attribute__((section (".SettingsData"))) mqttDeviceName[USER_CONF_DEVICE_NAME_LENGTH] = "bills";
+//-- reserv
+uint8_t __attribute__((section (".SettingsData"))) reserv[0xFFFFF] = {0};
+#endif
 
 static const uint8_t not_found_caption[] = "not found";
+
+static uint32_t GetSector(uint32_t Address);
 
 void settingsInit() {
 	DBGLog("settings: init: status certificates - %d %d %d",
@@ -101,51 +187,31 @@ void settingsInit() {
 			getKeyCLIENT_PRIVATE_KEY_PEM_IsExist(),
 			getKeyCLIENT_PRIVATE_DEVICE_CERT_PEM_IsExist()
 	);
-
-	flushSettingsFullSector();
-
 }
 
 bool getKeyCLIENT_CERTIFICATE_PEM_IsExist() {
-	bool res = false;
-	for(uint32_t i=0; i<sizeof(CLIENT_ROOT_CA); i++) {
-		if(CLIENT_ROOT_CA[i] != 0) {
-			res = true;
-		}
-	}
-	return res;
+	return CLIENT_ROOT_CA[0] != 0xFF;
 }
 
 bool getKeyCLIENT_PRIVATE_KEY_PEM_IsExist() {
-	bool res = false;
-	for(uint32_t i=0; i<sizeof(CLIENT_PRIVATE_KEY); i++) {
-		if(CLIENT_PRIVATE_KEY[i] != 0) {
-			res = true;
-		}
-	}
-	return res;
+	return CLIENT_PRIVATE_KEY[0] != 0xFF;
 }
 
 bool getKeyCLIENT_PRIVATE_DEVICE_CERT_PEM_IsExist() {
-	bool res = false;
-	for(uint32_t i=0; i<sizeof(CLIENT_PRIVATE_DEVICE_CERT); i++) {
-		if(CLIENT_PRIVATE_DEVICE_CERT[i] != 0) {
-			res = true;
-		}
-	}
-	return res;
+	return CLIENT_PRIVATE_DEVICE_CERT[0] != 0xFF;
 }
 
 bool getMqttDestEndpoint_isExist() {
-	return 	mqttDestEndpoint[0] != NULL;
+	return  mqttDestEndpoint[0] != 0xFF;
+
 }
 
 bool getDeviceName_isExist() {
-	return 	mqttDeviceName[0] != NULL;
+	return 	mqttDeviceName[0] != 0xFF;
 }
 
 bool getThingName_isExist() {
-	return mqttThingName[0] != NULL;
+	return mqttThingName[0] != 0xFF;
 }
 
 /*
@@ -157,16 +223,18 @@ bool getThingName_isExist() {
  * "-----END CERTIFICATE-----\n"
  */
 bool setKeyCLIENT_CERTIFICATE_PEM(uint8_t *pdata, uint16_t len) {
-	bool res = false;
 	HAL_FLASH_Unlock();
-	for(uint16_t i=0; i<len; i++) {
-		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, (uint32_t)((&CLIENT_ROOT_CA) + i), pdata[i])) {
+	uint32_t addr = (uint32_t)&CLIENT_ROOT_CA;
+	uint16_t i = 0;
+	for(i=0; i<len; i++) {
+		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr + i, pdata[i])) {
 			HAL_FLASH_Lock();
 			return false;
 		}
 	}
+	HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr+i, 0);
 	HAL_FLASH_Lock();
-	return res;
+	return true;
 }
 
 /*
@@ -176,16 +244,18 @@ bool setKeyCLIENT_CERTIFICATE_PEM(uint8_t *pdata, uint16_t len) {
  * "-----END CERTIFICATE-----\n"
  */
 bool setKeyCLIENT_PRIVATE_KEY_PEM(uint8_t *pdata, uint16_t len) {
-	bool res = false;
+	uint16_t i = 0;
 	HAL_FLASH_Unlock();
-	for(uint16_t i=0; i<len; i++) {
-		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, (uint32_t)((&CLIENT_PRIVATE_KEY) + i), pdata[i])) {
+	uint32_t addr = (uint32_t)(&CLIENT_PRIVATE_KEY);
+	for(i=0; i<len; i++) {
+		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr + i, pdata[i])) {
 			HAL_FLASH_Lock();
 			return false;
 		}
 	}
+	HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr+i, 0);
 	HAL_FLASH_Lock();
-	return res;
+	return true;
 }
 
 /*
@@ -195,80 +265,63 @@ bool setKeyCLIENT_PRIVATE_KEY_PEM(uint8_t *pdata, uint16_t len) {
  * "-----END CERTIFICATE-----\n"
  */
 bool setKeyCLIENT_PRIVATE_DEVICE_CERT(uint8_t *pdata, uint16_t len) {
-	bool res = false;
+	uint16_t i=0;
 	HAL_FLASH_Unlock();
-	for(uint16_t i=0; i<len; i++) {
-		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, (uint32_t)((&CLIENT_PRIVATE_DEVICE_CERT) + i), pdata[i])) {
+	uint32_t addr = (uint32_t)&CLIENT_PRIVATE_DEVICE_CERT;
+	for(i=0; i<len; i++) {
+		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr+i, pdata[i])) {
 			HAL_FLASH_Lock();
 			return false;
 		}
 	}
+	HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr+i, 0);
 	HAL_FLASH_Lock();
-	return res;
+	return true;
 }
 
 bool setMqttDestEndpoint(uint8_t *pdata, uint16_t len) {
-	bool res = false;
+	uint16_t i=0;
 	HAL_FLASH_Unlock();
-
-	for(uint16_t i=0; i<len; i++) {
-		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, (uint32_t)((&mqttDestEndpoint) + i), pdata[i])) {
+	uint32_t addr = (uint32_t)&mqttDestEndpoint;
+	for(i=0; i<len; i++) {
+		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr+i, pdata[i])) {
 			HAL_FLASH_Lock();
 			return false;
 		}
 	}
-
+	HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr+i, 0);
 	HAL_FLASH_Lock();
-	return res;
+	return true;
 }
 
 bool setDeviceName(uint8_t *pdata, uint16_t len) {
-	bool res = false;
+	uint16_t i=0;
 	HAL_FLASH_Unlock();
-	for(uint16_t i=0; i<len; i++) {
-		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, (uint32_t)((&mqttDeviceName) + i), pdata[i])) {
+	uint32_t addr = (uint32_t)&mqttDeviceName;
+	for(i=0; i<len; i++) {
+		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr + i, pdata[i])) {
 			HAL_FLASH_Lock();
 			return false;
 		}
 	}
+	HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr+i, 0);
 	HAL_FLASH_Lock();
-	return res;
+	return true;
 }
 
 bool setThingName(uint8_t *pdata, uint16_t len) {
-	bool res = false;
+	uint16_t i=0;
 	HAL_FLASH_Unlock();
-	for(uint16_t i=0; i<len; i++) {
-		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, (uint32_t)((&mqttThingName) + i), pdata[i])) {
+	uint32_t addr = &mqttThingName;
+	for(i=0; i<len; i++) {
+		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr + i, pdata[i])) {
 			HAL_FLASH_Lock();
 			return false;
 		}
 	}
+	HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr+i, 0);
 	HAL_FLASH_Lock();
-	return res;
-}
-
-bool flushSettingsFullSector() {
-	bool res = false;
-	HAL_FLASH_Unlock();
-	uint32_t flashPageEraseErrors = 0;
-	FLASH_EraseInitTypeDef eraseMainInit = {
-			FLASH_TYPEERASE_SECTORS,
-			FLASH_BANK_2,
-			FLASH_SECTOR_23,
-			1,
-			FLASH_VOLTAGE_RANGE_3
-	};
-
-	for(uint8_t i=0; i<105; i++) {
-		if (HAL_OK == HAL_FLASHEx_Erase(&eraseMainInit, &flashPageEraseErrors)) {
-			res = true;
-		}
-		eraseMainInit.Sector --;
-	}
-
-	HAL_FLASH_Lock();
-	return res;
+	return true;
 }
 
 const uint8_t * getKeyCLIENT_CERTIFICATE_PEM() {
@@ -294,3 +347,139 @@ const uint8_t * getDeviceName() {
 const uint8_t * getThingName() {
 	return 	getThingName_isExist() ? mqttThingName : not_found_caption;
 }
+
+bool flushSettingsFullSector() {
+	bool res = false;
+	uint32_t FirstSector = 0, NbOfSectors = 0, Address = 0;
+	uint32_t SectorError = 0;
+	__IO uint32_t data32 = 0 , MemoryProgramStatus = 0;
+
+	/* Unlock the Flash to enable the flash control register access *************/
+	HAL_FLASH_Unlock();
+
+	// Erase the user Flash area
+	// (area defined by FLASH_USER_START_ADDR and FLASH_USER_END_ADDR) ***********/
+
+	/* Get the 1st sector to erase */
+	FirstSector = GetSector(FLASH_USER_START_ADDR);
+	/* Get the number of sector to erase from 1st sector*/
+	NbOfSectors = GetSector(FLASH_USER_END_ADDR) - FirstSector + 1;
+
+	/* Fill EraseInit structure*/
+	FLASH_EraseInitTypeDef EraseInitStruct;
+	EraseInitStruct.TypeErase = TYPEERASE_SECTORS;
+	EraseInitStruct.VoltageRange = VOLTAGE_RANGE_3;
+	EraseInitStruct.Sector = FirstSector;
+	EraseInitStruct.NbSectors = NbOfSectors;
+
+	if (HAL_FLASHEx_Erase(&EraseInitStruct, &SectorError) != HAL_OK) {
+		// Error occurred while sector erase.
+		// User can add here some code to deal with this error.
+		// SectorError will contain the faulty sector and then to know the code error on this sector,
+		// user can call function 'HAL_FLASH_GetError()' */
+		// FLASH_ErrorTypeDef errorcode = HAL_FLASH_GetError();
+		res = false;
+	}
+
+	// Program the user Flash area word by word
+	// (area defined by FLASH_USER_START_ADDR and FLASH_USER_END_ADDR) ***********/
+
+	Address = FLASH_USER_START_ADDR;
+
+	while (Address < FLASH_USER_END_ADDR){
+		if (HAL_FLASH_Program(TYPEPROGRAM_WORD, Address, DATA_32) == HAL_OK) {
+			Address = Address + 4;
+		} else { // Error occurred while writing data in Flash memory
+			// User can add here some code to deal with this error */
+			// FLASH_ErrorTypeDef errorcode = HAL_FLASH_GetError();
+			res = false;
+		}
+	}
+
+	/* Lock the Flash to disable the flash control register access (recommended
+	 * to protect the FLASH memory against possible unwanted operation) */
+	HAL_FLASH_Lock();
+
+	/* Check if the programmed data is OK
+    MemoryProgramStatus = 0: data programmed correctly
+    MemoryProgramStatus != 0: number of words not programmed correctly ******/
+	Address = FLASH_USER_START_ADDR;
+	MemoryProgramStatus = 0x0;
+
+	while (Address < FLASH_USER_END_ADDR) {
+		data32 = *(__IO uint32_t*)Address;
+
+		if (data32 != DATA_32) {
+			MemoryProgramStatus++;
+		}
+		Address = Address + 4;
+	}
+
+	/*Check if there is an issue to program data*/
+	if (MemoryProgramStatus == 0) { /* No error detected */
+		res = true;
+	}
+
+	return res;
+}
+
+/**
+ * @brief  Gets the sector of a given address
+ * @param  None
+ * @retval The sector of a given address
+ */
+static uint32_t GetSector(uint32_t Address) {
+	uint32_t sector = 0;
+
+	if((Address < ADDR_FLASH_SECTOR_1) && (Address >= ADDR_FLASH_SECTOR_0))
+	{
+		sector = FLASH_SECTOR_0;
+	}
+	else if((Address < ADDR_FLASH_SECTOR_2) && (Address >= ADDR_FLASH_SECTOR_1))
+	{
+		sector = FLASH_SECTOR_1;
+	}
+	else if((Address < ADDR_FLASH_SECTOR_3) && (Address >= ADDR_FLASH_SECTOR_2))
+	{
+		sector = FLASH_SECTOR_2;
+	}
+	else if((Address < ADDR_FLASH_SECTOR_4) && (Address >= ADDR_FLASH_SECTOR_3))
+	{
+		sector = FLASH_SECTOR_3;
+	}
+	else if((Address < ADDR_FLASH_SECTOR_5) && (Address >= ADDR_FLASH_SECTOR_4))
+	{
+		sector = FLASH_SECTOR_4;
+	}
+	else if((Address < ADDR_FLASH_SECTOR_6) && (Address >= ADDR_FLASH_SECTOR_5))
+	{
+		sector = FLASH_SECTOR_5;
+	}
+	else if((Address < ADDR_FLASH_SECTOR_7) && (Address >= ADDR_FLASH_SECTOR_6))
+	{
+		sector = FLASH_SECTOR_6;
+	}
+	else if((Address < ADDR_FLASH_SECTOR_8) && (Address >= ADDR_FLASH_SECTOR_7))
+	{
+		sector = FLASH_SECTOR_7;
+	}
+	else if((Address < ADDR_FLASH_SECTOR_9) && (Address >= ADDR_FLASH_SECTOR_8))
+	{
+		sector = FLASH_SECTOR_8;
+	}
+	else if((Address < ADDR_FLASH_SECTOR_10) && (Address >= ADDR_FLASH_SECTOR_9))
+	{
+		sector = FLASH_SECTOR_9;
+	}
+	else if((Address < ADDR_FLASH_SECTOR_11) && (Address >= ADDR_FLASH_SECTOR_10))
+	{
+		sector = FLASH_SECTOR_10;
+	}
+	else /* (Address < FLASH_END_ADDR) && (Address >= ADDR_FLASH_SECTOR_11) */
+	{
+		sector = FLASH_SECTOR_11;
+	}
+
+	return sector;
+}
+

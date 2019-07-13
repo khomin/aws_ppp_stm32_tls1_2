@@ -13,4 +13,6 @@
 void commanderInit();
 void commanderAppendData(uint8_t * data, uint16_t len);
 
+void printToUsb(uint8_t * pdata, uint16_t len);
+
 #endif /* COMMANDER_COMMANDER_H_ */

@@ -17,8 +17,10 @@
 #include <stdio.h>
 #include "usbd_cdc_if.h"
 #include "settings/settings.h"
+#include "iot_flash_config.h"
+#include "cloud.h"
 
-#define COMMANDER_MAX_BUFF_SIZE				2048
+#define COMMANDER_MAX_BUFF_SIZE				2128
 
 static void commanderTask(void * arg);
 static xSemaphoreHandle lock;
@@ -30,8 +32,8 @@ static uint16_t buxTxLen = 0;
 static bool usbIsActive = false;
 static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len);
 
-#define COMMANDS_LIST_MAX_LEN				14
-#define COMMANDS_TEXT_MAX_LEN				35
+#define COMMANDS_LIST_MAX_LEN				15
+#define COMMANDS_TEXT_MAX_LEN				50
 
 typedef enum {
 	//-- gets
@@ -49,7 +51,9 @@ typedef enum {
 	e_set_mqtt_url,
 	e_set_device_name,
 	e_set_thing_name,
-	e_flush_full
+	e_flush_full,
+	//-- other
+	e_reboot
 }eTypeCommands;
 
 typedef struct {
@@ -73,7 +77,8 @@ static const sCommandItem c_commands[COMMANDS_LIST_MAX_LEN] = {
 		{{"set -mqtt url"}, e_set_mqtt_url},
 		{{"set -device name"}, e_set_device_name},
 		{{"set -thing name"}, e_set_thing_name},
-		{{"flush full"}, e_flush_full}
+		{{"flush full"}, e_flush_full},
+		{{"reboot"}, e_reboot}
 };
 
 static const uint8_t command_not_found_caption[] = "command not found\r\n";
@@ -82,81 +87,117 @@ static const uint8_t command_options_execut_error_caption[] = "execut error\r\n"
 static const uint8_t command_options_error_caption[] = "error options\r\n";
 
 static uint16_t findLenOffset(uint8_t * pdata, uint8_t firstChar);
+static bool prepareData(uint8_t * commandHeader, uint8_t *p, uint8_t * temp_buf);
 
 void commanderInit() {
 	lock = xSemaphoreCreateMutex();
 	xTaskCreate(commanderTask, "commanderTask", 1024, 0, tskIDLE_PRIORITY, NULL);
 }
 
+void printToUsb(uint8_t * pdata, uint16_t len) {
+	CDC_Transmit_FS(pdata, len);
+}
+
 void commanderTask(void * arg) {
 	for(;;) {
-		//-- if usb packet was finished
 		if(usbIsActive) {
 			usbIsActive = false;
 			vTaskDelay(100/portTICK_PERIOD_MS);
 			if(!usbIsActive) {
 				uint8_t* command_res = handleCommandData(buffRx, buffRxLen);
+				memset(buffRx, 0, sizeof(buffRx));
+				buffRxLen = 0;
 				if(command_res != NULL) {
 					DBGLog("command: result [%s]", command_res);
 					CDC_Transmit_FS(command_res, strlen((char*)command_res));
+					vTaskDelay(100/portTICK_PERIOD_MS);
 				} else {
 					DBGLog("command: result is null");
 				}
 			}
 		}
+
 		vTaskDelay(100/portTICK_PERIOD_MS);
 	}
 }
 
 static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
-	uint8_t * res = buffTx;
+	uint8_t * tempbuf = buffTx;
 	memset(buffTx, 0, sizeof(buffTx));
 
 	for(uint8_t index=0; index<COMMANDS_LIST_MAX_LEN; index++) {
 		if(strstr((char*)pdata, (char*)c_commands[index].command) != NULL) {
-			switch(c_commands[index].type) {
 
+			switch(c_commands[index].type) {
 			//--
 			//-- gets
 			//--
 			case e_get_keys : {
-				res = buffTx;
-				sprintf((char*)res,
+				tempbuf = buffTx;
+				sprintf((char*)tempbuf,
 						"Root CA:\r\n%s\nClient Cert:\r\n%s\nClient Key:\r\n%s\r\n",
 						getKeyCLIENT_CERTIFICATE_PEM_IsExist() == true ? "OK" : "not found",
-						getKeyCLIENT_PRIVATE_DEVICE_CERT_PEM_IsExist() == true ? "OK" : "not found",
-						getKeyCLIENT_PRIVATE_KEY_PEM_IsExist() == true ? "OK" : "not found"
+								getKeyCLIENT_PRIVATE_DEVICE_CERT_PEM_IsExist() == true ? "OK" : "not found",
+										getKeyCLIENT_PRIVATE_KEY_PEM_IsExist() == true ? "OK" : "not found"
 				);
 			}
 			break;
 
 			case e_get_client_cert : {
-				sprintf((char*)res, "client cert:\r\n%s\r\n", getKeyCLIENT_CERTIFICATE_PEM());
+				strcpy((char*)tempbuf, "client cert:\r\n");
+				uint16_t len = strlen((char*)tempbuf);
+				uint8_t *p = getKeyCLIENT_CERTIFICATE_PEM();
+				while(*p != NULL) {
+					*(tempbuf + len) = *p;
+					p++;
+					len++;
+				}
+				*(tempbuf+len+1) = '\r';
+				*(tempbuf+len+2) = '\n';
 			}
 			break;
 
 			case e_get_client_private_device_cert : {
-				sprintf((char*)res, "client private device cert:\r\n%s\r\n", getKeyCLIENT_PRIVATE_DEVICE_CERT());
+				strcpy((char*)tempbuf, "client private device cert:\r\n");
+				uint16_t len = strlen((char*)tempbuf);
+				uint8_t *p = getKeyCLIENT_PRIVATE_DEVICE_CERT();
+				while(*p != NULL) {
+					*(tempbuf + len) = *p;
+					p++;
+					len++;
+				}
+				*(tempbuf+len+1) = '\r';
+				*(tempbuf+len+2) = '\n';
 			}
 			break;
 
 			case e_get_client_private_key : {
-				sprintf((char*)res, "client private key:\r\n%s\r\n", getKeyCLIENT_PRIVATE_KEY_PEM());
+				strcpy((char*)tempbuf, "client private key:\r\n");
+				uint16_t len = strlen((char*)tempbuf);
+				uint8_t *p = getKeyCLIENT_PRIVATE_KEY_PEM();
+				while(*p != NULL) {
+					*(tempbuf + len) = *p;
+					p++;
+					len++;
+				}
+				*(tempbuf+len+1) = '\r';
+				*(tempbuf+len+2) = '\n';
 			}
 			break;
 
 			case e_get_mqtt_url : {
-				sprintf((char*)res, "url aws:\r\n%s\r\n", getMqttDestEndpoint());
+				DBGLog("%s: %s", pdata, getMqttDestEndpoint());
+				sprintf((char*)tempbuf, "url aws:\r\n%s\r\n", getMqttDestEndpoint());
 			}
 			break;
 
 			case e_get_device_name : {
-				sprintf((char*)res, "device name:\r\n%s\r\n", getDeviceName());
+				sprintf((char*)tempbuf, "device name:\r\n%s\r\n", getDeviceName());
 			}
 			break;
 
 			case e_get_thing_name : {
-				sprintf((char*)res, "thing name:\r\n%s\r\n", getThingName());
+				sprintf((char*)tempbuf, "thing name:\r\n%s\r\n", getThingName());
 			}
 			break;
 
@@ -164,56 +205,125 @@ static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
 			//-- sets
 			//--
 			case e_set_client_cert: {
-				char * p = strstr((char*)pdata, "-----BEGIN");
+				char * p = strstr((char*)pdata, c_commands[index].command);
 				bool execute_res = false;
-				if(p != NULL) {
-					setKeyCLIENT_CERTIFICATE_PEM((uint8_t*)p, findLenOffset(res, *p));
+				if(prepareData(c_commands[index].command, p, tempbuf)) {
+					execute_res = setKeyCLIENT_CERTIFICATE_PEM((uint8_t*)tempbuf, strlen(tempbuf));
 				}
-				sprintf((char*)res, "%s:\r\n%s\r\n",
+				sprintf((char*)tempbuf, "%s:\r\n%s\r\n",
 						c_commands[index].command,
 						(p == NULL) ? (command_options_error_caption)
-								: (execute_res ? command_options_executed_caption: command_options_execut_error_caption));
+								: (execute_res ? command_options_executed_caption : command_options_execut_error_caption));
 			} break;
-			case e_set_client_private_device_cert: {} break;
-			case e_set_client_private_key: {} break;
-			case e_set_mqtt_url: {
+
+			case e_set_client_private_device_cert: {
+				char * p = strstr((char*)pdata, c_commands[index].command);
 				bool execute_res = false;
-				uint8_t url[32] = {0};
-				if(sscanf(pdata, "set -mqtt url %s", url)) {
-					setMqttDestEndpoint(url, strlen(url));
-					execute_res = true;
+				if(prepareData(c_commands[index].command, p, tempbuf)) {
+					execute_res = setKeyCLIENT_PRIVATE_DEVICE_CERT((uint8_t*)tempbuf, strlen(tempbuf));
 				}
-				sprintf((char*)res, "%s:\r\n%s\r\n",
+				sprintf((char*)tempbuf, "%s:\r\n%s\r\n",
 						c_commands[index].command,
 						execute_res ? command_options_executed_caption: command_options_execut_error_caption
 				);
 			} break;
-			case e_set_device_name: {} break;
-			case e_set_thing_name: {} break;
+
+			case e_set_client_private_key: {
+				char * p = strstr((char*)pdata, c_commands[index].command);
+				bool execute_res = false;
+				if(prepareData(c_commands[index].command, p, tempbuf)) {
+					execute_res = setKeyCLIENT_PRIVATE_KEY_PEM((uint8_t*)tempbuf, strlen(tempbuf));
+				}
+				sprintf((char*)tempbuf, "%s:\r\n%s\r\n",
+						c_commands[index].command,
+						execute_res ? command_options_executed_caption: command_options_execut_error_caption
+				);
+			} break;
+
+			case e_set_mqtt_url: {
+				bool execute_res = false;
+				if(sscanf(pdata, "set -mqtt url %s", tempbuf)) {
+					execute_res = setMqttDestEndpoint(tempbuf, strlen(tempbuf));
+				}
+				sprintf((char*)tempbuf, "%s:\r\n%s\r\n",
+						c_commands[index].command,
+						execute_res ? command_options_executed_caption: command_options_execut_error_caption
+				);
+			} break;
+			case e_set_device_name: {
+				bool execute_res = false;
+				if(sscanf(pdata, "set -device name %s", tempbuf)) {
+					execute_res = setDeviceName(tempbuf, strlen(tempbuf));
+				}
+				sprintf((char*)tempbuf, "%s:\r\n%s\r\n",
+						c_commands[index].command,
+						execute_res ? command_options_executed_caption: command_options_execut_error_caption
+				);
+			} break;
+			case e_set_thing_name: {
+				bool execute_res = false;
+				if(sscanf(pdata, "set -thing name %s", tempbuf)) {
+					execute_res = setThingName(tempbuf, strlen(tempbuf));
+				}
+				sprintf((char*)tempbuf, "%s:\r\n%s\r\n",
+						c_commands[index].command,
+						execute_res ? command_options_executed_caption: command_options_execut_error_caption
+				);
+			} break;
 
 			case e_flush_full: {
-				bool execute_res = false;
-				sprintf((char*)res, "%s:\r\n%s\r\n",
+				sprintf((char*)tempbuf, "%s:\r\n%s\r\n",
 						c_commands[index].command,
-						(flushSettingsFullSector()) ? command_options_executed_caption: command_options_execut_error_caption);
+						(flushSettingsFullSector())
+						? command_options_executed_caption: command_options_execut_error_caption);
 			} break;
+
+			case e_reboot:
+				NVIC_SystemReset();
+				break;
 			}
 		}
 	}
 
-	if(res == NULL) {
-		res = (uint8_t*)command_not_found_caption;
+	if(tempbuf == NULL) {
+		tempbuf = (uint8_t*)command_not_found_caption;
 	}
 
+	return tempbuf;
+}
+
+bool prepareData(uint8_t * commandHeader, uint8_t *p, uint8_t * temp_buf) {
+	bool res = false;
+	if(p != NULL) {
+		p += strlen(commandHeader);
+		p = strstr(p, "\r");
+		if(p != NULL) {
+			if(*(p+1) != '\n') {
+				p++;
+			} else {
+				p+=2;
+			}
+			uint8_t * p_handBuf = temp_buf;
+			while(*p != NULL) {
+				*p_handBuf++ = *p;
+				//-- unix - windows
+				if((*p == '\r') && (*(p+1) != '\n')) {
+					*p_handBuf++ = '\n';
+				}
+				p++;
+			}
+			res = true;
+		}
+	}
 	return res;
 }
 
 void commanderAppendData(uint8_t * data, uint16_t len) {
 	xSemaphoreTakeFromISR(lock, 0);
 	usbIsActive = true;
-	if((sizeof(buffRx)+1) > len) {
-		buffRxLen = 0;
-		memcpy(buffRx, data, len);
+	if((buffRxLen + len) < sizeof(buffRx)) {
+		memcpy(&buffRx[buffRxLen], data, len);
+		buffRxLen += len;
 	} else {
 		DBGErr("commander: append override buf!");
 	}

@@ -153,7 +153,8 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+
+	HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -205,7 +206,7 @@ int main(void)
 
 	/* Create the thread(s) */
 	/* definition and creation of defaultTask */
-	xTaskCreate(StartDefaultTask, "defaultTask", 1024, 0, tskIDLE_PRIORITY, NULL);
+	xTaskCreate(StartDefaultTask, "defaultTask", 128, 0, tskIDLE_PRIORITY, NULL);
 
 	gsmTaskInit();
 
@@ -554,7 +555,7 @@ void StartDefaultTask(void *argument)
 
   /* USER CODE BEGIN 5 */
 
-	xTaskCreate(fpgaTask, "fpgaTask", 1024, 0, tskIDLE_PRIORITY, NULL);
+	xTaskCreate(fpgaTask, "fpgaTask", 512, 0, tskIDLE_PRIORITY, NULL);
 
 	/* Infinite loop */
 	for(;;)

@@ -96,16 +96,17 @@ void CLOUD_Error_Handler(int errorCode);
  */
 bool dialog_ask(char *s)
 {
-	//	char console_yn;
-	//	do
-	//	{
-	//		printf("%s",s);
-	//		console_yn= getchar();
-	//		printf("\b");
-	//	}
-	//	while((console_yn != 'y') && (console_yn != 'n') && (console_yn != '\n'));
-	//	if (console_yn == 'y') return true;
-	return false;
+//	char console_yn;
+//	do
+//	{
+//		DBGLog("%s",s);
+//		console_yn= getchar();
+//		DBGLog("\b");
+//	}
+//	while((console_yn != 'y') && (console_yn != 'n') && (console_yn != '\n'));
+//	if (console_yn == 'y') return true;
+//	return false;
+	return true;
 }
 
 
@@ -179,7 +180,6 @@ int platform_init(void)
 	net_macaddr_t macAddr;
 	const firmware_version_t  *fw_version=&version;;
 	unsigned int random_number = 0;
-	bool skip_reconf = false;
 
 #ifdef HEAP_DEBUG
 	stack_measure_prologue();
@@ -253,31 +253,9 @@ int platform_init(void)
 	/* Security and cloud parameters definition */
 	/* Define, or allow to update if the user button is pushed. */
 
-	skip_reconf = (checkTLSRootCA() == 0)
-    				&& ( (checkTLSDeviceConfig() == 0) || !app_needs_device_keypair() )
-					&& (checkIoTDeviceConfig() == 0);
-
-	//	if (skip_reconf == true)
-	//	{
-	//		printf("Push the User button (Blue) within the next 5 seconds if you want to update "
-	//				"the device security parameters or credentials.\n\n");
-	//		skip_reconf = (Button_WaitForPush(5000) == BP_NOT_PUSHED);
-	//	}
-
-	//	if (skip_reconf == false)
-	//	{
-	//		if ((checkIoTDeviceConfig() != 0) || dialog_ask("Do you want to update your IoT device connection parameters? (y/n)\n"))
-	//		{
-	//			if (cloud_device_enter_credentials() != 0)
-	//			{
-	//				msg_error("Failed configuring the IoT device.\n");
-	//			}
-	//		}
-	//#if defined(USE_MBED_TLS) || (!defined(USE_CLEAR_TIMEDATE))
-	//		updateTLSCredentials();
-	//#endif
-	//	}
-	/* End of security and cloud parameters definition */
+//	skip_reconf = (checkTLSRootCA() == 0)
+//    				&& ( (checkTLSDeviceConfig() == 0) || !app_needs_device_keypair() )
+//					&& (checkIoTDeviceConfig() == 0);
 
 	msg_info("Setting the RTC from the network time.\n");
 #ifdef CLOUD_TIMEDATE_TLS_VERIFICATION_IGNORE
@@ -293,14 +271,6 @@ int platform_init(void)
 #if defined(RFU) && !defined(FIREWALL_MBEDLIB)
 	//	updateFirmwareVersion();
 #endif  /* RFU */
-
-#ifdef SENSOR
-	int res = init_sensors();
-	if(0 != res)
-	{
-		msg_error("init_sensors returned error : %d\n", res);
-	}
-#endif /* SENSOR */
 
 	return 0;
 }
