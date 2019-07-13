@@ -17,7 +17,6 @@
 #include <stdio.h>
 #include "usbd_cdc_if.h"
 #include "settings/settings.h"
-#include "iot_flash_config.h"
 #include "cloud.h"
 
 #define COMMANDER_MAX_BUFF_SIZE				2128
@@ -32,7 +31,7 @@ static uint16_t buxTxLen = 0;
 static bool usbIsActive = false;
 static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len);
 
-#define COMMANDS_LIST_MAX_LEN				15
+#define COMMANDS_LIST_MAX_LEN				12
 #define COMMANDS_TEXT_MAX_LEN				50
 
 typedef enum {
@@ -42,15 +41,13 @@ typedef enum {
 	e_get_client_private_device_cert,
 	e_get_client_private_key,
 	e_get_mqtt_url,
-	e_get_device_name,
-	e_get_thing_name,
+	e_get_topic_path,
 	//-- sets
 	e_set_client_cert,
 	e_set_client_private_device_cert,
 	e_set_client_private_key,
 	e_set_mqtt_url,
-	e_set_device_name,
-	e_set_thing_name,
+	e_set_topic_path,
 	e_flush_full,
 	//-- other
 	e_reboot
@@ -68,15 +65,13 @@ static const sCommandItem c_commands[COMMANDS_LIST_MAX_LEN] = {
 		{{"get -key client private device cert"}, e_get_client_private_device_cert},
 		{{"get -key client private key"}, e_get_client_private_key},
 		{{"get -mqtt url"}, e_get_mqtt_url},
-		{{"get -device name"}, e_get_device_name},
-		{{"get -thing name"}, e_get_thing_name},
+		{{"get -topic path"}, e_get_topic_path},
 		//-- sets
 		{{"set -key client cert"}, e_set_client_cert},
 		{{"set -key client private device cert"}, e_set_client_private_device_cert},
 		{{"set -key client private key"}, e_set_client_private_key},
 		{{"set -mqtt url"}, e_set_mqtt_url},
-		{{"set -device name"}, e_set_device_name},
-		{{"set -thing name"}, e_set_thing_name},
+		{{"set -topic path"}, e_set_topic_path},
 		{{"flush full"}, e_flush_full},
 		{{"reboot"}, e_reboot}
 };
@@ -191,13 +186,8 @@ static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
 			}
 			break;
 
-			case e_get_device_name : {
-				sprintf((char*)tempbuf, "device name:\r\n%s\r\n", getDeviceName());
-			}
-			break;
-
-			case e_get_thing_name : {
-				sprintf((char*)tempbuf, "thing name:\r\n%s\r\n", getThingName());
+			case e_get_topic_path: {
+				sprintf((char*)tempbuf, "device name:\r\n%s\r\n", getTopicPath());
 			}
 			break;
 
@@ -250,20 +240,11 @@ static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
 						execute_res ? command_options_executed_caption: command_options_execut_error_caption
 				);
 			} break;
-			case e_set_device_name: {
+
+			case e_set_topic_path: {
 				bool execute_res = false;
 				if(sscanf(pdata, "set -device name %s", tempbuf)) {
-					execute_res = setDeviceName(tempbuf, strlen(tempbuf));
-				}
-				sprintf((char*)tempbuf, "%s:\r\n%s\r\n",
-						c_commands[index].command,
-						execute_res ? command_options_executed_caption: command_options_execut_error_caption
-				);
-			} break;
-			case e_set_thing_name: {
-				bool execute_res = false;
-				if(sscanf(pdata, "set -thing name %s", tempbuf)) {
-					execute_res = setThingName(tempbuf, strlen(tempbuf));
+					execute_res = setTopicPath(tempbuf, strlen(tempbuf));
 				}
 				sprintf((char*)tempbuf, "%s:\r\n%s\r\n",
 						c_commands[index].command,

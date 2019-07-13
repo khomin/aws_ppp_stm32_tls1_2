@@ -51,8 +51,6 @@
 #include "aws_iot_log.h"
 #include "aws_iot_version.h"
 #include "aws_iot_mqtt_client_interface.h"
-#include "iot_flash_config.h"
-#include "sensors_data.h"
 #include "msg.h"
 #include "aws_iot_error.h"
 #include "aws_clientcredential_keys.h"
@@ -62,11 +60,11 @@
 #include "queue.h"
 #include "fpga_buf/fpga_buf.h"
 #include "fpga_buf/fpga_commander.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "settings/settings.h"
 
 extern xQueueHandle fpgaDataQueue;
-
-extern uint8_t __attribute__((section (".rodata"))) mqttDestEndpoint[USER_CONF_TLS_OBJECT_MAX_SIZE];
-extern uint8_t __attribute__((section (".rodata"))) mqttThingName[USER_CONF_DEVICE_NAME_LENGTH];
 
 void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topicNameLen, IoT_Publish_Message_Params *params, void *pData);
 int subscribe_publish_sensor_values(void);
@@ -99,27 +97,17 @@ int cloud_device_enter_credentials(void)
 
 	printf("\nEnter server address: (example: xxx.iot.region.amazonaws.com) \n");
 
-	getInputString(iot_config.server_name, USER_CONF_SERVER_NAME_LENGTH);
-
-	iot_config.server_name = mqttDestEndpoint;
+	iot_config.server_name = (char*)getMqttDestEndpoint();
 
 	msg_info("read: --->\n%s\n<---\n", iot_config.server_name);
 
 	printf("\nEnter device name: (example: mything1) \n");
 
-	getInputString(iot_config.device_name, USER_CONF_DEVICE_NAME_LENGTH);
-
-	iot_config.device_name = mqttDeviceName;
+	iot_config.device_name = (char*)getTopicPath();
 
 	msg_info("read: --->\n%s\n<---\n", iot_config.device_name);
 
 	iot_config.magic = 1234;
-
-	if(setIoTDeviceConfig(&iot_config) != 0)
-	{
-		ret = -1;
-		msg_error("Failed programming the IoT device configuration to Flash.\n");
-	}
 
 	return ret;
 }
@@ -191,14 +179,12 @@ void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topi
 	/* If a new desired LED state is received, change the LED state. */
 	if (strstr((char *) params->payload, "\"desired\":{\"LED_value\":\"On\"}") != NULL)
 	{
-//		Led_SetState(true);
 		strcpy(ledstate, "On");
 		msg_info("LED On!\n");
 		msg = msg_on;
 	}
 	else if (strstr((char *) params->payload, "\"desired\":{\"LED_value\":\"Off\"}") != NULL)
 	{
-//		Led_SetState(false);
 		strcpy(ledstate, "Off");
 		msg_info("LED Off!\n");
 		msg = msg_off;
@@ -226,19 +212,15 @@ void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topi
  * @return AWS_SUCCESS: 0
           FAILURE: -1
  */
-#include "FreeRTOS.h"
-#include "task.h"
-
 int subscribe_publish_sensor_values(void)
 {
 	bool loop_is_normal = false;
-	const char *serverAddress = NULL;
-	const char *pCaCert;
-	const char *pClientCert;
-	const char *pClientPrivateKey;
-	const char *pDeviceName;
+	const char *pServerAddress = NULL;
+	const char *pCaCert = NULL;
+	const char *pClientCert = NULL;
+	const char *pClientPrivateKey = NULL;
+	const char *pTopicName = NULL;
 	char cPayload[AWS_IOT_MQTT_TX_BUF_LEN];
-	char const * deviceName;
 	int connectCounter;
 	IoT_Error_t rc = FAILURE;
 
@@ -247,21 +229,24 @@ int subscribe_publish_sensor_values(void)
 	IoT_Client_Init_Params mqttInitParams = iotClientInitParamsDefault;
 	IoT_Client_Connect_Params connectParams = iotClientConnectParamsDefault;
 
-	getIoTDeviceConfig(&deviceName);
-	if (strlen(deviceName) >= MAX_SIZE_OF_THING_NAME) {
+	pTopicName = (char*)getTopicPath();
+	if (strlen(pTopicName) >= MAX_SIZE_OF_THING_NAME) {
 		msg_error("The length of the device name stored in the iot user configuration is larger than the AWS client MAX_SIZE_OF_THING_NAME.\n");
 		return -1;
 	}
 
-	snprintf(cPTopicName, sizeof(cPTopicName), "%s", deviceName);
-	snprintf(cSTopicName, sizeof(cSTopicName), "%s", deviceName);
+	snprintf(cPTopicName, sizeof(cPTopicName), "%s", pTopicName);
+	snprintf(cSTopicName, sizeof(cSTopicName), "%s", pTopicName);
 
 	msg_info("AWS IoT SDK Version %d.%d.%d-%s\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_TAG);
 
-	getServerAddress(&serverAddress);
-	getTLSKeys(&pCaCert, &pClientCert, &pClientPrivateKey);
+	pServerAddress = (char*)getMqttDestEndpoint();
+	pCaCert = (char*)getKeyCLIENT_CERTIFICATE_PEM();
+	pClientCert = (char*)getKeyCLIENT_PRIVATE_DEVICE_CERT();
+	pClientPrivateKey = (char*)getKeyCLIENT_PRIVATE_KEY_PEM();
+
 	mqttInitParams.enableAutoReconnect = false; /* We enable this later below */
-	mqttInitParams.pHostURL = (char *) serverAddress;
+	mqttInitParams.pHostURL = (char *) pServerAddress;
 	mqttInitParams.port = AWS_IOT_MQTT_PORT;
 	mqttInitParams.pRootCALocation = (char *) pCaCert;
 	mqttInitParams.pDeviceCertLocation = (char *) pClientCert;
@@ -280,12 +265,11 @@ int subscribe_publish_sensor_values(void)
 		return -1;
 	}
 
-	getIoTDeviceConfig(&pDeviceName);
 	connectParams.keepAliveIntervalInSec = 30;
 	connectParams.isCleanSession = true;
 	connectParams.MQTTVersion = MQTT_3_1_1;
-	connectParams.pClientID = (char *) pDeviceName;
-	connectParams.clientIDLen = (uint16_t) strlen(pDeviceName);
+	connectParams.pClientID = (char *) pTopicName;
+	connectParams.clientIDLen = (uint16_t) strlen(pTopicName);
 	connectParams.isWillMsgPresent = false;
 
 	connectCounter = 0;

@@ -23,7 +23,7 @@
 #include "netif/ppp/pppoe.h"
 #include "netif/ppp/pppol2tp.h"
 #include "aws_system_init.h"
-#include "../Common/AWS/Inc/net.h"
+#include "net.h"
 #include "cloud.h"
 #include "aws_dev_mode_key_provisioning.h"
 #include "aws_hello_world.h"
@@ -193,10 +193,9 @@ void gsmPPP_Tsk(void *pvParamter) {
 //					vTaskDelay(1000/portTICK_RATE_MS);
 //				}
 
-				platform_init();
-
-				subscribe_publish_sensor_values();
-
+				if(platform_init() == 0) {
+					subscribe_publish_sensor_values();
+				}
 				platform_deinit();
 
 				setDisplayStatus(E_Status_Display_connect_lost);

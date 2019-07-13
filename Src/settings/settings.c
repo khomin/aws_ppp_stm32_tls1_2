@@ -8,24 +8,7 @@
 #include "stm32f4xx.h"
 #include <string.h>
 #include <stdio.h>
-#include "iot_flash_config.h"
 #include "debug_print.h"
-
-#define ADDR_FLASH_SECTOR_0     ((uint32_t)0x08000000) /* Base @ of Sector 0, 16 Kbytes */
-#define ADDR_FLASH_SECTOR_1     ((uint32_t)0x08004000) /* Base @ of Sector 1, 16 Kbytes */
-#define ADDR_FLASH_SECTOR_2     ((uint32_t)0x08008000) /* Base @ of Sector 2, 16 Kbytes */
-#define ADDR_FLASH_SECTOR_3     ((uint32_t)0x0800C000) /* Base @ of Sector 3, 16 Kbytes */
-#define ADDR_FLASH_SECTOR_4     ((uint32_t)0x08010000) /* Base @ of Sector 4, 64 Kbytes */
-#define ADDR_FLASH_SECTOR_5     ((uint32_t)0x08020000) /* Base @ of Sector 5, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_6     ((uint32_t)0x08040000) /* Base @ of Sector 6, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_7     ((uint32_t)0x08060000) /* Base @ of Sector 7, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_8     ((uint32_t)0x08080000) /* Base @ of Sector 8, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_9     ((uint32_t)0x080A0000) /* Base @ of Sector 9, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_10    ((uint32_t)0x080C0000) /* Base @ of Sector 10, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_11 	((uint32_t)0x080E0000) /* Base @ of Sector 11, 128 Kbytes */
-#define FLASH_USER_START_ADDR	((uint32_t)0x080E0000)
-#define FLASH_USER_END_ADDR		((uint32_t)0x080FFFFF)
-#define DATA_32 				((uint32_t)0xFFFFFFFF)
 
 #define USE_OLD_CONF_CERTIFICATES	1
 
@@ -163,9 +146,11 @@ uint8_t __attribute__((section (".SettingsData"))) CLIENT_PRIVATE_KEY[USER_CONF_
 //-- connect properies
 #ifdef USE_OLD_CONF_CERTIFICATES
 //-- mqtt topic - example: a39gt7zyg3mya3-ats.iot.us-east-2.amazonaws.com
-uint8_t __attribute__((section (".SettingsData"))) mqttDestEndpoint[USER_CONF_SERVER_NAME_LENGTH] = "ajdhfkws66ilz-ats.iot.us-east-2.amazonaws.com";
+uint8_t __attribute__((section (".SettingsData"))) mqttDestEndpoint[USER_CONF_SERVER_NAME_LENGTH] = "a39gt7zyg3mya3-ats.iot.us-east-2.amazonaws.com";
+//-- device topic
+uint8_t __attribute__((section (".SettingsData"))) mqttTopicPath[USER_CONF_DEVICE_NAME_LENGTH] = "$aws/things/USB_Printer_Board/shadow/update";
 //-- device name
-uint8_t __attribute__((section (".SettingsData"))) mqttDeviceName[USER_CONF_DEVICE_NAME_LENGTH] = "$aws/things/USB_Printer_Board/shadow/update";
+uint8_t __attribute__((section (".SettingsData"))) mqttDeviceName[USER_CONF_DEVICE_NAME_LENGTH] = "USB_Printer_Board";
 //-- reserv
 uint8_t __attribute__((section (".SettingsData"))) reserv[0xFFFFF] = {0};
 #else
@@ -177,7 +162,24 @@ uint8_t __attribute__((section (".SettingsData"))) mqttDeviceName[USER_CONF_DEVI
 uint8_t __attribute__((section (".SettingsData"))) reserv[0xFFFFF] = {0};
 #endif
 
-static const uint8_t not_found_caption[] = "not found";
+/* to workaround a limitation of SFMI tools which support a single section      */
+/* so do not mark structure as _no_init                                         */
+user_config_t __uninited_region_start__ __attribute__((section("UNINIT_FIXED_LOC")));
+const  user_config_t lUserConfigPtr = {
+		CLIENT_ROOT_CA,	// tls_root_ca_cert
+		CLIENT_PRIVATE_DEVICE_CERT,	// tls_device_cert
+		CLIENT_PRIVATE_KEY,	// tls_device_key
+		{
+				// iot_config
+				USER_CONF_MAGIC,
+				mqttTopicPath,
+				mqttDestEndpoint,
+		},
+		USER_CONF_MAGIC,	// ca_tls_magic
+		USER_CONF_MAGIC // device_tls_magic
+};
+
+static const char not_found_caption[] = "not found";
 
 static uint32_t GetSector(uint32_t Address);
 
@@ -206,12 +208,12 @@ bool getMqttDestEndpoint_isExist() {
 
 }
 
-bool getDeviceName_isExist() {
-	return 	mqttDeviceName[0] != 0xFF;
+bool getTopicPath_isExist() {
+	return 	mqttTopicPath[0] != 0xFF;
 }
 
-bool getThingName_isExist() {
-	return mqttThingName[0] != 0xFF;
+bool getDeviceName_isExist() {
+	return mqttDeviceName[0] != 0xFF;
 }
 
 /*
@@ -294,6 +296,21 @@ bool setMqttDestEndpoint(uint8_t *pdata, uint16_t len) {
 	return true;
 }
 
+bool setTopicPath(uint8_t *pdata, uint16_t len) {
+	uint16_t i=0;
+	HAL_FLASH_Unlock();
+	uint32_t addr = (uint32_t)&mqttTopicPath;
+	for(i=0; i<len; i++) {
+		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr + i, pdata[i])) {
+			HAL_FLASH_Lock();
+			return false;
+		}
+	}
+	HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr+i, 0);
+	HAL_FLASH_Lock();
+	return true;
+}
+
 bool setDeviceName(uint8_t *pdata, uint16_t len) {
 	uint16_t i=0;
 	HAL_FLASH_Unlock();
@@ -309,43 +326,28 @@ bool setDeviceName(uint8_t *pdata, uint16_t len) {
 	return true;
 }
 
-bool setThingName(uint8_t *pdata, uint16_t len) {
-	uint16_t i=0;
-	HAL_FLASH_Unlock();
-	uint32_t addr = &mqttThingName;
-	for(i=0; i<len; i++) {
-		if(HAL_OK != HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr + i, pdata[i])) {
-			HAL_FLASH_Lock();
-			return false;
-		}
-	}
-	HAL_FLASH_Program(TYPEPROGRAM_BYTE, addr+i, 0);
-	HAL_FLASH_Lock();
-	return true;
+const char * getKeyCLIENT_CERTIFICATE_PEM() {
+	return 	getKeyCLIENT_CERTIFICATE_PEM_IsExist() ? (char*)CLIENT_ROOT_CA : not_found_caption;
 }
 
-const uint8_t * getKeyCLIENT_CERTIFICATE_PEM() {
-	return 	getKeyCLIENT_CERTIFICATE_PEM_IsExist() ? CLIENT_ROOT_CA : not_found_caption;
+const char * getKeyCLIENT_PRIVATE_KEY_PEM() {
+	return 	getKeyCLIENT_CERTIFICATE_PEM_IsExist() ? (char*)CLIENT_PRIVATE_KEY : not_found_caption;
 }
 
-const uint8_t * getKeyCLIENT_PRIVATE_KEY_PEM() {
-	return 	getKeyCLIENT_CERTIFICATE_PEM_IsExist() ? CLIENT_PRIVATE_KEY : not_found_caption;
+const char * getKeyCLIENT_PRIVATE_DEVICE_CERT() {
+	return 	getKeyCLIENT_CERTIFICATE_PEM_IsExist() ? (char*)CLIENT_PRIVATE_DEVICE_CERT : not_found_caption;
 }
 
-const uint8_t * getKeyCLIENT_PRIVATE_DEVICE_CERT() {
-	return 	getKeyCLIENT_CERTIFICATE_PEM_IsExist() ? CLIENT_PRIVATE_DEVICE_CERT : not_found_caption;
+const char * getMqttDestEndpoint() {
+	return 	getMqttDestEndpoint_isExist() ? (char*)mqttDestEndpoint : not_found_caption;
 }
 
-const uint8_t * getMqttDestEndpoint() {
-	return 	getMqttDestEndpoint_isExist() ? mqttDestEndpoint : not_found_caption;
+const char * getTopicPath() {
+	return 	getTopicPath_isExist() ? (char*)mqttTopicPath : not_found_caption;
 }
 
-const uint8_t * getDeviceName() {
-	return 	getDeviceName_isExist() ? mqttDeviceName : not_found_caption;
-}
-
-const uint8_t * getThingName() {
-	return 	getThingName_isExist() ? mqttThingName : not_found_caption;
+const char* getDeviceName() {
+	return 	getDeviceName_isExist() ? (char*)mqttDeviceName : not_found_caption;
 }
 
 bool flushSettingsFullSector() {
