@@ -95,57 +95,57 @@
 
 int net_if_init(void * if_ctxt)
 {
-//  struct netif * Netif = (struct netif *) if_ctxt;
-//  ip4_addr_t addr;
-//  ip4_addr_t netmask;
-//  ip4_addr_t gw;
-//  uint32_t start;
+//	struct netif * Netif = (struct netif *) if_ctxt;
+//	ip4_addr_t addr;
+//	ip4_addr_t netmask;
+//	ip4_addr_t gw;
+//	uint32_t start;
 //
-//  msg_info("\n*** Ethernet connection ***\n");
+//	msg_info("\n*** Ethernet connection ***\n");
 //
-//  msg_info("Initializing LwIP on Ethernet interface\n\n");
+//	msg_info("Initializing LwIP on Ethernet interface\n\n");
 //
-//  tcpip_init(NULL, NULL);
+//	tcpip_init(NULL, NULL);
 //
-//  /* IP default settings, to be overridden by DHCP */
+//	/* IP default settings, to be overridden by DHCP */
 //
-//  IP4_ADDR(&addr, IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
-//  IP4_ADDR(&gw, GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
-//  IP4_ADDR(&netmask, MASK_ADDR0, MASK_ADDR1, MASK_ADDR2, MASK_ADDR3);
+//	IP4_ADDR(&addr, IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
+//	IP4_ADDR(&gw, GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
+//	IP4_ADDR(&netmask, MASK_ADDR0, MASK_ADDR1, MASK_ADDR2, MASK_ADDR3);
 //
-//  /* add the network interface */
-//  netif_add(Netif, &addr, &netmask, &gw, NULL, &ethernetif_init, &ethernet_input);
+//	/* add the network interface */
+//	netif_add(Netif, &addr, &netmask, &gw, NULL, &ethernetif_init, &ethernet_input);
 //
-//  /* register the default network interface */
-//  netif_set_default(Netif);
+//	/* register the default network interface */
+//	netif_set_default(Netif);
 //
-//  netif_set_up(Netif);
+//	netif_set_up(Netif);
 //
 //#ifdef USE_DHCP
-//  msg_info("Starting DHCP client to get IP address...\n");
+//	msg_info("Starting DHCP client to get IP address...\n");
 //
-//  dhcp_start(Netif);
+//	dhcp_start(Netif);
 //
-//  start = HAL_GetTick();
+//	start = HAL_GetTick();
 //
-//  while((Netif->ip_addr.addr == 0) && (HAL_GetTick() - start < 10000))
-//  {
-//  }
+//	while((Netif->ip_addr.addr == 0) && (HAL_GetTick() - start < 10000))
+//	{
+//	}
 //#endif
 //
-//  if (Netif->ip_addr.addr == 0)
-//  {
-//    msg_info(" Failed to get IP address! Please check cable and/or network configuration.\n");
-//    Error_Handler();
-//  }
-//  else
-//  {
-//    msg_debug("\nIpAddress = %lu.%lu.%lu.%lu\n", (Netif->ip_addr.addr & 0xff), ((Netif->ip_addr.addr >> 8) & 0xff)
-//                                        , ((Netif->ip_addr.addr >> 16) & 0xff), ((Netif->ip_addr.addr >> 24)& 0xff));
+//	if (Netif->ip_addr.addr == 0)
+//	{
+//		msg_info(" Failed to get IP address! Please check cable and/or network configuration.\n");
+//		Error_Handler();
+//	}
+//	else
+//	{
+//		msg_debug("\nIpAddress = %lu.%lu.%lu.%lu\n", (Netif->ip_addr.addr & 0xff), ((Netif->ip_addr.addr >> 8) & 0xff)
+//				, ((Netif->ip_addr.addr >> 16) & 0xff), ((Netif->ip_addr.addr >> 24)& 0xff));
 //#ifdef USE_DHCP
-//    dhcp_stop(Netif);
+//		dhcp_stop(Netif);
 //#endif
-//  }
+//	}
 
   return 0;
 }

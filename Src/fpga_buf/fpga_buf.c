@@ -44,6 +44,7 @@ bool putFpgaRecord(uint8_t* pdata, int len) {
 					res = true;
 				} else {
 					DBGErr("putFpgaRecord -send data to queue -ERROR (queue full");
+					free(p);
 				}
 			}
 		}

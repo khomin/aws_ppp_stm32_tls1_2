@@ -12,7 +12,7 @@
 #include <stdint.h>
 
 #define FPGA_BUFFER_RECORD_MAX_COUNT		16
-#define FPGA_BUFFER_RECORD_MAX_SIZE			512
+#define FPGA_BUFFER_RECORD_MAX_SIZE			1024
 #define FPGA_MAGIC_WORD						1973
 
 typedef struct {

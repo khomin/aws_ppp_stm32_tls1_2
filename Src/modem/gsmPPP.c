@@ -23,12 +23,14 @@
 #include "netif/ppp/pppoe.h"
 #include "netif/ppp/pppol2tp.h"
 #include "aws_system_init.h"
-#include "../Common/AWS/Inc/net.h"
+#include "net.h"
 #include "cloud.h"
 #include "aws_dev_mode_key_provisioning.h"
 #include "aws_hello_world.h"
 #include "./aws_system_init.h"
 #include "net_internal.h"
+#include "status/display_status.h"
+#include "settings/settings.h"
 
 extern xSemaphoreHandle sioWriteSemaphore;
 extern sGsmUartParcer uartParcerStruct;
@@ -65,12 +67,77 @@ static u32_t output_cb(ppp_pcb *pcb, u8_t *data, u32_t len, void *ctx);
 
 //-- public function
 bool gsmPPP_Init(void) {
-	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", GSM_PPP_RX_TASK_STACK_SIZE, 0, tskIDLE_PRIORITY, NULL);
+	xTaskCreate(gsmPPP_Tsk, "gsmPPP_Tsk", GSM_PPP_RX_TASK_STACK_SIZE, 0, tskIDLE_PRIORITY+1, NULL);
 
 	gsmPppUartTranmitQueue = xQueueCreate(GSM_PPP_UART_QUEUE_LENGTH, sizeof(sTransmitQueue*));
 
+	connectionPppStruct.semphr = xSemaphoreCreateBinary();
+	connectionPppStruct.rxData.rxSemh = xSemaphoreCreateBinary();
+
 	return true;
 }
+
+
+
+
+static err_t TcpConnectedCallBack(void *arg, struct tcp_pcb *tpcb, err_t err) {
+	if(tpcb == connectionPppStruct.tcpClient) {
+		DBGInfo("GSMPPP: connected (callback)%s", inet_ntoa(tpcb->local_ip.addr));
+		xSemaphoreGive(connectionPppStruct.semphr);
+	}
+}
+
+
+bool GsmPPP_Connect(uint8_t numConnect, char *pDestAddr, uint16_t port) {
+	uint8_t ipCut[4] = {0};
+	ipCut[0] = 31;
+	ipCut[1] = 10;
+	ipCut[2] = 4;
+	ipCut[3] = 146;
+	port = 45454;
+	IP4_ADDR(&connectionPppStruct.ipRemoteAddr, ipCut[0],ipCut[1],ipCut[2],ipCut[3]);
+
+	if(connectionPppStruct.connected == false) {
+		if(connectionPppStruct.tcpClient == NULL) {
+			connectionPppStruct.tcpClient = tcp_new();
+		}
+
+		tcp_connect(connectionPppStruct.tcpClient, &connectionPppStruct.ipRemoteAddr, port, &TcpConnectedCallBack);
+		if(xSemaphoreTake(connectionPppStruct.semphr, 10000/portTICK_PERIOD_MS) == pdTRUE) {
+			connectionPppStruct.connected = true;
+			DBGInfo("GSMPPP: connected %s", inet_ntoa(connectionPppStruct.ipRemoteAddr));
+			return true;
+		}else{
+			DBGInfo("GSMPPP: connectTimeout-ERROR");
+			return false;
+		}
+	}
+	return false;
+}
+
+bool GsmPPP_Disconnect(uint8_t numConnect) {
+	server_close(connectionPppStruct.tcpClient);
+	return true;
+}
+
+bool GsmPPP_SendData(uint8_t numConnect, uint8_t *pData, uint16_t len) {
+	if(tcp_write(connectionPppStruct.tcpClient, pData, len, NULL) == ERR_OK) {
+		return true;
+	} else {
+//		server_close(connectionPppStruct.tcpClient);
+//		connectionPppStruct.connected = false;
+	}
+	return false;
+}
+
+
+
+
+
+
+
+
+
 
 void gsmPPP_Tsk(void *pvParamter) {
 	uint8_t setup = 0;
@@ -114,14 +181,31 @@ void gsmPPP_Tsk(void *pvParamter) {
 		if(pppState == ppp_ready_work) {
 			DBGLog("AWS PPP: module initialized.\r\n");
 
-			platform_init();
+			setDisplayStatus(E_Status_Display_wait_unitl_connect);
 
-			subscribe_publish_sensor_values();
+			if((getKeyCLIENT_CERTIFICATE_PEM_IsExist())
+					&& (getKeyCLIENT_PRIVATE_KEY_PEM_IsExist())
+					&& (getKeyCLIENT_PRIVATE_DEVICE_CERT_PEM_IsExist())) {
 
-			platform_deinit();
+//				GsmPPP_Connect(0, NULL, 45454);
+//				while(1) {
+//					GsmPPP_SendData(0, "dddddddddddddddddddd", strlen("dddddddddddddddddddd"));
+//					vTaskDelay(1000/portTICK_RATE_MS);
+//				}
+
+				if(platform_init() == 0) {
+					subscribe_publish_sensor_values();
+				}
+				platform_deinit();
+
+				setDisplayStatus(E_Status_Display_connect_lost);
+			} else {
+				vTaskDelay(3000/portTICK_RATE_MS);
+				setDisplayStatus(E_Status_Display_cert_empty);
+			}
 		}
 
-		vTaskDelay(1000/portTICK_RATE_MS);
+		vTaskDelay(3000/portTICK_RATE_MS);
 	}
 }
 

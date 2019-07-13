@@ -15,6 +15,8 @@
 #include "queue.h"
 #include "main.h"
 
+//#define TEST_FPGA				1
+
 extern UART_HandleTypeDef huart2;
 static bool isActiveUart = false;
 
@@ -34,6 +36,7 @@ void fpgaTask(void *argument) {
 	/* Infinite loop */
 	for(;;) {
 		// detect new data uart
+#ifndef TEST_FPGA
 		if(isActiveUart) {
 			vTaskDelay(500/portTICK_RATE_MS);
 			isActiveUart = false;
@@ -48,6 +51,14 @@ void fpgaTask(void *argument) {
 				}
 			}
 		}
+#else
+		for(fpga_temp_buff_count = 0; fpga_temp_buff_count<280; fpga_temp_buff_count++) {
+			fpga_temp_buff[fpga_temp_buff_count] = fpga_temp_buff_count;
+		}
+		putFpgaRecord(fpga_temp_buff, fpga_temp_buff_count);
+
+		memset(fpga_temp_buff, 0, sizeof(fpga_temp_buff));
+#endif
 
 		vTaskDelay(500/portTICK_RATE_MS);
 	}

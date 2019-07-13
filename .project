@@ -29,11 +29,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Common/net_tcp_wifi.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/net_tcp_wifi.c</locationURI>
-		</link>
-		<link>
 			<name>SW4STM32/startup_stm32f769xx.s</name>
 			<type>1</type>
 			<locationURI>copy_PARENT1/startup_stm32f769xx.s</locationURI>
@@ -42,11 +37,6 @@
 			<name>SW4STM32/syscalls.c</name>
 			<type>1</type>
 			<locationURI>copy_PARENT1/syscalls.c</locationURI>
-		</link>
-		<link>
-			<name>Common/AWS/Src/rfu.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT/Common/Shared/Src/rfu.c</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

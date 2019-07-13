@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include "debug_print.h"
 #include "time.h"
+#include "status/display_status.h"
 
 sGsmState gsmState = {0};
 uint8_t gsmCsqValue = 0;
@@ -46,6 +47,8 @@ void vGsmTask( void * pvParameters ) {
 	gsmPPP_Init();
 
 	while((gsmState.initLLR != true) && (gsmState.initLLR2 != true)) {};
+
+	setDisplayStatus(E_Status_Display_init_GSM);
 
 	while(1) {
 		//--
@@ -123,6 +126,9 @@ void vGsmTask( void * pvParameters ) {
 
 				//-- start ppp
 				DBGInfo("GSM: init PPP...");
+
+				setDisplayStatus(E_Status_Display_init_PPP);
+
 				if(gsmLLR_StartPPP(&gsmSettings) == eOk) {
 					DBGInfo("GSM: init PPP -ready");
 					xQueueReset(uartParcerStruct.uart.rxQueue);
