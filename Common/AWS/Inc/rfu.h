@@ -64,7 +64,7 @@
 #define RFU_ERR_OB            -5  /**< Option bytes programming error */
 #define RFU_ERR_HTTP_CLOSED   -6  /**< The HTTP connection was closed by the server. */
 
-int rfu_update(const char * const url);
+int rfu_update(const char * const url, const char * ca_certs);
 
 #ifdef __cplusplus
 }

@@ -12,18 +12,25 @@
 #include <stdint.h>
 
 #define FPGA_BUFFER_RECORD_MAX_COUNT		16
-#define FPGA_BUFFER_RECORD_MAX_SIZE			1024
+#define FPGA_BUFFER_RECORD_MAX_SIZE			10240
 #define FPGA_MAGIC_WORD						1973
+#define FPGA_MIN_DATA_SIZE					30
+
+typedef enum {
+	efpgaStatusWait,
+	efpgaStatusSent,
+	efpgaStatusError
+}eFpgaStatus;
 
 typedef struct {
 	uint8_t data[FPGA_BUFFER_RECORD_MAX_SIZE];
-	uint16_t len;
-	// TODO: not used
-	uint32_t timestamp;
+	uint16_t count;
 	uint16_t magic_word;
-}sFpgaDataStruct;
+	eFpgaStatus statusProcessed;
+}sFpgaData;
 
 void init_fpga();
-bool putFpgaRecord(uint8_t* pData, int len);
+bool putFpgaRecord(sFpgaData * pfpgaData);
+void putFpgaReocordToUsb(sFpgaData * pfpgaData);
 
 #endif /* FPGA_BUF_FPGA_BUF_H_ */

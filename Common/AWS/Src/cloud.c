@@ -268,7 +268,7 @@ int platform_init(void)
 		}
 
 #if defined(RFU) && !defined(FIREWALL_MBEDLIB)
-	//	updateFirmwareVersion();
+	updateFirmwareVersion();
 #endif  /* RFU */
 
 	return 0;

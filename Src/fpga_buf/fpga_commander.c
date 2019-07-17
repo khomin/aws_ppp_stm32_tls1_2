@@ -13,6 +13,7 @@
 #include "string.h"
 #include "FreeRTOS.h"
 #include "queue.h"
+#include "semphr.h"
 #include "main.h"
 
 //#define TEST_FPGA				1
@@ -20,44 +21,84 @@
 extern UART_HandleTypeDef huart2;
 static bool isActiveUart = false;
 
+static sFpgaData fpgaData = {0};
+static uint8_t rxByte = 0;
+
 xQueueHandle fpgaDataQueue;
 
-static uint8_t fpga_temp_buff[FPGA_BUFFER_RECORD_MAX_SIZE] = {0};
-static uint16_t fpga_temp_buff_count = 0;
+static void insertJsonStartField(sFpgaData * pdata);
+static void insertJsonEndField(sFpgaData * pdata);
+static void getNewFpgaData();
 
 void fpgaTask(void *argument) {
-	/* USER CODE BEGIN 5 */
 	init_fpga();
 
-	fpgaDataQueue = xQueueCreate(4, sizeof(sFpgaDataStruct*));
+	fpgaDataQueue = xQueueCreate(1, sizeof(sFpgaData*));
 
-	HAL_UART_Receive_IT(&huart2, fpga_temp_buff, 1);
+	HAL_UART_Receive_IT(&huart2, &rxByte, 1);
 
 	/* Infinite loop */
 	for(;;) {
+
+		getNewFpgaData();
+
 		// detect new data uart
 #ifndef TEST_FPGA
 		if(isActiveUart) {
-			vTaskDelay(500/portTICK_RATE_MS);
+			vTaskDelay(100/portTICK_RATE_MS);
 			isActiveUart = false;
-			vTaskDelay(500/portTICK_RATE_MS);
+			vTaskDelay(100/portTICK_RATE_MS);
 			if(!isActiveUart) {
-				if(fpga_temp_buff_count != 0) {
-					DBGLog("FPGA: new data, size %d", fpga_temp_buff_count);
-					putFpgaRecord(fpga_temp_buff, fpga_temp_buff_count);
+				if(fpgaData.count > FPGA_MIN_DATA_SIZE) {
+					DBGLog("FPGA: new data, size %d", fpgaData.count);
 
-					fpga_temp_buff_count = 0;
-					memset(fpga_temp_buff, 0, sizeof(fpga_temp_buff));
+					insertJsonEndField(&fpgaData);
+
+					while(fpgaData.statusProcessed != efpgaStatusSent) {
+						fpgaData.statusProcessed = efpgaStatusWait;
+						fpgaData.magic_word = FPGA_MAGIC_WORD;
+						//-- put to queue
+						if(putFpgaRecord(&fpgaData)) {
+							//-- print to usb
+							putFpgaReocordToUsb(&fpgaData);
+							//-- while mqtt will be send it
+							while(fpgaData.statusProcessed == efpgaStatusWait) {}
+							if(fpgaData.statusProcessed == efpgaStatusError) {
+								DBGLog("FPGA: send error");
+							}
+							vTaskDelay(500/portTICK_RATE_MS);
+						} else {
+							DBGLog("FPGA: putFpgaRecord error");
+						}
+					}
+					memset(fpgaData.data, 0, fpgaData.count);
+					fpgaData.count = 0;
 				}
 			}
 		}
 #else
-		for(fpga_temp_buff_count = 0; fpga_temp_buff_count<280; fpga_temp_buff_count++) {
-			fpga_temp_buff[fpga_temp_buff_count] = fpga_temp_buff_count;
-		}
-		putFpgaRecord(fpga_temp_buff, fpga_temp_buff_count);
 
-		memset(fpga_temp_buff, 0, sizeof(fpga_temp_buff));
+		insertJsonStartField(&fpgaData);
+
+		for(; fpgaData.count<sizeof(fpgaData.data)-50; fpgaData.count++) {
+			fpgaData.data[fpgaData.count] = 'x';
+		}
+		insertJsonEndField(&fpgaData);
+
+		while(fpgaData.statusProcessed != efpgaStatusSent) {
+			fpgaData.statusProcessed = efpgaStatusWait;
+			fpgaData.magic_word = FPGA_MAGIC_WORD;
+			if(putFpgaRecord(&fpgaData)) {
+				while(fpgaData.statusProcessed == efpgaStatusWait) {}
+				if(fpgaData.statusProcessed == efpgaStatusError) {
+					DBGLog("FPGA: send error");
+				}
+				vTaskDelay(500/portTICK_RATE_MS);
+			} else {
+				DBGLog("FPGA: putFpgaRecord error");
+			}
+		}
+		memset(fpgaData.data, 0, sizeof(fpgaData.count));
 #endif
 
 		vTaskDelay(500/portTICK_RATE_MS);
@@ -74,17 +115,41 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	}
 }
 
+void getNewFpgaData() {
+	HAL_GPIO_WritePin(FPGA_CS_LINE_GPIO_Port, FPGA_CS_LINE_Pin, GPIO_PIN_SET);
+	vTaskDelay(100/portTICK_RATE_MS);
+	HAL_GPIO_WritePin(FPGA_CS_LINE_GPIO_Port, FPGA_CS_LINE_Pin, GPIO_PIN_RESET);
+	vTaskDelay(100/portTICK_RATE_MS);
+}
+
 void fpgaRxUartHandler(UART_HandleTypeDef *huart) {
 	isActiveUart = true;
 	if(huart->Instance->SR & USART_SR_IDLE) {
 		DBGLog("FPGA: buffer ready");
 	} else {
-		if(fpga_temp_buff_count < FPGA_BUFFER_RECORD_MAX_SIZE) {
-			fpga_temp_buff_count += 1;
+		if(fpgaData.count < FPGA_BUFFER_RECORD_MAX_SIZE) {
+			if(fpgaData.count == 0) { //-- add start json
+				insertJsonStartField(&fpgaData);
+			}
+			sprintf((char*)&fpgaData.data[fpgaData.count], "%02x", rxByte);
+			fpgaData.count += 2;
 		} else {
 			DBGErr("FPGA: buffer overflow");
-			fpga_temp_buff_count = 0;
+			fpgaData.count = 0;
 		}
 	}
-	HAL_UART_Receive_IT(huart, fpga_temp_buff + fpga_temp_buff_count, 1);
+	HAL_UART_Receive_IT(huart, &rxByte, 1);
+}
+
+void insertJsonStartField(sFpgaData * pdata) {
+	static long id = 0;
+	sprintf(pdata->data, "{\"id\":%ld,\"state\":{\"desired\":{\"message\":\"", id++);
+	pdata->count = strlen(pdata->data);
+}
+
+void insertJsonEndField(sFpgaData * pdata) {
+	pdata->data[pdata->count++] = '"';
+	pdata->data[pdata->count++] = '}';
+	pdata->data[pdata->count++] = '}';
+	pdata->data[pdata->count++] = '}';
 }

@@ -46,7 +46,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "iot_flash_config.h"
+#include "settings/settings.h"
 
 #include "lwip/dhcp.h"
 #include "lwip/tcpip.h"

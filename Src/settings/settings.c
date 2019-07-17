@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include "debug_print.h"
 
-#define USE_OLD_CONF_CERTIFICATES	1
+//#define USE_OLD_CONF_CERTIFICATES
 
 //-- root CA
 uint8_t __attribute__((section (".SettingsData"))) CLIENT_ROOT_CA[USER_CONF_TLS_ROOT_CA_CERT] =
@@ -157,7 +157,9 @@ uint8_t __attribute__((section (".SettingsData"))) reserv[0xFFFFF] = {0};
 //-- mqtt topic - example: a39gt7zyg3mya3-ats.iot.us-east-2.amazonaws.com
 uint8_t __attribute__((section (".SettingsData"))) mqttDestEndpoint[USER_CONF_SERVER_NAME_LENGTH] = "ajdhfkws66ilz-ats.iot.us-east-2.amazonaws.com";
 //-- device name
-uint8_t __attribute__((section (".SettingsData"))) mqttDeviceName[USER_CONF_DEVICE_NAME_LENGTH] = "bills";
+uint8_t __attribute__((section (".SettingsData"))) mqttDeviceName[USER_CONF_DEVICE_NAME_LENGTH] = "USB_Printer_Board";
+//-- device topic
+uint8_t __attribute__((section (".SettingsData"))) mqttTopicPath[USER_CONF_DEVICE_NAME_LENGTH] = "bills";
 //-- reserv
 uint8_t __attribute__((section (".SettingsData"))) reserv[0xFFFFF] = {0};
 #endif
@@ -350,6 +352,36 @@ const char* getDeviceName() {
 	return 	getDeviceName_isExist() ? (char*)mqttDeviceName : not_found_caption;
 }
 
+//--
+//-- max length buff
+//--
+uint16_t getRootCaCertMaxSize() {
+	return sizeof(CLIENT_ROOT_CA);
+}
+
+uint16_t getPrivateKeyMaxSize() {
+	return sizeof(CLIENT_PRIVATE_KEY);
+}
+
+uint16_t getPrivateDeviceCertMaxSize() {
+	return sizeof(CLIENT_PRIVATE_DEVICE_CERT);
+}
+
+uint16_t getMqttEndpointMaxSize() {
+	return sizeof(mqttDestEndpoint);
+}
+
+uint16_t getTopicPathMaxSize() {
+	return sizeof(mqttTopicPath);
+}
+
+uint16_t getDeviceNameMaxSize() {
+	return sizeof(mqttDeviceName);
+}
+
+//---
+//-- local functions
+//--
 bool flushSettingsFullSector() {
 	bool res = false;
 	uint32_t FirstSector = 0, NbOfSectors = 0, Address = 0;

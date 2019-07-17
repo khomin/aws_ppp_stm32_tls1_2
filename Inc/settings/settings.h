@@ -99,4 +99,11 @@ const char * getMqttDestEndpoint();
 const char * getTopicPath();
 const char* getDeviceName();
 
+uint16_t getRootCaCertMaxSize();
+uint16_t getPrivateKeyMaxSize();
+uint16_t getPrivateDeviceCertMaxSize();
+uint16_t getMqttEndpointMaxSize();
+uint16_t getTopicPathMaxSize();
+uint16_t getDeviceNameMaxSize();
+
 #endif /* SETTINGS_SETTINGS_H_ */
