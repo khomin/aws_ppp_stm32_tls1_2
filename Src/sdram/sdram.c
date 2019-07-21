@@ -110,7 +110,7 @@ sSdramAlloc* createNewSdramBuff() {
 	DBGLog("SDRAM: create new buf -error");
 	return NULL;
 }
-
+//0xc03c9400
 bool freeSdramBuff(sSdramAlloc *pbuff) {
 	bool res = false;
 	for(uint32_t index=0; index<SDRAM_ALLOC_PULL_MAX_LEN; index++) {

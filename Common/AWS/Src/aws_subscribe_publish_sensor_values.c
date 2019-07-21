@@ -204,8 +204,6 @@ void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topi
 	}
 }
 
-char static cPayload[AWS_IOT_MQTT_TX_BUF_LEN];
-
 /**
  * @brief main entry function to AWS IoT code
  *
@@ -213,6 +211,8 @@ char static cPayload[AWS_IOT_MQTT_TX_BUF_LEN];
  * @return AWS_SUCCESS: 0
           FAILURE: -1
  */
+sFpgaData * p = NULL;
+
 int subscribe_publish_sensor_values(void)
 {
 	bool loop_is_normal = false;
@@ -324,7 +324,7 @@ int subscribe_publish_sensor_values(void)
 			&& loop_is_normal)
 	{
 		/* Max time the yield function will wait for read messages */
-		rc = aws_iot_mqtt_yield(&client, 1000);
+		rc = aws_iot_mqtt_yield(&client, 100);
 
 		if(NETWORK_ATTEMPTING_RECONNECT == rc)
 		{
@@ -339,42 +339,27 @@ int subscribe_publish_sensor_values(void)
 			msg_info("Reconnected.\n");
 		}
 
-		paramsQOS1.payload = (void *) cPayload;
-
 		//-- send data
-		sFpgaData * p = NULL;
-		while((xQueuePeek(fpgaDataQueue, &p, 50/portTICK_PERIOD_MS) == pdTRUE) && rc == AWS_SUCCESS) {
+		//-- endless looop
+		if(xQueuePeek(fpgaDataQueue, &p, NULL) == pdTRUE) {
 			if(p != NULL) {
-				printf("Sending data to AWS.\n");
-//				paramsQOS1.payload = (void *)p->sdramData->data;
-//				paramsQOS1.payloadLen = p->sdramData->len;
-//				DBGLog("AWS: %s", (char*)p->sdramData->data);
-
-//				paramsQOS1.payload = "{\"state\":{\"reported\":{\"message\":\"11111\"}}}";
-//				paramsQOS1.payloadLen = strlen("{\"state\":{\"reported\":{\"message\":\"11111\"}}}");
-
-				/* create desired message */
-				memset(cPayload, 0, sizeof(cPayload));
-				strcat(cPayload, "{\"state\":{\"reported\":{\"message\":\"11111\"}}}");
-				paramsQOS1.payloadLen = strlen(cPayload) + 1;
-
-				DBGLog("AWS: %s", cPayload);
-
-				do {
-					rc = aws_iot_mqtt_publish(&client, cPTopicName, strlen(cPTopicName), &paramsQOS1);
-					if (rc == AWS_SUCCESS) {
-						printf("\nPublished to topic %s:", cPTopicName);
-						p->statusProcessed = efpgaStatusSent;
-						freeSdramBuff(p->sdramData);
-						free(p);
-						xQueueReceive(fpgaDataQueue, &p, 50/portTICK_PERIOD_MS);
-					}
-					if (rc != AWS_SUCCESS) {
-						p->statusProcessed = efpgaStatusError;
-						break;
-					}
-					vTaskDelay(3000/portTICK_PERIOD_MS);
-				} while(MQTT_REQUEST_TIMEOUT_ERROR == rc &&(loop_is_normal));
+				if(p->sdramData->data != NULL) {
+					/* create desired message */
+					paramsQOS1.payload = p->sdramData->data;
+					paramsQOS1.payloadLen = p->sdramData->len;
+					DBGLog("AWS: %s", paramsQOS1.payload);
+					do {
+						rc = aws_iot_mqtt_publish(&client, cPTopicName, strlen(cPTopicName), &paramsQOS1);
+						if (rc == AWS_SUCCESS) {
+							printf("\nPublished to topic %s:", cPTopicName);
+							xQueueReceive(fpgaDataQueue, &p, NULL);
+							freeSdramBuff(p->sdramData);
+							vPortFree(p);
+						}
+					} while(MQTT_REQUEST_TIMEOUT_ERROR == rc &&(loop_is_normal));
+				} else {
+					DBGErr("AWS: sdramData == null");
+				}
 			}
 		}
 
@@ -384,7 +369,6 @@ int subscribe_publish_sensor_values(void)
 	aws_iot_mqtt_yield(&client, 10);
 
 	rc = aws_iot_mqtt_disconnect(&client);
-
 
 	return rc;
 }

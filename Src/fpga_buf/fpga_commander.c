@@ -36,7 +36,7 @@ void testFillData();
 void fpgaTask(void *argument) {
 	init_fpga();
 
-	fpgaDataQueue = xQueueCreate(16, sizeof(sFpgaData));
+	fpgaDataQueue = xQueueCreate(4, sizeof(sFpgaData));
 
 	HAL_UART_Receive_IT(&huart2, &rxByte, 1);
 
@@ -61,8 +61,8 @@ void fpgaTask(void *argument) {
 						//-- insert json header
 						insertJsonEndField(&fpgaData);
 						//-- put to queue
-						if(putFpgaRecord(fpgaData)) {
-							putFpgaReocordToUsb(fpgaData);
+						if(putFpgaRecord(&fpgaData)) {
+							putFpgaReocordToUsb(&fpgaData);
 						} else {
 							DBGLog("FPGA: putFpgaRecord error");
 						}
@@ -72,7 +72,7 @@ void fpgaTask(void *argument) {
 			}
 		}
 
-		vTaskDelay(500/portTICK_RATE_MS);
+		vTaskDelay(3000/portTICK_RATE_MS);
 	}
 	/* USER CODE END 5 */
 }
@@ -103,8 +103,7 @@ void testFillData() {
 			return;
 		}
 	}
-//	FPGA_BUFFER_RECORD_MAX_SIZE
-	for(uint32_t i=0; i<15; i++) {
+	for(uint32_t i=0; i<FPGA_BUFFER_RECORD_MAX_SIZE; i++) {
 		if(fpgaData.sdramData->len == 0) { //-- add start json
 			insertJsonStartField(&fpgaData);
 		}

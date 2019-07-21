@@ -25,18 +25,19 @@ void init_fpga() {
 	xLogFpga = xSemaphoreCreateMutex();
 }
 
-bool putFpgaRecord(sFpgaData pfpgaData) {
+bool putFpgaRecord(sFpgaData * pfpgaData) {
 	bool res = false;
 	if(xSemaphoreTake(xLogFpga, (TickType_t)500) == true) {
-		sFpgaData * pfpga = malloc(sizeof(sFpgaData*));
-		pfpga->statusProcessed = pfpgaData.statusProcessed;
-		pfpga->sdramData = pfpgaData.sdramData;
-		pfpga->magic_word = pfpgaData.magic_word;
+		sFpgaData * pfpga = pvPortMalloc(sizeof(sFpgaData*));
+		pfpga->statusProcessed = pfpgaData->statusProcessed;
+		pfpga->sdramData = pfpgaData->sdramData;
+		pfpga->magic_word = pfpgaData->magic_word;
 		if(xQueueSend(fpgaDataQueue, &pfpga, 1000/portTICK_PERIOD_MS) == pdTRUE) {
 			DBGInfo("putFpgaRecord: record add -OK");
 			res = true;
 		} else {
 			DBGErr("putFpgaRecord -send data to queue -ERROR (queue full");
+			vPortFree(pfpga);
 		}
 		xSemaphoreGive(xLogFpga);
 	} else {
@@ -45,10 +46,10 @@ bool putFpgaRecord(sFpgaData pfpgaData) {
 	return res;
 }
 
-void putFpgaReocordToUsb(sFpgaData pfpgaData) {
+void putFpgaReocordToUsb(sFpgaData * pfpgaData) {
 	static uint8_t printBuf[32] = {0};
 	xSemaphoreTake(usbLock, 500/portTICK_PERIOD_MS);
-	sprintf((char*)printBuf, "\r\nFPGA:len[%lu]\r\n", pfpgaData.sdramData->len);
+	sprintf((char*)printBuf, "\r\nFPGA:len[%lu]\r\n", pfpgaData->sdramData->len);
 	CDC_Transmit_FS(printBuf, strlen((char*)printBuf));
 	vTaskDelay(1000/portTICK_PERIOD_MS);
 	xSemaphoreGive(usbLock);
