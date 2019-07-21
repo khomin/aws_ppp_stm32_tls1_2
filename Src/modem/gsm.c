@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include "debug_print.h"
 #include "time.h"
+#include "status/display_status.h"
 
 sGsmState gsmState = {0};
 uint8_t gsmCsqValue = 0;
@@ -31,7 +32,6 @@ extern sGsmUartParcer uartParcerStruct;
 extern bool pppIsOpen;
 
 sGsmSettings gsmSettings = {0, "internet", "gdata", "gdata"};
-sConnectSettings connectSettings = {"31.10.4.146", "111", 45454};
 
 void vGsmTask( void * pvParameters );
 
@@ -48,67 +48,69 @@ void vGsmTask( void * pvParameters ) {
 
 	while((gsmState.initLLR != true) && (gsmState.initLLR2 != true)) {};
 
+	setDisplayStatus(E_Status_Display_init_GSM);
+
 	while(1) {
-		//
-		// if gsm is ready
-		// then the task does nothing in the pause
-		// otherwise begin initialization
-		//
+		//--
+		//-- if gsm is ready
+		//-- then the task does nothing in the pause
+		//-- otherwise begin initialization
+		//--
 		if(gsmState.init == false) {
-			//
-			// if one of the stages returns an error
-			// then it all starts with the first step
-			//
+			//--
+			//-- if one of the stages returns an error
+			//-- then it all starts with the first step
+			//--
 			if(gsmLLR_PowerUp() != eOk) {
 				gsmLLR_ModuleLost();
 				continue;
 			}
-			// if the module stops responding
+			//-- if the module stops responding
 			if(gsmState.notRespond == true) {
 				DBGInfo("GSM: init -module lost");
 				gsmLLR_ModuleLost();
 				continue;
 			}
-			// check module is ready
+			//-- check module is ready
 			if(gsmLLR_ATAT() != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
-			// disable power warnings
+			//-- disable power warnings
 			if(gsmLLR_WarningOff() != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
-			// set type reply
+			//-- set type reply
 			if(gsmLLR_FlowControl() != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
-			// get IMEI
+			//-- get IMEI
 			if(gsmLLR_GetIMEI(aIMEI) != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
 			DBGInfo("GSM: module IMEI=%s", aIMEI);
-			// get IMSI
+			//-- get IMSI
 			if(gsmLLR_GetIMSI(aIMSI) != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
 			DBGInfo("GSM: module IMSI=%s", aIMSI);
-			// get software version
+			//-- get software version
 			if(gsmLLR_GetModuleSoftWareVersion(aVerionSoftware) != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
-			// set the type of registration message
+			//-- set the type of registration message
 			if(gsmLLR_AtCREG() != eOk) {
 				gsmState.notRespond = true;
 				continue;
 			}
 			DBGInfo("GSM: creg -OK");
 
-			// get csq
+			//-- get csq
 			if(gsmLLR_UpdateCSQ(&gsmCsqValue) != eOk) {
 				DBGInfo("GSM: get CSQ ERROR, -RELOAD");
 				gsmState.notRespond = true;
@@ -116,14 +118,17 @@ void vGsmTask( void * pvParameters ) {
 			} else {
 				DBGInfo("GSM: csq value %d", gsmCsqValue);
 
-				// get phone number
+				//-- get phone number
 				if(gsmLLR_GetSimCardNum(aSimCardNumber) != eOk) {
 					gsmState.notRespond = true;
 					continue;
 				}
 
-				// start ppp
+				//-- start ppp
 				DBGInfo("GSM: init PPP...");
+
+				setDisplayStatus(E_Status_Display_init_PPP);
+
 				if(gsmLLR_StartPPP(&gsmSettings) == eOk) {
 					DBGInfo("GSM: init PPP -ready");
 					xQueueReset(uartParcerStruct.uart.rxQueue);

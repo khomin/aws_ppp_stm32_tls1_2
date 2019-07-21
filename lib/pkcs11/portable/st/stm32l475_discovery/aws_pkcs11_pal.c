@@ -44,7 +44,7 @@
 #include <string.h>
 
 /* flash driver includes. */
-#include "flash.h"
+//#include "flash.h"
 
 /* WiFi includes. */
 #ifdef USE_OFFLOAD_SSL
@@ -311,125 +311,129 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 
 {
     CK_OBJECT_HANDLE xHandle = eInvalidHandle;
-    CK_RV xBytesWritten = 0;
-    CK_RV xReturn;
-    uint32_t ulFlashMark = ( pkcs11OBJECT_PRESENT_MAGIC | ( ulDataSize ) );
-    uint8_t * pemBuffer;
-    size_t pemLength;
 
+//    TODO:
+    while(1){}
 
-    if( ulDataSize <= pkcs11OBJECT_MAX_SIZE )
-    {
-        /*
-         * write client certificate.
-         */
-        if( strcmp( pxLabel->pValue,
-                    pkcs11configLABEL_DEVICE_CERTIFICATE_FOR_TLS ) == 0 )
-        {
-            xBytesWritten = FLASH_update( ( uint32_t ) P11KeyConfig.cDeviceCertificate,
-                                          pucData,
-                                          ( ulDataSize ) );
-
-            if( xBytesWritten == ( ulDataSize ) )
-            {
-                xHandle = eAwsDeviceCertificate;
-
-                /*change flash written mark'*/
-                FLASH_update( ( uint32_t ) &P11KeyConfig.ulDeviceCertificateMark,
-                              &ulFlashMark,
-                              sizeof( uint32_t ) );
-            }
-
-            #ifdef USE_OFFLOAD_SSL
-
-                /* If we are using offload SSL, write the certificate to the
-                 * WiFi module as well. */
-
-                xReturn = prvDerToPem( pucData,
-                                       ulDataSize,
-                                       ( char ** ) &pemBuffer,
-                                       &pemLength,
-                                       CKO_CERTIFICATE );
-
-                if( xReturn != CKR_OK )
-                {
-                    xHandle = eInvalidHandle;
-                }
-
-                if( xHandle == eAwsDeviceCertificate )
-                {
-                    if( WIFI_StoreCertificate( pemBuffer, ( uint16_t ) pemLength ) != eWiFiSuccess )
-                    {
-                        xHandle = eInvalidHandle;
-                    }
-                }
-                vPortFree( pemBuffer );
-            #endif /* USE_OFFLOAD_SSL */
-        }
-
-        /*
-         * write client key.
-         */
-
-        else if( strcmp( pxLabel->pValue,
-                         pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS ) == 0 )
-        {
-            xBytesWritten = FLASH_update( ( uint32_t ) P11KeyConfig.cDeviceKey,
-                                          pucData,
-                                          ulDataSize );
-
-            if( xBytesWritten == ( ulDataSize ) )
-            {
-                xHandle = eAwsDevicePrivateKey;
-                /*change flash written mark'*/
-                FLASH_update( ( uint32_t ) &P11KeyConfig.ulDeviceKeyMark,
-                              &ulFlashMark,
-                              sizeof( uint32_t ) );
-            }
-
-            #ifdef USE_OFFLOAD_SSL
-                xReturn = prvDerToPem( pucData,
-                                       ulDataSize,
-                                       ( char ** ) &pemBuffer,
-                                       &pemLength,
-                                       CKO_PRIVATE_KEY );
-
-                if( xReturn != CKR_OK )
-                {
-                    xHandle = eInvalidHandle;
-                }
-
-                /* If we are using offload SSL, write the key to the WiFi
-                 * module as well. */
-                if( xHandle == eAwsDevicePrivateKey )
-                {
-                    if( WIFI_StoreKey( pemBuffer, ( uint16_t ) pemLength ) != eWiFiSuccess )
-                    {
-                        xHandle = eInvalidHandle;
-                    }
-                }
-                vPortFree( pemBuffer );
-            #endif /* USE_OFFLOAD_SSL */
-        }
-
-        else if( strcmp( pxLabel->pValue,
-                         pkcs11configLABEL_CODE_VERIFICATION_KEY ) == 0 )
-        {
-            xBytesWritten = FLASH_update( ( uint32_t ) P11KeyConfig.cCodeSignKey,
-                                          pucData,
-                                          ulDataSize );
-
-            if( xBytesWritten == ( ulDataSize ) )
-            {
-                xHandle = eAwsCodeSigningKey;
-
-                /*change flash written mark'*/
-                FLASH_update( ( uint32_t ) &P11KeyConfig.ulCodeSignKeyMark,
-                              &ulFlashMark,
-                              sizeof( uint32_t ) );
-            }
-        }
-    }
+//    CK_RV xBytesWritten = 0;
+//    CK_RV xReturn;
+//    uint32_t ulFlashMark = ( pkcs11OBJECT_PRESENT_MAGIC | ( ulDataSize ) );
+//    uint8_t * pemBuffer;
+//    size_t pemLength;
+//
+//
+//    if( ulDataSize <= pkcs11OBJECT_MAX_SIZE )
+//    {
+//    	/*
+//    	 * write client certificate.
+//    	 */
+//    	if( strcmp( pxLabel->pValue,
+//    			pkcs11configLABEL_DEVICE_CERTIFICATE_FOR_TLS ) == 0 )
+//    	{
+//    		xBytesWritten = FLASH_update( ( uint32_t ) P11KeyConfig.cDeviceCertificate,
+//    				pucData,
+//					( ulDataSize ) );
+//
+//    		if( xBytesWritten == ( ulDataSize ) )
+//    		{
+//    			xHandle = eAwsDeviceCertificate;
+//
+//    			/*change flash written mark'*/
+//				FLASH_update( ( uint32_t ) &P11KeyConfig.ulDeviceCertificateMark,
+//						&ulFlashMark,
+//						sizeof( uint32_t ) );
+//    		}
+//
+//#ifdef USE_OFFLOAD_SSL
+//
+//    		/* If we are using offload SSL, write the certificate to the
+//    		 * WiFi module as well. */
+//
+//    		xReturn = prvDerToPem( pucData,
+//    				ulDataSize,
+//					( char ** ) &pemBuffer,
+//					&pemLength,
+//					CKO_CERTIFICATE );
+//
+//    		if( xReturn != CKR_OK )
+//    		{
+//    			xHandle = eInvalidHandle;
+//    		}
+//
+//    		if( xHandle == eAwsDeviceCertificate )
+//    		{
+//    			if( WIFI_StoreCertificate( pemBuffer, ( uint16_t ) pemLength ) != eWiFiSuccess )
+//    			{
+//    				xHandle = eInvalidHandle;
+//    			}
+//    		}
+//    		vPortFree( pemBuffer );
+//#endif /* USE_OFFLOAD_SSL */
+//    	}
+//
+//    	/*
+//    	 * write client key.
+//    	 */
+//
+//    	else if( strcmp( pxLabel->pValue,
+//    			pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS ) == 0 )
+//    	{
+//    		xBytesWritten = FLASH_update( ( uint32_t ) P11KeyConfig.cDeviceKey,
+//    				pucData,
+//					ulDataSize );
+//
+//    		if( xBytesWritten == ( ulDataSize ) )
+//    		{
+//    			xHandle = eAwsDevicePrivateKey;
+//    			/*change flash written mark'*/
+//				FLASH_update( ( uint32_t ) &P11KeyConfig.ulDeviceKeyMark,
+//						&ulFlashMark,
+//						sizeof( uint32_t ) );
+//    		}
+//
+//#ifdef USE_OFFLOAD_SSL
+//    		xReturn = prvDerToPem( pucData,
+//    				ulDataSize,
+//					( char ** ) &pemBuffer,
+//					&pemLength,
+//					CKO_PRIVATE_KEY );
+//
+//    		if( xReturn != CKR_OK )
+//    		{
+//    			xHandle = eInvalidHandle;
+//    		}
+//
+//    		/* If we are using offload SSL, write the key to the WiFi
+//    		 * module as well. */
+//    		if( xHandle == eAwsDevicePrivateKey )
+//    		{
+//    			if( WIFI_StoreKey( pemBuffer, ( uint16_t ) pemLength ) != eWiFiSuccess )
+//    			{
+//    				xHandle = eInvalidHandle;
+//    			}
+//    		}
+//    		vPortFree( pemBuffer );
+//#endif /* USE_OFFLOAD_SSL */
+//    	}
+//
+//    	else if( strcmp( pxLabel->pValue,
+//    			pkcs11configLABEL_CODE_VERIFICATION_KEY ) == 0 )
+//    	{
+//    		xBytesWritten = FLASH_update( ( uint32_t ) P11KeyConfig.cCodeSignKey,
+//    				pucData,
+//					ulDataSize );
+//
+//    		if( xBytesWritten == ( ulDataSize ) )
+//    		{
+//    			xHandle = eAwsCodeSigningKey;
+//
+//    			/*change flash written mark'*/
+//				FLASH_update( ( uint32_t ) &P11KeyConfig.ulCodeSignKeyMark,
+//						&ulFlashMark,
+//						sizeof( uint32_t ) );
+//    		}
+//    	}
+//    }
 
     return xHandle;
 }

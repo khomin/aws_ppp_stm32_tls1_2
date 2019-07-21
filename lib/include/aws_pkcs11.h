@@ -71,6 +71,7 @@
 #endif
 
 #include "pkcs11.h"
+#include "pkcs11/pkcs11t.h"
 
 /* Key Template */
 /* The object class must be the first attribute in the array. */

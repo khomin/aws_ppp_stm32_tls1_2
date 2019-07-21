@@ -14,6 +14,8 @@
 #define FPGA_TASK_STACK_SIZE	512
 #define FPGA_TASK_PRIORYTY		osPriorityNormal
 
+#define FPGA_ARRAY_RX_MAX_SIZE
+
 void fpgaTask(void *argument);
 
 void fpgaRxUartHandler(UART_HandleTypeDef *huart);

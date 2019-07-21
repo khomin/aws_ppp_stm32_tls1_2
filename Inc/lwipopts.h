@@ -60,7 +60,7 @@
 
 /* MEM_SIZE: the size of the heap memory. If the application will send
 a lot of data that needs to be copied, this should be set high. */
-#define MEM_SIZE                (3*1024)
+#define MEM_SIZE                (11*1024)
 
 /* MEMP_NUM_PBUF: the number of memp struct pbufs. If the application
    sends a lot of data out of ROM (or other static memory), this
@@ -82,6 +82,10 @@ a lot of data that needs to be copied, this should be set high. */
    timeouts. */
 #define MEMP_NUM_SYS_TIMEOUT    10
 
+#define LWIP_SO_RCVTIMEO                1
+#define LWIP_SO_RCVRCVTIMEO_NONSTANDARD 1   /* Pass an integer number of ms instead of a timeval struct. */
+#define LWIP_SO_SNDTIMEO                1
+#define LWIP_SO_SNDRCVTIMEO_NONSTANDARD 1   /* Pass an integer number of ms instead of a timeval struct. */
 
 /* ---------- Pbuf options ---------- */
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool. */
@@ -207,7 +211,7 @@ The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
 /**
  * LWIP_SOCKET==1: Enable Socket API (require to use sockets.c)
  */
-#define LWIP_SOCKET                     0
+#define LWIP_SOCKET                     1
 
 /*
    -----------------------------------
@@ -231,7 +235,7 @@ The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
 #define DEFAULT_TCP_RECVMBOX_SIZE       2000
 #define DEFAULT_ACCEPTMBOX_SIZE         2000
 #define DEFAULT_THREAD_STACKSIZE        500
-#define TCPIP_THREAD_PRIO               (configMAX_PRIORITIES - 2)
+#define TCPIP_THREAD_PRIO               (tskIDLE_PRIORITY + 1)
 #define LWIP_COMPAT_MUTEX               1
 
 

@@ -12,7 +12,6 @@
 #include "debug_print.h"
 #include <stdlib.h>
 
-extern sConnectSettings connectSettings;
 extern sGsmSettings gsmSettings;
 extern sConnectionPppStruct connectionPppStruct;
 
@@ -443,101 +442,6 @@ eRetComm gsmLLR_SmsGetLastMessage(char *pMessage, char *pNumber) {
 	}
 	return ret;
 }
-
-/**********************************************************************/
-/**						----										 **/
-/**********************************************************************/
-eRetComm gsmLLR_ConnectService(uint8_t numConnect) {
-	eRetComm ret = eError;
-	if(gsmLLR_GetMutex() == true) {
-		if(gsmPPP_Connect(connectSettings.srvAddr, connectSettings.srvPort) == true) {
-			ret = eOk;
-		}
-		gsmLLR_GiveMutex();
-	}
-	return ret;
-}
-
-eRetComm gsmLLR_DisconnectService(uint8_t numConnect) {
-	eRetComm ret = eError;
-	if(gsmLLR_GetMutex() == true) { // отключаем соединение
-		if(gsmPPP_Disconnect(numConnect) == true) {
-			ret = eOk;
-		}
-		gsmLLR_GiveMutex();
-	}
-	return ret;
-}
-
-bool gsmPPP_ConnectStatus(uint8_t numConnect) {
-	if(connectionPppStruct.tcpClient->state == ESTABLISHED) {
-		return true;
-	}
-	return false;
-}
-
-eRetComm gsmLLR_ConnectServiceStatus(uint8_t numConnect) {
-	eRetComm ret = eError;
-	if(gsmLLR_GetMutex() == true) {
-		if(gsmPPP_ConnectStatus(numConnect) == true) {
-			ret = eOk;
-		}
-		gsmLLR_GiveMutex();
-	}
-	return ret;
-}
-
-/**
- * @brief: Чтение размера принятых данных.
- * @param uint8_t serviceNum: - номер интернет-сервиса
- * @return Ошибка/Размер считанных данных
- */
-uint16_t gsmLLR_TcpGetRxCount(uint8_t serviceNum) {
-	return gsmPPP_GetRxLenData(serviceNum);
-}
-
-eRetComm gsmLLR_TcpSend(uint8_t serviceNum, uint8_t *pData, uint16_t sendSize) {
-	eRetComm ret = eError;
-	uint16_t packetSize = 0;
-	uint16_t packetPos = 0;
-
-	if(gsmLLR_GetMutex() == true) {
-		// передаем
-		packetPos = 0;
-		while(sendSize != 0) {
-			// если размер данных больше, чем может сразу отправить модем
-			if(sendSize > GSM_PACKET_MAX_SIZE) { // разбиваем
-				packetSize = GSM_PACKET_MAX_SIZE;
-			} else {
-				packetSize = sendSize;
-			}
-			// передача данных
-			if(gsmPPP_SendData(serviceNum, &pData[packetPos], packetSize) == eOk) {
-				DBGInfo("GSMSEND: SEND OK, packSize %d", packetSize);
-				ret = eOk;
-			} else {
-				DBGInfo("GSMSEND: ERROR SEND");
-				ret = eError;
-				break;
-			}
-			sendSize -= packetSize;
-			packetPos += packetSize;
-		}
-		vTaskDelay(500/portTICK_PERIOD_MS);
-		gsmLLR_GiveMutex();
-	}
-	return ret;
-}
-
-///**
-// * @brief: Чтение Tcp сообщения.
-// * @param uint8_t *rxBuffer: - указатель куда будет считаны данные
-// * @param uint8_t size - размер буфера данных
-// * @return Ошибка/Размер считанных данных
-// */
-//int gsmLLR_TcpReadData(uint8_t **ppData, uint16_t buffSize) {
-//	return gsmPPP_ReadRxData(ppData);
-//}
 
 eRetComm gsmLLR_CallNumber(uint8_t *phoneNumber) {
 	return eOk;

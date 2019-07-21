@@ -1596,7 +1596,7 @@
  * sys_thread_new() when the thread is created.
  */
 #if !defined SLIPIF_THREAD_PRIO || defined __DOXYGEN__
-#define SLIPIF_THREAD_PRIO              1
+#define SLIPIF_THREAD_PRIO              tskIDLE_PRIORITY+1
 #endif
 
 /**
@@ -1784,7 +1784,7 @@
  * SO_SNDTIMEO processing.
  */
 #if !defined LWIP_SO_SNDTIMEO || defined __DOXYGEN__
-#define LWIP_SO_SNDTIMEO                0
+#define LWIP_SO_SNDTIMEO                1
 #endif
 
 /**
@@ -1792,7 +1792,7 @@
  * SO_RCVTIMEO processing.
  */
 #if !defined LWIP_SO_RCVTIMEO || defined __DOXYGEN__
-#define LWIP_SO_RCVTIMEO                0
+#define LWIP_SO_RCVTIMEO                1
 #endif
 
 /**
@@ -2663,7 +2663,7 @@
  * SOCKETS_DEBUG: Enable debugging in sockets.c.
  */
 #if !defined SOCKETS_DEBUG || defined __DOXYGEN__
-#define SOCKETS_DEBUG                   LWIP_DBG_ON
+#define SOCKETS_DEBUG                   LWIP_DBG_OFF
 #endif
 
 /**

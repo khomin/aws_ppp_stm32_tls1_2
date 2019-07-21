@@ -10,27 +10,27 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "../Src/sdram/sdram.h"
 
 #define FPGA_BUFFER_RECORD_MAX_COUNT		16
-#define FPGA_BUFFER_RECORD_MAX_SIZE			512
+#define FPGA_BUFFER_RECORD_MAX_SIZE			SDRAM_RECORD_MAX_LEN
+#define FPGA_MAGIC_WORD						1973
+#define FPGA_MIN_DATA_SIZE					30
+
+typedef enum {
+	efpgaStatusWait,
+	efpgaStatusSent,
+	efpgaStatusError
+}eFpgaStatus;
 
 typedef struct {
-	uint8_t p_buffer[FPGA_BUFFER_RECORD_MAX_SIZE][FPGA_BUFFER_RECORD_MAX_COUNT];
-	int records_count;
+	sSdramAlloc * sdramData;
+	eFpgaStatus statusProcessed;
+	uint16_t magic_word;
 }sFpgaData;
 
-typedef struct {
-	// TODO: not used
-	uint32_t timestamp;
-	uint8_t data[FPGA_BUFFER_RECORD_MAX_SIZE];
-	int data_len;
-	// TODO: not used
-	uint16_t crc;
-}sRecord;
-
 void init_fpga();
-bool putFpgaRecord(uint8_t* pData, int len);
-int getFpgaLastRecord(uint8_t* pData, int maxLen);
-void flushFpgaAll();
+bool putFpgaRecord(sFpgaData  * pfpgaData);
+void putFpgaReocordToUsb(sFpgaData * pfpgaData);
 
 #endif /* FPGA_BUF_FPGA_BUF_H_ */

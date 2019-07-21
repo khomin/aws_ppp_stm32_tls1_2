@@ -33,34 +33,14 @@
 #include "aws_clientcredential_keys.h"
 
 /*
- * MQTT Broker endpoint.
- */
-static const char clientcredentialMQTT_BROKER_ENDPOINT[] = "a39gt7zyg3mya3-ats.iot.us-east-2.amazonaws.com";
-
-
-/* Use of a "define" and not a "static const" here to be able to
- * use pre-compile concatenation on the string. */
-#define clientcredentialIOT_THING_NAME               "Paste AWS IoT Thing name here."
-
-/*
  * Port number the MQTT broker is using.
  */
-#define clientcredentialMQTT_BROKER_PORT             8883 // 45454
+#define clientcredentialMQTT_BROKER_PORT             8883
 
 /*
  * Port number the Green Grass Discovery use for JSON retrieval from cloud is using.
  */
 #define clientcredentialGREENGRASS_DISCOVERY_PORT    8443
-
-/*
- * Wi-Fi network to join.
- */
-#define clientcredentialWIFI_SSID                    "Paste Wi-Fi SSID here."
-
-/*
- * Password needed to join Wi-Fi network.
- */
-#define clientcredentialWIFI_PASSWORD                "Paste Wi-Fi password here."
 
 /**
  * @brief Security type

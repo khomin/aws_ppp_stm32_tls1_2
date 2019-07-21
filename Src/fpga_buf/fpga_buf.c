@@ -10,72 +10,49 @@
 
 #include "fpga_buf/fpga_buf.h"
 #include <FreeRTOS.h>
+#include "task.h"
 #include <semphr.h>
 #include <string.h>
+#include <stdlib.h>
 #include "debug_print.h"
+#include "usbd_cdc_if.h"
 
-static sFpgaData fpgaData;
 static xSemaphoreHandle xLogFpga;
+extern xSemaphoreHandle usbLock;
+extern xQueueHandle fpgaDataQueue;
 
 void init_fpga() {
-	fpgaData.records_count = 0;
 	xLogFpga = xSemaphoreCreateMutex();
 }
 
-bool putFpgaRecord(uint8_t* pdata, int len) {
+bool putFpgaRecord(sFpgaData * pfpgaData) {
 	bool res = false;
-	if(xSemaphoreTake(xLogFpga, (TickType_t)100) == true) {
-		if(fpgaData.records_count == 0) {
-			memcpy(fpgaData.p_buffer[fpgaData.records_count], pdata, len);
-			fpgaData.records_count ++;
+	if(xSemaphoreTake(xLogFpga, (TickType_t)500) == true) {
+		sFpgaData * pfpga = pvPortMalloc(sizeof(sFpgaData*));
+		pfpga->statusProcessed = pfpgaData->statusProcessed;
+		pfpga->sdramData = pfpgaData->sdramData;
+		pfpga->magic_word = pfpgaData->magic_word;
+		if(xQueueSend(fpgaDataQueue, &pfpga, 1000/portTICK_PERIOD_MS) == pdTRUE) {
 			DBGInfo("putFpgaRecord: record add -OK");
 			res = true;
 		} else {
-			if(fpgaData.records_count < FPGA_BUFFER_RECORD_MAX_COUNT) {
-				memcpy(fpgaData.p_buffer[fpgaData.records_count], pdata, len);
-				fpgaData.records_count ++;
-				DBGInfo("putFpgaRecord: record add -OK");
-				res = true;
-			} else {
-				DBGErr("putFpgaRecord: overflow");
-				fpgaData.records_count = 0;
-			}
+			DBGErr("putFpgaRecord -send data to queue -ERROR (queue full");
+			vPortFree(pfpga);
 		}
 		xSemaphoreGive(xLogFpga);
+	} else {
+		DBGErr("putFpgaRecord - buffer malloc error");
 	}
-
 	return res;
 }
 
-int getFpgaLastRecord(uint8_t* pdata, int max_len) {
-	uint8_t * pstart_rec_data = NULL;
-	int res_rec_len = 0;
-
-	xSemaphoreTake(xLogFpga, portMAX_DELAY);
-	if(fpgaData.records_count == 0) {
-		pstart_rec_data = fpgaData.p_buffer[0];
-	} else {
-		int cout = fpgaData.records_count * FPGA_BUFFER_RECORD_MAX_SIZE;
-		if(cout < sizeof(fpgaData.p_buffer)) {
-			pstart_rec_data = fpgaData.p_buffer[fpgaData.records_count * FPGA_BUFFER_RECORD_MAX_SIZE];
-		}
-	}
-
-	if(pstart_rec_data != NULL) {
-		memcpy(pdata, pstart_rec_data, max_len);
-		res_rec_len = ((sRecord*)(pstart_rec_data))->data_len;
-	}
-
-	xSemaphoreGive(xLogFpga);
-
-	return res_rec_len;
-}
-
-void flushFpgaAll() {
-	xSemaphoreTake(xLogFpga, portMAX_DELAY);
-	fpgaData.records_count = 0;
-	memset(fpgaData.p_buffer[0], 0, FPGA_BUFFER_RECORD_MAX_SIZE);
-	xSemaphoreGive(xLogFpga);
+void putFpgaReocordToUsb(sFpgaData * pfpgaData) {
+	static uint8_t printBuf[32] = {0};
+	xSemaphoreTake(usbLock, 500/portTICK_PERIOD_MS);
+	sprintf((char*)printBuf, "\r\nFPGA:len[%lu]\r\n", pfpgaData->sdramData->len);
+	CDC_Transmit_FS(printBuf, strlen((char*)printBuf));
+	vTaskDelay(1000/portTICK_PERIOD_MS);
+	xSemaphoreGive(usbLock);
 }
 
 #endif /* FPGA_BUF_FPGA_BUF_C_ */

@@ -32,7 +32,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stdbool.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -42,7 +42,13 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
+#ifdef USE_MBED_TLS
+extern int mbedtls_hardware_poll( void *data, unsigned char *output, size_t len, size_t *olen );
+#endif /* USE_MBED_TLS */
 
+#define FLASH_PAGE_SIZE                    ((uint32_t)0x800)
+
+/* Exported functions --------------------------------------------------------*/
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -71,6 +77,8 @@ void Error_Handler(void);
 #define GSM_RESET_GPIO_Port GPIOH
 #define GSM_PWRKY_Pin GPIO_PIN_9
 #define GSM_PWRKY_GPIO_Port GPIOH
+#define OLED_RESET_Pin GPIO_PIN_11
+#define OLED_RESET_GPIO_Port GPIOH
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

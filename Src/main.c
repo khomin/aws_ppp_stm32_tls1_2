@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -31,6 +32,14 @@
 #include "task.h"
 #include "stats.h"
 #include "gsmPPP.h"
+#include "../Common/AWS/Inc/net.h"
+#include "cloud.h"
+#include "commander/commander.h"
+#include "settings/settings.h"
+#include "ssd1306_oled/ssd1306.h"
+#include "status/display_status.h"
+#include "sdram/sdram.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,12 +59,21 @@
 /* Private variables ---------------------------------------------------------*/
 CRC_HandleTypeDef hcrc;
 
+I2C_HandleTypeDef hi2c3;
+
+RNG_HandleTypeDef hrng;
+
+RTC_HandleTypeDef hrtc;
+
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
+SDRAM_HandleTypeDef hsdram1;
+
 /* USER CODE BEGIN PV */
 extern ePppState pppState;
-RNG_HandleTypeDef hrng;
+net_hnd_t hnet;
+static volatile uint8_t button_flags = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,6 +82,10 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_CRC_Init(void);
 static void MX_USART3_UART_Init(void);
+static void MX_RTC_Init(void);
+static void MX_RNG_Init(void);
+static void MX_FMC_Init(void);
+static void MX_I2C3_Init(void);
 void StartDefaultTask(void *argument); // for v2
 
 /* USER CODE BEGIN PFP */
@@ -113,6 +135,7 @@ void vApplicationGetTimerTaskMemory( StaticTask_t ** ppxTimerTaskTCBBuffer,
 	*pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
 }
 
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -152,14 +175,38 @@ int main(void)
 	MX_USART2_UART_Init();
 	MX_CRC_Init();
 	MX_USART3_UART_Init();
+	MX_RTC_Init();
+	MX_RNG_Init();
+	MX_FMC_Init();
+	MX_I2C3_Init();
 	/* USER CODE BEGIN 2 */
 
 	ITM_Init(1000);
 	DBGLog("Started");
 
+	settingsInit();
+	ssd1306_Init();
+	setDisplayStatus(E_Status_Display_init);
+
+	sdramInit();
+
+	/* Create the thread(s) */
+	/* definition and creation of defaultTask */
+	xTaskCreate(StartDefaultTask, "defaultTask", 128, 0, tskIDLE_PRIORITY, NULL);
+
+	gsmTaskInit();
+
+	commanderInit();
+
+	/* USER CODE END RTOS_THREADS */
+
+	/* Start scheduler */
+	vTaskStartScheduler();
+
+	/* We should never get here as control is now taken by the scheduler */
+
 	/* USER CODE END 2 */
 
-	// Initialize CMSIS-RTOS
 
 	/* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
@@ -177,35 +224,18 @@ int main(void)
 	/* add queues, ... */
 	/* USER CODE END RTOS_QUEUES */
 
-	/* Create the thread(s) */
-	/* definition and creation of defaultTask */
-	//  const osThreadAttr_t defaultTask_attributes = {
-	//    .name = "defaultTask",
-	//    .priority = (osPriority_t) osPriorityNormal,
-	//    .stack_size = 128
-	//  };
-	//  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
 	/* USER CODE BEGIN RTOS_THREADS */
-	/* definition and creation task */
-	//	osThreadAttr_t attributes = {
-	//			.name = "fpgaTask",
-	//			.priority = (osPriority_t) osPriorityNormal7,
-	//			.stack_size = 1024
-	//	};
-	//	osThreadNew(fpgaTask, NULL, &attributes);
-
-	gsmTaskInit();
-
+	/* add threads, ... */
 	/* USER CODE END RTOS_THREADS */
 
-	/* Start scheduler */
-	vTaskStartScheduler();
 
 	/* We should never get here as control is now taken by the scheduler */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
+
+
 	while (1)
 	{
 		/* USER CODE END WHILE */
@@ -223,21 +253,23 @@ void SystemClock_Config(void)
 {
 	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
 	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+	RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
 	/** Configure the main internal regulator output voltage
 	 */
 	__HAL_RCC_PWR_CLK_ENABLE();
-	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
 	/** Initializes the CPU, AHB and APB busses clocks
 	 */
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
 	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+	RCC_OscInitStruct.LSIState = RCC_LSI_ON;
 	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
 	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
 	RCC_OscInitStruct.PLL.PLLM = 15;
-	RCC_OscInitStruct.PLL.PLLN = 192;
+	RCC_OscInitStruct.PLL.PLLN = 144;
 	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-	RCC_OscInitStruct.PLL.PLLQ = 4;
+	RCC_OscInitStruct.PLL.PLLQ = 5;
 	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
 	{
 		Error_Handler();
@@ -251,7 +283,13 @@ void SystemClock_Config(void)
 	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
 	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
+	PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
+	if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
 	{
 		Error_Handler();
 	}
@@ -287,28 +325,108 @@ static void MX_CRC_Init(void)
 }
 
 /**
-  * @brief RNG Initialization Function
-  * @param None
-  * @retval None
-  */
+ * @brief I2C3 Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_I2C3_Init(void)
+{
+
+	/* USER CODE BEGIN I2C3_Init 0 */
+
+	/* USER CODE END I2C3_Init 0 */
+
+	/* USER CODE BEGIN I2C3_Init 1 */
+
+	/* USER CODE END I2C3_Init 1 */
+	hi2c3.Instance = I2C3;
+	hi2c3.Init.ClockSpeed = 100000;
+	hi2c3.Init.DutyCycle = I2C_DUTYCYCLE_2;
+	hi2c3.Init.OwnAddress1 = 0;
+	hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+	hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+	hi2c3.Init.OwnAddress2 = 0;
+	hi2c3.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+	hi2c3.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+	if (HAL_I2C_Init(&hi2c3) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	/** Configure Analogue filter
+	 */
+	if (HAL_I2CEx_ConfigAnalogFilter(&hi2c3, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	/** Configure Digital filter
+	 */
+	if (HAL_I2CEx_ConfigDigitalFilter(&hi2c3, 0) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	/* USER CODE BEGIN I2C3_Init 2 */
+
+	/* USER CODE END I2C3_Init 2 */
+
+}
+
+/**
+ * @brief RNG Initialization Function
+ * @param None
+ * @retval None
+ */
 static void MX_RNG_Init(void)
 {
 
-  /* USER CODE BEGIN RNG_Init 0 */
+	/* USER CODE BEGIN RNG_Init 0 */
 
-  /* USER CODE END RNG_Init 0 */
+	/* USER CODE END RNG_Init 0 */
 
-  /* USER CODE BEGIN RNG_Init 1 */
+	/* USER CODE BEGIN RNG_Init 1 */
 
-  /* USER CODE END RNG_Init 1 */
-  hrng.Instance = RNG;
-  if (HAL_RNG_Init(&hrng) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN RNG_Init 2 */
+	/* USER CODE END RNG_Init 1 */
+	hrng.Instance = RNG;
+	if (HAL_RNG_Init(&hrng) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	/* USER CODE BEGIN RNG_Init 2 */
 
-  /* USER CODE END RNG_Init 2 */
+	/* USER CODE END RNG_Init 2 */
+
+}
+
+/**
+ * @brief RTC Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_RTC_Init(void)
+{
+
+	/* USER CODE BEGIN RTC_Init 0 */
+
+	/* USER CODE END RTC_Init 0 */
+
+	/* USER CODE BEGIN RTC_Init 1 */
+
+	/* USER CODE END RTC_Init 1 */
+	/** Initialize RTC Only
+	 */
+	hrtc.Instance = RTC;
+	hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+	hrtc.Init.AsynchPrediv = 127;
+	hrtc.Init.SynchPrediv = 255;
+	hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+	hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+	hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+	if (HAL_RTC_Init(&hrtc) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	/* USER CODE BEGIN RTC_Init 2 */
+
+	/* USER CODE END RTC_Init 2 */
 
 }
 
@@ -378,6 +496,53 @@ static void MX_USART3_UART_Init(void)
 
 }
 
+/* FMC initialization function */
+static void MX_FMC_Init(void)
+{
+
+	/* USER CODE BEGIN FMC_Init 0 */
+
+	/* USER CODE END FMC_Init 0 */
+
+	FMC_SDRAM_TimingTypeDef SdramTiming = {0};
+
+	/* USER CODE BEGIN FMC_Init 1 */
+
+	/* USER CODE END FMC_Init 1 */
+
+	/** Perform the SDRAM1 memory initialization sequence
+	 */
+	hsdram1.Instance = FMC_SDRAM_DEVICE;
+	/* hsdram1.Init */
+	hsdram1.Init.SDBank = FMC_SDRAM_BANK1;
+	hsdram1.Init.ColumnBitsNumber = FMC_SDRAM_COLUMN_BITS_NUM_8;
+	hsdram1.Init.RowBitsNumber = FMC_SDRAM_ROW_BITS_NUM_12;
+	hsdram1.Init.MemoryDataWidth = FMC_SDRAM_MEM_BUS_WIDTH_16;
+	hsdram1.Init.InternalBankNumber = FMC_SDRAM_INTERN_BANKS_NUM_4;
+	hsdram1.Init.CASLatency = FMC_SDRAM_CAS_LATENCY_2;
+	hsdram1.Init.WriteProtection = FMC_SDRAM_WRITE_PROTECTION_DISABLE;
+	hsdram1.Init.SDClockPeriod = FMC_SDRAM_CLOCK_PERIOD_2;
+	hsdram1.Init.ReadBurst = FMC_SDRAM_RBURST_ENABLE;
+	hsdram1.Init.ReadPipeDelay = FMC_SDRAM_RPIPE_DELAY_0;
+	/* SdramTiming */
+	SdramTiming.LoadToActiveDelay = 16;
+	SdramTiming.ExitSelfRefreshDelay = 16;
+	SdramTiming.SelfRefreshTime = 16;
+	SdramTiming.RowCycleDelay = 16;
+	SdramTiming.WriteRecoveryTime = 16;
+	SdramTiming.RPDelay = 16;
+	SdramTiming.RCDDelay = 16;
+
+	if (HAL_SDRAM_Init(&hsdram1, &SdramTiming) != HAL_OK)
+	{
+		Error_Handler( );
+	}
+
+	/* USER CODE BEGIN FMC_Init 2 */
+
+	/* USER CODE END FMC_Init 2 */
+}
+
 /**
  * @brief GPIO Initialization Function
  * @param None
@@ -389,10 +554,12 @@ static void MX_GPIO_Init(void)
 
 	/* GPIO Ports Clock Enable */
 	__HAL_RCC_GPIOE_CLK_ENABLE();
+	__HAL_RCC_GPIOG_CLK_ENABLE();
 	__HAL_RCC_GPIOD_CLK_ENABLE();
+	__HAL_RCC_GPIOA_CLK_ENABLE();
+	__HAL_RCC_GPIOF_CLK_ENABLE();
 	__HAL_RCC_GPIOH_CLK_ENABLE();
 	__HAL_RCC_GPIOC_CLK_ENABLE();
-	__HAL_RCC_GPIOG_CLK_ENABLE();
 	__HAL_RCC_GPIOB_CLK_ENABLE();
 
 	/*Configure GPIO pin Output Level */
@@ -410,7 +577,7 @@ static void MX_GPIO_Init(void)
 
 	/*Configure GPIO pin : USER_BUTTON_Pin */
 	GPIO_InitStruct.Pin = USER_BUTTON_Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	HAL_GPIO_Init(USER_BUTTON_GPIO_Port, &GPIO_InitStruct);
 
@@ -446,13 +613,17 @@ static void MX_GPIO_Init(void)
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
+	/* init code for USB_DEVICE */
+	MX_USB_DEVICE_Init();
 
 	/* USER CODE BEGIN 5 */
+
+	xTaskCreate(fpgaTask, "fpgaTask", 512, 0, tskIDLE_PRIORITY, NULL);
+
 	/* Infinite loop */
 	for(;;)
 	{
-		DBGInfo("-WORK");
-		vTaskDelay(100/portTICK_PERIOD_MS);
+		vTaskDelay(5000/portTICK_PERIOD_MS);
 	}
 	/* USER CODE END 5 */
 }
