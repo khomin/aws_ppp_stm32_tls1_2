@@ -80,7 +80,6 @@ int subscribe_publish_sensor_values(void);
 /* Private variables ---------------------------------------------------------*/
 static char ledstate[] = { "Off" };
 static char cPTopicName[MAX_SHADOW_TOPIC_LENGTH_BYTES] = "";
-static char cSTopicName[MAX_SHADOW_TOPIC_LENGTH_BYTES] = "";
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -205,6 +204,8 @@ void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topi
 	}
 }
 
+char static cPayload[AWS_IOT_MQTT_TX_BUF_LEN];
+
 /**
  * @brief main entry function to AWS IoT code
  *
@@ -223,7 +224,6 @@ int subscribe_publish_sensor_values(void)
 	const char *pDeviceName = NULL;
 	int connectCounter;
 	IoT_Error_t rc = FAILURE;
-
 	AWS_IoT_Client client;
 	memset(&client, 0, sizeof(AWS_IoT_Client));
 	IoT_Client_Init_Params mqttInitParams = iotClientInitParamsDefault;
@@ -236,7 +236,6 @@ int subscribe_publish_sensor_values(void)
 	}
 
 	snprintf(cPTopicName, sizeof(cPTopicName), "%s", pTopicName);
-	snprintf(cSTopicName, sizeof(cSTopicName), "%s", pTopicName);
 
 	msg_info("AWS IoT SDK Version %d.%d.%d-%s\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_TAG);
 
@@ -311,18 +310,6 @@ int subscribe_publish_sensor_values(void)
 		return -1;
 	}
 
-//	rc = aws_iot_mqtt_subscribe(&client, cSTopicName, strlen(cSTopicName), QOS0, MQTTcallbackHandler, NULL);
-//
-//	if(AWS_SUCCESS != rc)
-//	{
-//		msg_error("Error subscribing : %d\n", rc);
-//		return -1;
-//	}
-//	else
-//	{
-//		msg_info("Subscribed to topic %s\n", cSTopicName);
-//	}
-
 	IoT_Publish_Message_Params paramsQOS1 = {QOS1, 0, 0, 0, NULL,0};
 
 	printf("Press the User button (Blue) to publish the LED desired value on the %s topic\n", cPTopicName);
@@ -352,22 +339,35 @@ int subscribe_publish_sensor_values(void)
 			msg_info("Reconnected.\n");
 		}
 
+		paramsQOS1.payload = (void *) cPayload;
+
 		//-- send data
 		sFpgaData * p = NULL;
-		while((xQueueReceive(fpgaDataQueue, &p, 50/portTICK_PERIOD_MS) == pdTRUE) && rc == AWS_SUCCESS) {
+		while((xQueuePeek(fpgaDataQueue, &p, 50/portTICK_PERIOD_MS) == pdTRUE) && rc == AWS_SUCCESS) {
 			if(p != NULL) {
 				printf("Sending data to AWS.\n");
+//				paramsQOS1.payload = (void *)p->sdramData->data;
+//				paramsQOS1.payloadLen = p->sdramData->len;
+//				DBGLog("AWS: %s", (char*)p->sdramData->data);
 
-				paramsQOS1.payload = (void *) p->data;
-				paramsQOS1.payloadLen = p->count;
+//				paramsQOS1.payload = "{\"state\":{\"reported\":{\"message\":\"11111\"}}}";
+//				paramsQOS1.payloadLen = strlen("{\"state\":{\"reported\":{\"message\":\"11111\"}}}");
 
-				DBGLog("AWS: %s", p->data);
+				/* create desired message */
+				memset(cPayload, 0, sizeof(cPayload));
+				strcat(cPayload, "{\"state\":{\"reported\":{\"message\":\"11111\"}}}");
+				paramsQOS1.payloadLen = strlen(cPayload) + 1;
+
+				DBGLog("AWS: %s", cPayload);
 
 				do {
 					rc = aws_iot_mqtt_publish(&client, cPTopicName, strlen(cPTopicName), &paramsQOS1);
 					if (rc == AWS_SUCCESS) {
 						printf("\nPublished to topic %s:", cPTopicName);
 						p->statusProcessed = efpgaStatusSent;
+						freeSdramBuff(p->sdramData);
+						free(p);
+						xQueueReceive(fpgaDataQueue, &p, 50/portTICK_PERIOD_MS);
 					}
 					if (rc != AWS_SUCCESS) {
 						p->statusProcessed = efpgaStatusError;
