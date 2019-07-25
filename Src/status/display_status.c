@@ -14,10 +14,11 @@ static const char statusMessages [8][25]  = {
 		{"Init GSM..."},
 		{"Init PPP..."},
 		{"Wait until connect..."},
+		{"Ready send"},
 		{"Connected"},
-		{"Connected and send"},
+		{"Connected and sent"},
 		{"Connect was lost"},
-		{"Connecing -cert er"}
+		{"Connect -cert err"}
 };
 
 void setDisplayStatus(eStatusDisplayTypes status) {

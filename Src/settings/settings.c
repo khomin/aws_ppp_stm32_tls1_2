@@ -10,7 +10,8 @@
 #include <stdio.h>
 #include "debug_print.h"
 
-#define USE_OLD_CONF_CERTIFICATES
+//#define USE_OLD_CONF_CERTIFICATES
+//#define USE_BILLS
 
 //-- root CA
 uint8_t __attribute__((section (".SettingsData"))) CLIENT_ROOT_CA[USER_CONF_TLS_ROOT_CA_CERT] =

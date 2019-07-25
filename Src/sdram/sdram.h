@@ -13,7 +13,7 @@
 #include "debug_print.h"
 
 #define SDRAM_ALLOC_PULL_MAX_LEN				32
-#define SDRAM_RECORD_MAX_LEN					128000
+#define SDRAM_RECORD_MAX_LEN					133120
 
 /* Exported types ------------------------------------------------------------*/
 typedef enum {PASSED = 0, FAILED = !PASSED} TestStatus_t;

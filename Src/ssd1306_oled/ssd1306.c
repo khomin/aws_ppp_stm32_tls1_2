@@ -129,6 +129,11 @@ uint8_t ssd1306_Init(void)
 
 	SSD1306.Initialized = 1;
 
+	ssd1306_Clear();
+	ssd1306_DisplayOff();
+	ssd1306_DisplayOn();
+	ssd1306_UpdateScreen();
+
 	/* Return OK */
 	return 1;
 }

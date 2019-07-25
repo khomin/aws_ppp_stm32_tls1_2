@@ -16,6 +16,7 @@ typedef enum {
 	E_Status_Display_init_GSM,
 	E_Status_Display_init_PPP,
 	E_Status_Display_wait_unitl_connect,
+	E_Status_Display_ready_send,
 	E_Status_Display_connected,
 	E_Status_Display_connected_and_send,
 	E_Status_Display_connect_lost,

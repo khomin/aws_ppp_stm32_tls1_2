@@ -30,8 +30,9 @@ static uint8_t buffTx[COMMANDER_MAX_BUFF_SIZE];
 static uint16_t buxTxLen = 0;
 static bool usbIsActive = false;
 static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len);
+static bool logModePrintUsb = false;
 
-#define COMMANDS_LIST_MAX_LEN				15
+#define COMMANDS_LIST_MAX_LEN				17
 #define COMMANDS_TEXT_MAX_LEN				50
 
 typedef enum {
@@ -43,6 +44,7 @@ typedef enum {
 	e_get_mqtt_url,
 	e_get_device_name,
 	e_get_topic_path,
+	e_get_log_mode,
 	//-- sets
 	e_set_client_cert,
 	e_set_client_private_device_cert,
@@ -51,6 +53,7 @@ typedef enum {
 	e_set_device_name,
 	e_set_topic_path,
 	e_flush_full,
+	e_set_log_mode,
 	//-- other
 	e_reboot
 }eTypeCommands;
@@ -69,6 +72,7 @@ static const sCommandItem c_commands[COMMANDS_LIST_MAX_LEN] = {
 		{{"get -mqtt url"}, e_get_mqtt_url},
 		{{"get -device name"}, e_get_device_name},
 		{{"get -topic path"}, e_get_topic_path},
+		{{"get -log mode"}, e_get_log_mode},
 		//-- sets
 		{{"set -key client cert"}, e_set_client_cert},
 		{{"set -key client private device cert"}, e_set_client_private_device_cert},
@@ -77,6 +81,7 @@ static const sCommandItem c_commands[COMMANDS_LIST_MAX_LEN] = {
 		{{"set -device name"}, e_set_device_name},
 		{{"set -topic path"}, e_set_topic_path},
 		{{"flush full"}, e_flush_full},
+		{{"set -log mode"}, e_set_log_mode},
 		{{"reboot"}, e_reboot}
 };
 
@@ -93,10 +98,6 @@ void commanderInit() {
 	xTaskCreate(commanderTask, "commanderTask", 1024, 0, tskIDLE_PRIORITY, NULL);
 }
 
-void printToUsb(uint8_t * pdata, uint16_t len) {
-	CDC_Transmit_FS(pdata, len);
-}
-
 void commanderTask(void * arg) {
 	for(;;) {
 		if(usbIsActive) {
@@ -108,7 +109,6 @@ void commanderTask(void * arg) {
 				buffRxLen = 0;
 				if(command_res != NULL) {
 					DBGLog("command: result [%s]", command_res);
-
 					xSemaphoreTake(usbLock, 500/portTICK_PERIOD_MS);
 					CDC_Transmit_FS(command_res, strlen((char*)command_res));
 					xSemaphoreGive(usbLock);
@@ -203,6 +203,11 @@ static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
 				sprintf((char*)tempbuf, "device name:\r\n%s\r\n", getTopicPath());
 			} break;
 
+			case e_get_log_mode: {
+				tempbuf = buffTx;
+				sprintf((char*)tempbuf, "log mode:\r\n%d\r\n", logModePrintUsb);
+			} break;
+
 			//--
 			//-- sets
 			//--
@@ -291,6 +296,20 @@ static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
 						? command_options_executed_caption: command_options_execut_error_caption);
 			} break;
 
+			case e_set_log_mode: {
+				tempbuf = buffTx;
+				bool execute_res = false;
+				p = strstr((char*)pdata, (char*)c_commands[index].command);
+				if(prepareDataOneArgument((uint8_t*)c_commands[index].command, (uint8_t*)p, tempbuf, sizeof(int))) {
+					logModePrintUsb = atoi((char*)tempbuf);
+					execute_res = true;
+				}
+				sprintf((char*)tempbuf, "%s:\r\n%s\r\n",
+						c_commands[index].command,
+						execute_res ? command_options_executed_caption: command_options_execut_error_caption
+				);
+			} break;
+
 			case e_reboot:
 				tempbuf = buffTx;
 				NVIC_SystemReset();
@@ -304,6 +323,24 @@ static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
 	}
 
 	return tempbuf;
+}
+
+void printToUsb(char * pdata, uint16_t len) {
+	if(logModePrintUsb) {
+		CDC_Transmit_FS(pdata, len);
+		vTaskDelay(500/portTICK_PERIOD_MS);
+	}
+}
+
+void putFpgaReocordToUsb(sFpgaData * pfpgaData) {
+	static uint8_t printBuf[32] = {0};
+	if(logModePrintUsb) {
+		xSemaphoreTake(usbLock, 500/portTICK_PERIOD_MS);
+		sprintf((char*)printBuf, "\r\nFPGA: new data [len:%lu]\r\n", pfpgaData->sdramData->len);
+		CDC_Transmit_FS(printBuf, strlen((char*)printBuf));
+		vTaskDelay(1000/portTICK_PERIOD_MS);
+		xSemaphoreGive(usbLock);
+	}
 }
 
 bool prepareDataCertificate(uint8_t * commandHeader, uint8_t *p, uint8_t * temp_buf, uint16_t maxLen) {

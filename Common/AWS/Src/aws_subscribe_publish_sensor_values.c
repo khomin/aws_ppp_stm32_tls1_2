@@ -63,6 +63,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "settings/settings.h"
+#include "../Src/fpga_buf/prepareJson.h"
+#include "../Inc/status/display_status.h"
 
 extern xQueueHandle fpgaDataQueue;
 
@@ -211,8 +213,6 @@ void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topi
  * @return AWS_SUCCESS: 0
           FAILURE: -1
  */
-sFpgaData * p = NULL;
-
 int subscribe_publish_sensor_values(void)
 {
 	bool loop_is_normal = false;
@@ -222,9 +222,11 @@ int subscribe_publish_sensor_values(void)
 	const char *pClientPrivateKey = NULL;
 	const char *pTopicName = NULL;
 	const char *pDeviceName = NULL;
+	static uint8_t publishBuf[AWS_IOT_MQTT_TX_BUF_LEN] = {0};
 	int connectCounter;
 	IoT_Error_t rc = FAILURE;
 	AWS_IoT_Client client;
+
 	memset(&client, 0, sizeof(AWS_IoT_Client));
 	IoT_Client_Init_Params mqttInitParams = iotClientInitParamsDefault;
 	IoT_Client_Connect_Params connectParams = iotClientConnectParamsDefault;
@@ -339,24 +341,63 @@ int subscribe_publish_sensor_values(void)
 			msg_info("Reconnected.\n");
 		}
 
+		setDisplayStatus(E_Status_Display_ready_send);
+
 		//-- send data
-		//-- endless looop
-		if(xQueuePeek(fpgaDataQueue, &p, NULL) == pdTRUE) {
+		sFpgaData * p = NULL;
+		if(xQueuePeek(fpgaDataQueue, &p, 0) == pdTRUE) {
 			if(p != NULL) {
 				if(p->sdramData->data != NULL) {
-					/* create desired message */
-					paramsQOS1.payload = p->sdramData->data;
-					paramsQOS1.payloadLen = p->sdramData->len;
-					DBGLog("AWS: %s", paramsQOS1.payload);
+					uint8_t * pSendData = NULL;
+					uint16_t sentCounter = 0;
+					uint16_t offsetCounter = 0;
+					pSendData = (uint8_t*)p->sdramData->data;
+					static uint32_t counterPacket = 0;
+
 					do {
+						if((p->sdramData->len - sentCounter) > 512) {
+							offsetCounter = 512;
+						} else {
+							offsetCounter = (p->sdramData->len - sentCounter);
+						}
+
+						memset(publishBuf, 0, sizeof(publishBuf));
+						insertJsonStartField(publishBuf, counterPacket++);
+
+						uint16_t len = strlen((char*)publishBuf);
+						convertBufRawToText((uint8_t*)pSendData, offsetCounter, publishBuf + len, sizeof(publishBuf)- 10 - len);
+
+						len = strlen((char*)publishBuf);
+						insertJsonEndField(publishBuf + len);
+
+						/* create desired message */
+						paramsQOS1.payload = publishBuf;
+						paramsQOS1.payloadLen = strlen((char*)publishBuf);
+
+						printToUsb(paramsQOS1.payload, paramsQOS1.payloadLen);
+
+						DBGLog("AWS: %s", (char*)paramsQOS1.payload);
+
+						sentCounter += offsetCounter;
+						pSendData += offsetCounter;
+
+						setDisplayStatus(E_Status_Display_connected_and_send);
+
 						rc = aws_iot_mqtt_publish(&client, cPTopicName, strlen(cPTopicName), &paramsQOS1);
 						if (rc == AWS_SUCCESS) {
-							printf("\nPublished to topic %s:", cPTopicName);
-							xQueueReceive(fpgaDataQueue, &p, NULL);
-							freeSdramBuff(p->sdramData);
-							vPortFree(p);
+							DBGLog("Published to topic %s:", cPTopicName);
+							rc = aws_iot_mqtt_yield(&client, 500);
+						} else {
+							break;
 						}
-					} while(MQTT_REQUEST_TIMEOUT_ERROR == rc &&(loop_is_normal));
+					} while((MQTT_REQUEST_TIMEOUT_ERROR == rc &&(loop_is_normal))
+							|| (sentCounter < p->sdramData->len));
+					if(sentCounter == p->sdramData->len) {
+						DBGLog("Published to topic: - final");
+						xQueueReceive(fpgaDataQueue, &p, NULL);
+						freeSdramBuff(p->sdramData);
+						vPortFree(p);
+					}
 				} else {
 					DBGErr("AWS: sdramData == null");
 				}
@@ -367,6 +408,8 @@ int subscribe_publish_sensor_values(void)
 
 	/* Wait for all the messages to be received */
 	aws_iot_mqtt_yield(&client, 10);
+
+	setDisplayStatus(E_Status_Display_connect_lost);
 
 	rc = aws_iot_mqtt_disconnect(&client);
 

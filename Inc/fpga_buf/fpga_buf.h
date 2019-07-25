@@ -15,7 +15,7 @@
 #define FPGA_BUFFER_RECORD_MAX_COUNT		16
 #define FPGA_BUFFER_RECORD_MAX_SIZE			SDRAM_RECORD_MAX_LEN
 #define FPGA_MAGIC_WORD						1973
-#define FPGA_MIN_DATA_SIZE					30
+#define FPGA_MIN_DATA_SIZE					10
 
 typedef enum {
 	efpgaStatusWait,
@@ -31,6 +31,5 @@ typedef struct {
 
 void init_fpga();
 bool putFpgaRecord(sFpgaData  * pfpgaData);
-void putFpgaReocordToUsb(sFpgaData * pfpgaData);
 
 #endif /* FPGA_BUF_FPGA_BUF_H_ */
