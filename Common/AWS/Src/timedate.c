@@ -67,9 +67,10 @@ extern net_hnd_t hnet;
 extern const user_config_t lUserConfigPtr;
 extern RTC_HandleTypeDef hrtc;
 
-/** Size of the HTTP read buffer. 
+/** Size of the HTTP read timeBuffer.
  *  Should be large enough to contain a complete HTTP response header. */
 #define NET_BUF_SIZE  1000
+static char timeBuffer[NET_BUF_SIZE + 1]; /* +1 to be sure that the timeBuffer is closed by a \0, so that it may be parsed by string commands. */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -99,8 +100,7 @@ int setRTCTimeDateFromNetwork(bool force_apply)
   int ret = NET_OK;
   net_sockhnd_t socket = NULL;
   int len = strlen(http_request);
-  char buffer[NET_BUF_SIZE + 1]; /* +1 to be sure that the buffer is closed by a \0, so that it may be parsed by string commands. */
-  memset(buffer, 0, sizeof(buffer));
+  memset(timeBuffer, 0, sizeof(timeBuffer));
  
   ret = net_sock_create(hnet, &socket, TIME_SOURCE_HTTP_PROTO);
   if (ret != NET_OK)
@@ -152,11 +152,11 @@ int setRTCTimeDateFromNetwork(bool force_apply)
       int read = 0;
       do
       {
-        len = net_sock_recv(socket, (uint8_t *) buffer + read, NET_BUF_SIZE - read);
+        len = net_sock_recv(socket, (uint8_t *) timeBuffer + read, NET_BUF_SIZE - read);
         if (len > 0)
         {
           read += len;
-          dateStr = strstr(buffer, "Date: ");
+          dateStr = strstr(timeBuffer, "Date: ");
         }
       } while ( (dateStr == NULL) && ((len >= 0) || (len == NET_TIMEOUT)) && (read < NET_BUF_SIZE));
       
@@ -178,7 +178,7 @@ int setRTCTimeDateFromNetwork(bool force_apply)
         int count = sscanf(dateStr, "%s %s %d %s %d %02d:%02d:%02d ", prefix, dow, &day, month, &year, &hour, &min, &sec);
         if (count < 8)
         {
-          msg_error("At time initialization, only %d out of the 8 time/date data could be parsed from the HTTP response %s\n", count, buffer);
+          msg_error("At time initialization, only %d out of the 8 time/date data could be parsed from the HTTP response %s\n", count, timeBuffer);
           rc = TD_ERR_HTTP;
         }
         else

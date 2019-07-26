@@ -2740,21 +2740,21 @@
  * TCP_DEBUG: Enable debugging for TCP.
  */
 #if !defined TCP_DEBUG || defined __DOXYGEN__
-#define TCP_DEBUG                       LWIP_DBG_ON
+#define TCP_DEBUG                       LWIP_DBG_OFF
 #endif
 
 /**
  * TCP_INPUT_DEBUG: Enable debugging in tcp_in.c for incoming debug.
  */
 #if !defined TCP_INPUT_DEBUG || defined __DOXYGEN__
-#define TCP_INPUT_DEBUG                 LWIP_DBG_ON
+#define TCP_INPUT_DEBUG                 LWIP_DBG_OFF
 #endif
 
 /**
  * TCP_FR_DEBUG: Enable debugging in tcp_in.c for fast retransmit.
  */
 #if !defined TCP_FR_DEBUG || defined __DOXYGEN__
-#define TCP_FR_DEBUG                    LWIP_DBG_ON
+#define TCP_FR_DEBUG                    LWIP_DBG_OFF
 #endif
 
 /**
@@ -2762,56 +2762,56 @@
  * timeout.
  */
 #if !defined TCP_RTO_DEBUG || defined __DOXYGEN__
-#define TCP_RTO_DEBUG                   LWIP_DBG_ON
+#define TCP_RTO_DEBUG                   LWIP_DBG_OFF
 #endif
 
 /**
  * TCP_CWND_DEBUG: Enable debugging for TCP congestion window.
  */
 #if !defined TCP_CWND_DEBUG || defined __DOXYGEN__
-#define TCP_CWND_DEBUG                  LWIP_DBG_ON
+#define TCP_CWND_DEBUG                  LWIP_DBG_OFF
 #endif
 
 /**
  * TCP_WND_DEBUG: Enable debugging in tcp_in.c for window updating.
  */
 #if !defined TCP_WND_DEBUG || defined __DOXYGEN__
-#define TCP_WND_DEBUG                   LWIP_DBG_ON
+#define TCP_WND_DEBUG                   LWIP_DBG_OFF
 #endif
 
 /**
  * TCP_OUTPUT_DEBUG: Enable debugging in tcp_out.c output functions.
  */
 #if !defined TCP_OUTPUT_DEBUG || defined __DOXYGEN__
-#define TCP_OUTPUT_DEBUG                LWIP_DBG_ON
+#define TCP_OUTPUT_DEBUG                LWIP_DBG_OFF
 #endif
 
 /**
  * TCP_RST_DEBUG: Enable debugging for TCP with the RST message.
  */
 #if !defined TCP_RST_DEBUG || defined __DOXYGEN__
-#define TCP_RST_DEBUG                   LWIP_DBG_ON
+#define TCP_RST_DEBUG                   LWIP_DBG_OFF
 #endif
 
 /**
  * TCP_QLEN_DEBUG: Enable debugging for TCP queue lengths.
  */
 #if !defined TCP_QLEN_DEBUG || defined __DOXYGEN__
-#define TCP_QLEN_DEBUG                  LWIP_DBG_ON
+#define TCP_QLEN_DEBUG                  LWIP_DBG_OFF
 #endif
 
 /**
  * UDP_DEBUG: Enable debugging in UDP.
  */
 #if !defined UDP_DEBUG || defined __DOXYGEN__
-#define UDP_DEBUG                       LWIP_DBG_ON
+#define UDP_DEBUG                       LWIP_DBG_OFF
 #endif
 
 /**
  * TCPIP_DEBUG: Enable debugging in tcpip.c.
  */
 #if !defined TCPIP_DEBUG || defined __DOXYGEN__
-#define TCPIP_DEBUG                     LWIP_DBG_ON
+#define TCPIP_DEBUG                     LWIP_DBG_OFF
 #endif
 
 /**

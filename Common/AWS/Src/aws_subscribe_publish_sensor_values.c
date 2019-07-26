@@ -213,6 +213,8 @@ void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topi
  * @return AWS_SUCCESS: 0
           FAILURE: -1
  */
+char testSendBuff[1400] = {0};
+
 int subscribe_publish_sensor_values(void)
 {
 	bool loop_is_normal = false;
@@ -348,48 +350,38 @@ int subscribe_publish_sensor_values(void)
 		if(xQueuePeek(fpgaDataQueue, &p, 0) == pdTRUE) {
 			if(p != NULL) {
 				if(p->sdramData->data != NULL) {
-					uint8_t * pSendData = NULL;
 					uint16_t sentCounter = 0;
 					uint16_t offsetCounter = 0;
-					pSendData = (uint8_t*)p->sdramData->data;
-					static uint32_t counterPacket = 0;
-
 					do {
-						if((p->sdramData->len - sentCounter) > 512) {
-							offsetCounter = 512;
+						if((p->sdramData->len - sentCounter) > 1024) {
+							offsetCounter = 1024;
 						} else {
 							offsetCounter = (p->sdramData->len - sentCounter);
 						}
 
-						memset(publishBuf, 0, sizeof(publishBuf));
-						insertJsonStartField(publishBuf, counterPacket++);
+						paramsQOS1.payload = (char*)p->sdramData->data + sentCounter;
 
-						uint16_t len = strlen((char*)publishBuf);
-						convertBufRawToText((uint8_t*)pSendData, offsetCounter, publishBuf + len, sizeof(publishBuf)- 10 - len);
-
-						len = strlen((char*)publishBuf);
-						insertJsonEndField(publishBuf + len);
-
-						/* create desired message */
-						paramsQOS1.payload = publishBuf;
-						paramsQOS1.payloadLen = strlen((char*)publishBuf);
+						paramsQOS1.payloadLen = offsetCounter;
 
 						printToUsb(paramsQOS1.payload, paramsQOS1.payloadLen);
 
-						DBGLog("AWS: %s", (char*)paramsQOS1.payload);
+						memset(testSendBuff, 0, sizeof(testSendBuff));
+						memcpy(testSendBuff, paramsQOS1.payload, paramsQOS1.payloadLen);
 
-						sentCounter += offsetCounter;
-						pSendData += offsetCounter;
+						DBGLog("AWS: %s", (char*)testSendBuff);
 
 						setDisplayStatus(E_Status_Display_connected_and_send);
 
 						rc = aws_iot_mqtt_publish(&client, cPTopicName, strlen(cPTopicName), &paramsQOS1);
+
+						sentCounter += offsetCounter;
+
 						if (rc == AWS_SUCCESS) {
-							DBGLog("Published to topic %s:", cPTopicName);
-							rc = aws_iot_mqtt_yield(&client, 500);
+							DBGLog("Published to topic:");
 						} else {
 							break;
 						}
+						vTaskDelay(1500/portTICK_PERIOD_MS);
 					} while((MQTT_REQUEST_TIMEOUT_ERROR == rc &&(loop_is_normal))
 							|| (sentCounter < p->sdramData->len));
 					if(sentCounter == p->sdramData->len) {

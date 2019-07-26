@@ -178,7 +178,8 @@ void gsmPPP_rawOutput(void *pvParamter) {
 					do {
 						result = HAL_UART_Transmit_IT(&huart3, p->data, p->len);
 					} while(result != HAL_OK);
-					DBGInfo("PPP: out_raw %s", (char*)p->data);
+					vTaskDelay(1/portTICK_PERIOD_MS);
+//					DBGInfo("PPP: out_raw %s", (char*)p->data);
 					free(p);
 				}
 			}

@@ -66,6 +66,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define FPGA_CS_LINE_Pin GPIO_PIN_4
 #define FPGA_CS_LINE_GPIO_Port GPIOE
+#define FPGA_REST_Pin GPIO_PIN_2
+#define FPGA_REST_GPIO_Port GPIOI
 #define USER_BUTTON_Pin GPIO_PIN_7
 #define USER_BUTTON_GPIO_Port GPIOC
 #define USER_BUTTON_EXTI_IRQn EXTI9_5_IRQn

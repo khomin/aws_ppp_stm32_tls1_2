@@ -117,7 +117,7 @@
  * PPP_DEBUG: Enable debugging for PPP.
  */
 #ifndef PPP_DEBUG
-#define PPP_DEBUG                       LWIP_DBG_ON
+#define PPP_DEBUG                       LWIP_DBG_OFF
 #endif
 
 /**
