@@ -18,6 +18,7 @@
 #include "main.h"
 #include "prepareJson.h"
 #include "commander/commander.h"
+#include "status/display_status.h"
 
 //#define TEST_FPGA				1
 
@@ -59,14 +60,14 @@ void fpgaTask(void *argument) {
 #if	TEST_FPGA
 		//		testFillData();
 		//		printfTestFillData();
-#else
-		//		initiateNewFpgaData();
 #endif
 		if(isActiveUart) {
 			vTaskDelay(100/portTICK_RATE_MS);
 			isActiveUart = false;
 			vTaskDelay(100/portTICK_RATE_MS);
 			DBGLog("fpgaData: rxData: %lu", fpgaData.sdramData->len);
+			sprintf(caption_temp_buff, caption_display_fpga_rx_data, fpgaData.sdramData->len);
+			setDisplayStatus(caption_temp_buff);
 		} else {
 			if(fpgaData.sdramData != NULL) {
 				if(fpgaData.sdramData->len > FPGA_MIN_DATA_SIZE) {
@@ -81,6 +82,7 @@ void fpgaTask(void *argument) {
 					}
 				}
 			}
+			initiateNewFpgaData();
 		}
 
 		vTaskDelay(1000/portTICK_RATE_MS);

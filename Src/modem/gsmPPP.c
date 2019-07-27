@@ -44,6 +44,8 @@ extern net_hnd_t hnet;
 //-- security structure
 sConnectionPppStruct connectionPppStruct = {0};
 
+static SemaphoreHandle_t txUartCompletePppSemaphore;
+
 //-- current state
 ePppState pppState = ppp_not_inited;
 
@@ -74,6 +76,9 @@ bool gsmPPP_Init(void) {
 	connectionPppStruct.semphr = xSemaphoreCreateBinary();
 	connectionPppStruct.rxData.rxSemh = xSemaphoreCreateBinary();
 
+
+	txUartCompletePppSemaphore = xSemaphoreCreateBinary();
+
 	return true;
 }
 
@@ -103,6 +108,8 @@ void gsmPPP_Tsk(void *pvParamter) {
 			if((pppState != ppp_wait_for_connect) && (pppState != ppp_ready_work)) {
 				pppState = ppp_wait_for_connect;
 
+				setDisplayStatus((char*)caption_display_connecting_ppp);
+
 				if(ppp_connect(ppp, 0) == ERR_OK) {
 					DBGInfo("PPP inited - OK");
 				} else {
@@ -119,7 +126,8 @@ void gsmPPP_Tsk(void *pvParamter) {
 		if(pppState == ppp_ready_work) {
 			DBGLog("AWS PPP: module initialized.\r\n");
 
-			setDisplayStatus(E_Status_Display_wait_unitl_connect);
+			sprintf(caption_temp_buff, caption_display_connecting_mqtt, getMqttDestEndpoint());
+			setDisplayStatus(caption_temp_buff);
 
 			if((getKeyCLIENT_CERTIFICATE_PEM_IsExist())
 					&& (getKeyCLIENT_PRIVATE_KEY_PEM_IsExist())
@@ -129,11 +137,10 @@ void gsmPPP_Tsk(void *pvParamter) {
 					subscribe_publish_sensor_values();
 				}
 				platform_deinit();
-
-				setDisplayStatus(E_Status_Display_connect_lost);
+				setDisplayStatus((char*)caption_display_mqtt_send_error);
 			} else {
 				vTaskDelay(3000/portTICK_RATE_MS);
-				setDisplayStatus(E_Status_Display_cert_empty);
+				setDisplayStatus((char*)caption_display_mqtt_certs_error);
 			}
 		}
 
@@ -166,6 +173,14 @@ void gsmPPP_rawInput(void *pvParamter) {
 	}
 }
 
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
+	if(huart == &huart3) {
+		if(uartParcerStruct.ppp.pppModeEnable) {
+			xSemaphoreGive(txUartCompletePppSemaphore);
+		}
+	}
+}
+
 void gsmPPP_rawOutput(void *pvParamter) {
 	sTransmitQueue * p = NULL;
 	vTaskDelay(1000/portTICK_RATE_MS);
@@ -173,15 +188,10 @@ void gsmPPP_rawOutput(void *pvParamter) {
 		if(uartParcerStruct.ppp.pppModeEnable) {
 			//--- transmit
 			while(xQueueReceive(gsmPppUartTranmitQueue, &p, portMAX_DELAY) == pdTRUE) {
-				if(p != NULL) {
-					HAL_StatusTypeDef result;
-					do {
-						result = HAL_UART_Transmit_IT(&huart3, p->data, p->len);
-					} while(result != HAL_OK);
-					vTaskDelay(1/portTICK_PERIOD_MS);
-//					DBGInfo("PPP: out_raw %s", (char*)p->data);
-					free(p);
-				}
+				HAL_UART_Transmit_IT(&huart3, p->data, p->len);
+				while(pdTRUE != xSemaphoreTake(txUartCompletePppSemaphore, portMAX_DELAY));
+				memset(p->data, 0, p->len);
+				free(p);
 			}
 		} else {
 			vTaskDelay(10/portTICK_RATE_MS);

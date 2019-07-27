@@ -119,7 +119,7 @@ uint8_t ssd1306_Init(void)
 	// Set default values for screen object
 	SSD1306.CurrentX = 0;
 	SSD1306.CurrentY = 0;
-	SSD1306.Color = Black;
+	SSD1306.Color = White;
 
 	// Clear screen
 	ssd1306_Clear();
@@ -127,15 +127,17 @@ uint8_t ssd1306_Init(void)
 	// Flush buffer to screen
 	ssd1306_UpdateScreen();
 
-	SSD1306.Initialized = 1;
-
 	ssd1306_Clear();
+
+	ssd1306_InvertDisplay();
 	ssd1306_DisplayOff();
 	ssd1306_DisplayOn();
 	ssd1306_UpdateScreen();
 
+	SSD1306.Inverted = true;
+	SSD1306.Initialized = 1;
 	/* Return OK */
-	return 1;
+	return SSD1306.Initialized;
 }
 
 //

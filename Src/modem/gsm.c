@@ -48,7 +48,7 @@ void vGsmTask( void * pvParameters ) {
 
 	while((gsmState.initLLR != true) && (gsmState.initLLR2 != true)) {};
 
-	setDisplayStatus(E_Status_Display_init_GSM);
+	setDisplayStatus((char*)caption_display_init_gsm);
 
 	while(1) {
 		//--
@@ -127,7 +127,7 @@ void vGsmTask( void * pvParameters ) {
 				//-- start ppp
 				DBGInfo("GSM: init PPP...");
 
-				setDisplayStatus(E_Status_Display_init_PPP);
+				setDisplayStatus((char*)caption_display_init_ppp);
 
 				if(gsmLLR_StartPPP(&gsmSettings) == eOk) {
 					DBGInfo("GSM: init PPP -ready");

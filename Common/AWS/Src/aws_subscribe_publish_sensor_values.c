@@ -65,6 +65,7 @@
 #include "settings/settings.h"
 #include "../Src/fpga_buf/prepareJson.h"
 #include "../Inc/status/display_status.h"
+#include "commander/commander.h"
 
 extern xQueueHandle fpgaDataQueue;
 
@@ -74,19 +75,7 @@ int subscribe_publish_sensor_values(void);
 /* Private defines ------------------------------------------------------------*/
 #define MQTT_CONNECT_MAX_ATTEMPT_COUNT 1
 #define TIMER_COUNT_FOR_SENSOR_PUBLISH 10
-
-#define aws_json_pre        "{\"state\":{\"reported\":"
-#define aws_json_desired    "{\"state\":{\"desired\":"
-#define aws_json_post       "}}"
-
-/* Private variables ---------------------------------------------------------*/
-static char ledstate[] = { "Off" };
 static char cPTopicName[MAX_SHADOW_TOPIC_LENGTH_BYTES] = "";
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-
-/* Functions Definition ------------------------------------------------------*/
 
 /* Exported functions --------------------------------------------------------*/
 int cloud_device_enter_credentials(void)
@@ -178,32 +167,32 @@ void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topi
 	msg_info("%.*s\n", (int)params->payloadLen, (char *)params->payload);
 
 	/* If a new desired LED state is received, change the LED state. */
-	if (strstr((char *) params->payload, "\"desired\":{\"LED_value\":\"On\"}") != NULL)
-	{
-		strcpy(ledstate, "On");
-		msg_info("LED On!\n");
-		msg = msg_on;
-	}
-	else if (strstr((char *) params->payload, "\"desired\":{\"LED_value\":\"Off\"}") != NULL)
-	{
-		strcpy(ledstate, "Off");
-		msg_info("LED Off!\n");
-		msg = msg_off;
-	}
-
-	/* Report the new LED state to the MQTT broker. */
-	if (msg != NULL)
-	{
-		paramsQOS1.payload = (void *) msg;
-		paramsQOS1.payloadLen = strlen(msg) + 1;
-		IoT_Error_t rc = aws_iot_mqtt_publish(pClient, cPTopicName, strlen(cPTopicName), &paramsQOS1);
-
-		if (rc == AWS_SUCCESS)
-		{
-			msg_info("\nPublished the new LED status to topic %s:", cPTopicName);
-			msg_info("%s\n", msg);
-		}
-	}
+//	if (strstr((char *) params->payload, "\"desired\":{\"LED_value\":\"On\"}") != NULL)
+//	{
+//		strcpy(ledstate, "On");
+//		msg_info("LED On!\n");
+//		msg = msg_on;
+//	}
+//	else if (strstr((char *) params->payload, "\"desired\":{\"LED_value\":\"Off\"}") != NULL)
+//	{
+//		strcpy(ledstate, "Off");
+//		msg_info("LED Off!\n");
+//		msg = msg_off;
+//	}
+//
+//	/* Report the new LED state to the MQTT broker. */
+//	if (msg != NULL)
+//	{
+//		paramsQOS1.payload = (void *) msg;
+//		paramsQOS1.payloadLen = strlen(msg) + 1;
+//		IoT_Error_t rc = aws_iot_mqtt_publish(pClient, cPTopicName, strlen(cPTopicName), &paramsQOS1);
+//
+//		if (rc == AWS_SUCCESS)
+//		{
+//			msg_info("\nPublished the new LED status to topic %s:", cPTopicName);
+//			msg_info("%s\n", msg);
+//		}
+//	}
 }
 
 /**
@@ -213,10 +202,7 @@ void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topi
  * @return AWS_SUCCESS: 0
           FAILURE: -1
  */
-char testSendBuff[1400] = {0};
-
-int subscribe_publish_sensor_values(void)
-{
+int subscribe_publish_sensor_values(void) {
 	bool loop_is_normal = false;
 	const char *pServerAddress = NULL;
 	const char *pCaCert = NULL;
@@ -224,7 +210,6 @@ int subscribe_publish_sensor_values(void)
 	const char *pClientPrivateKey = NULL;
 	const char *pTopicName = NULL;
 	const char *pDeviceName = NULL;
-	static uint8_t publishBuf[AWS_IOT_MQTT_TX_BUF_LEN] = {0};
 	int connectCounter;
 	IoT_Error_t rc = FAILURE;
 	AWS_IoT_Client client;
@@ -343,18 +328,18 @@ int subscribe_publish_sensor_values(void)
 			msg_info("Reconnected.\n");
 		}
 
-		setDisplayStatus(E_Status_Display_ready_send);
+		setDisplayStatus((char*)caption_display_mqtt_ready_publish);
 
 		//-- send data
 		sFpgaData * p = NULL;
-		if(xQueuePeek(fpgaDataQueue, &p, 0) == pdTRUE) {
+		if(xQueuePeek(fpgaDataQueue, &p, 1500) == pdTRUE) {
 			if(p != NULL) {
 				if(p->sdramData->data != NULL) {
-					uint16_t sentCounter = 0;
-					uint16_t offsetCounter = 0;
+					uint32_t sentCounter = 0;
+					uint32_t offsetCounter = 0;
 					do {
-						if((p->sdramData->len - sentCounter) > 1024) {
-							offsetCounter = 1024;
+						if((p->sdramData->len - sentCounter) > 10240) {
+							offsetCounter = 10240;
 						} else {
 							offsetCounter = (p->sdramData->len - sentCounter);
 						}
@@ -363,25 +348,22 @@ int subscribe_publish_sensor_values(void)
 
 						paramsQOS1.payloadLen = offsetCounter;
 
-						printToUsb(paramsQOS1.payload, paramsQOS1.payloadLen);
-
-						memset(testSendBuff, 0, sizeof(testSendBuff));
-						memcpy(testSendBuff, paramsQOS1.payload, paramsQOS1.payloadLen);
-
-						DBGLog("AWS: %s", (char*)testSendBuff);
-
-						setDisplayStatus(E_Status_Display_connected_and_send);
-
 						rc = aws_iot_mqtt_publish(&client, cPTopicName, strlen(cPTopicName), &paramsQOS1);
 
 						sentCounter += offsetCounter;
 
+						DBGLog("MTTT: sent: %lu, total size: %lu", sentCounter, p->sdramData->len);
+
+						sprintf(caption_temp_buff, caption_display_mqtt_send_data, sentCounter, p->sdramData->len);
+
+						printToUsb(caption_temp_buff, strlen(caption_temp_buff));
+						setDisplayStatus(caption_temp_buff);
+
 						if (rc == AWS_SUCCESS) {
-							DBGLog("Published to topic:");
+							DBGLog("Published");
 						} else {
 							break;
 						}
-						vTaskDelay(1500/portTICK_PERIOD_MS);
 					} while((MQTT_REQUEST_TIMEOUT_ERROR == rc &&(loop_is_normal))
 							|| (sentCounter < p->sdramData->len));
 					if(sentCounter == p->sdramData->len) {
@@ -400,8 +382,6 @@ int subscribe_publish_sensor_values(void)
 
 	/* Wait for all the messages to be received */
 	aws_iot_mqtt_yield(&client, 10);
-
-	setDisplayStatus(E_Status_Display_connect_lost);
 
 	rc = aws_iot_mqtt_disconnect(&client);
 

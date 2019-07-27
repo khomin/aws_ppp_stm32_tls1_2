@@ -11,18 +11,20 @@
 #include <stdint.h>
 #include <string.h>
 
-typedef enum {
-	E_Status_Display_init,
-	E_Status_Display_init_GSM,
-	E_Status_Display_init_PPP,
-	E_Status_Display_wait_unitl_connect,
-	E_Status_Display_ready_send,
-	E_Status_Display_connected,
-	E_Status_Display_connected_and_send,
-	E_Status_Display_connect_lost,
-	E_Status_Display_cert_empty,
-}eStatusDisplayTypes;
+extern const char caption_display_init_system[];
+extern const char caption_display_init_gsm[];
+extern const char caption_display_init_ppp[];
+extern const char caption_display_connecting_ppp[];
+extern const char caption_display_connecting_mqtt[];
+extern const char caption_display_mqtt_ready_publish[];
+extern const char caption_display_fpga_rx_data[];
+extern const char caption_display_fpga_rx_complete[];
+extern const char caption_display_mqtt_send_data[];
+extern const char caption_display_mqtt_send_total[];
+extern const char caption_display_mqtt_send_error[];
+extern const char caption_display_mqtt_certs_error[];
+extern char caption_temp_buff[128];
 
-void setDisplayStatus(eStatusDisplayTypes status);
+void setDisplayStatus(char* pCaption);
 
 #endif /* STATUS_DISPLAY_STATUS_H_ */
