@@ -124,13 +124,13 @@ void initiateNewFpgaData() {
 
 static uint8_t printTestBuf[2150] = {0};
 void printfTestFillData() {
-//	uint32_t offset = 0;
-//	for(uint8_t index=0; index<10; index++) {
-//		memset(printTestBuf, 0, sizeof(printTestBuf));
-//		convertBufRawToText((uint8_t*)fpgaData.sdramData->data + offset, 1000, printTestBuf, sizeof(printTestBuf));
-//		offset += 1000;
-//		DBGLog("printfTestFillData: %s", printTestBuf);
-//	}
+	//	uint32_t offset = 0;
+	//	for(uint8_t index=0; index<10; index++) {
+	//		memset(printTestBuf, 0, sizeof(printTestBuf));
+	//		convertBufRawToText((uint8_t*)fpgaData.sdramData->data + offset, 1000, printTestBuf, sizeof(printTestBuf));
+	//		offset += 1000;
+	//		DBGLog("printfTestFillData: %s", printTestBuf);
+	//	}
 }
 
 #include "aws_iot_config.h"

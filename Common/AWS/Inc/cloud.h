@@ -54,14 +54,7 @@ extern "C" {
 /** Provided interface */  
 int platform_init(void);
 void platform_deinit(void);
-bool dialog_ask(char *s);
 
-/** Required interface */
-extern bool app_needs_device_keypair(void);
-extern int cloud_device_enter_credentials(void);  
-
-// TODO: move out!
-int bluemix_test(void);
 int subscribe_publish_sensor_values(void);
 
 #ifdef __cplusplus

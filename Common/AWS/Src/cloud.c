@@ -88,26 +88,6 @@ extern user_config_t lUserConfigPtr;
 void CLOUD_Error_Handler(int errorCode);
 
 /* Exported functions --------------------------------------------------------*/
-/**
- * @brief  Ask yes/no question.
- * @param  None
- * @retval None
- */
-bool dialog_ask(char *s)
-{
-//	char console_yn;
-//	do
-//	{
-//		DBGLog("%s",s);
-//		console_yn= getchar();
-//		DBGLog("\b");
-//	}
-//	while((console_yn != 'y') && (console_yn != 'n') && (console_yn != '\n'));
-//	if (console_yn == 'y') return true;
-//	return false;
-	return true;
-}
-
 
 /**
  * @brief  This function is executed in case of error occurrence.
@@ -251,10 +231,6 @@ int platform_init(void)
 
 	/* Security and cloud parameters definition */
 	/* Define, or allow to update if the user button is pushed. */
-
-//	skip_reconf = (checkTLSRootCA() == 0)
-//    				&& ( (checkTLSDeviceConfig() == 0) || !app_needs_device_keypair() )
-//					&& (checkIoTDeviceConfig() == 0);
 
 	msg_info("Setting the RTC from the network time.\n");
 #ifdef CLOUD_TIMEDATE_TLS_VERIFICATION_IGNORE

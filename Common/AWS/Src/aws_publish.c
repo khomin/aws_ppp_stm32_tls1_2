@@ -69,131 +69,12 @@
 
 extern xQueueHandle fpgaDataQueue;
 
-void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topicNameLen, IoT_Publish_Message_Params *params, void *pData);
-int subscribe_publish_sensor_values(void);
+static void disconnectCallbackHandler(AWS_IoT_Client *pClient, void *data);
 
 /* Private defines ------------------------------------------------------------*/
 #define MQTT_CONNECT_MAX_ATTEMPT_COUNT 1
 #define TIMER_COUNT_FOR_SENSOR_PUBLISH 10
 static char cPTopicName[MAX_SHADOW_TOPIC_LENGTH_BYTES] = "";
-
-/* Exported functions --------------------------------------------------------*/
-int cloud_device_enter_credentials(void)
-{
-	int ret = 0;
-	iot_config_t iot_config;
-
-	memset(&iot_config, 0, sizeof(iot_config_t));
-
-	printf("\nEnter server address: (example: xxx.iot.region.amazonaws.com) \n");
-
-	iot_config.server_name = (char*)getMqttDestEndpoint();
-
-	msg_info("read: --->\n%s\n<---\n", iot_config.server_name);
-
-	printf("\nEnter device name: (example: mything1) \n");
-
-	iot_config.device_name = (char*)getTopicPath();
-
-	msg_info("read: --->\n%s\n<---\n", iot_config.device_name);
-
-	iot_config.magic = 1234;
-
-	return ret;
-}
-
-bool app_needs_device_keypair()
-{
-	return true;
-}
-
-
-/**
- * @brief MQTT disconnect callback hander
- *
- * @param pClient: pointer to the AWS client structure
- * @param data:
- * @return no return
- */
-static void disconnectCallbackHandler(AWS_IoT_Client *pClient, void *data)
-{
-	msg_warning("MQTT Disconnect\n");
-	IoT_Error_t rc = FAILURE;
-
-	if(NULL == data)
-	{
-		return;
-	}
-
-	AWS_IoT_Client *client = (AWS_IoT_Client *)data;
-
-	if(aws_iot_is_autoreconnect_enabled(client))
-	{
-		msg_info("Auto Reconnect is enabled, Reconnecting attempt will start now\n");
-	}
-	else
-	{
-		msg_warning("Auto Reconnect not enabled. Starting manual reconnect...\n");
-		rc = aws_iot_mqtt_attempt_reconnect(client);
-
-		if(NETWORK_RECONNECTED == rc)
-		{
-			msg_warning("Manual Reconnect Successful\n");
-		}
-		else
-		{
-			msg_warning("Manual Reconnect Failed - %d\n", rc);
-		}
-	}
-}
-
-/* Exported functions --------------------------------------------------------*/
-
-/**
- * @brief MQTT subscriber callback hander
- *
- * called when data is received from AWS IoT Thing (message broker)
- * @param MQTTCallbackParams type parameter
- * @return no return
- */
-void MQTTcallbackHandler(AWS_IoT_Client *pClient, char *topicName, uint16_t topicNameLen, IoT_Publish_Message_Params *params, void *pData)
-{
-	const char msg_on[]  = "{\"state\":{\"reported\":{\"LED_value\":\"On\"}}}";
-	const char msg_off[] = "{\"state\":{\"reported\":{\"LED_value\":\"Off\"}}}";
-	const char *msg = NULL;
-	IoT_Publish_Message_Params paramsQOS1 = {QOS1, 0, 0, 0, NULL,0};
-
-	msg_info("\nMQTT subscribe callback......\n");
-	msg_info("%.*s\n", (int)params->payloadLen, (char *)params->payload);
-
-	/* If a new desired LED state is received, change the LED state. */
-//	if (strstr((char *) params->payload, "\"desired\":{\"LED_value\":\"On\"}") != NULL)
-//	{
-//		strcpy(ledstate, "On");
-//		msg_info("LED On!\n");
-//		msg = msg_on;
-//	}
-//	else if (strstr((char *) params->payload, "\"desired\":{\"LED_value\":\"Off\"}") != NULL)
-//	{
-//		strcpy(ledstate, "Off");
-//		msg_info("LED Off!\n");
-//		msg = msg_off;
-//	}
-//
-//	/* Report the new LED state to the MQTT broker. */
-//	if (msg != NULL)
-//	{
-//		paramsQOS1.payload = (void *) msg;
-//		paramsQOS1.payloadLen = strlen(msg) + 1;
-//		IoT_Error_t rc = aws_iot_mqtt_publish(pClient, cPTopicName, strlen(cPTopicName), &paramsQOS1);
-//
-//		if (rc == AWS_SUCCESS)
-//		{
-//			msg_info("\nPublished the new LED status to topic %s:", cPTopicName);
-//			msg_info("%s\n", msg);
-//		}
-//	}
-}
 
 /**
  * @brief main entry function to AWS IoT code
@@ -388,6 +269,33 @@ int subscribe_publish_sensor_values(void) {
 	return rc;
 }
 
+/**
+ * @brief MQTT disconnect callback hander
+ *
+ * @param pClient: pointer to the AWS client structure
+ * @param data:
+ * @return no return
+ */
+static void disconnectCallbackHandler(AWS_IoT_Client *pClient, void *data) {
+	msg_warning("MQTT Disconnect\n");
+	IoT_Error_t rc = FAILURE;
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+	if(NULL == data) {
+		return;
+	}
 
+	AWS_IoT_Client *client = (AWS_IoT_Client *)data;
+
+	if(aws_iot_is_autoreconnect_enabled(client)) {
+		msg_info("Auto Reconnect is enabled, Reconnecting attempt will start now\n");
+	} else {
+		msg_warning("Auto Reconnect not enabled. Starting manual reconnect...\n");
+		rc = aws_iot_mqtt_attempt_reconnect(client);
+
+		if(NETWORK_RECONNECTED == rc) {
+			msg_warning("Manual Reconnect Successful\n");
+		} else {
+			msg_warning("Manual Reconnect Failed - %d\n", rc);
+		}
+	}
+}
