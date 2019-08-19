@@ -32,37 +32,6 @@ static bool usbIsActive = false;
 static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len);
 static bool logModePrintUsb = false;
 
-#define COMMANDS_LIST_MAX_LEN				17
-#define COMMANDS_TEXT_MAX_LEN				50
-
-typedef enum {
-	//-- gets
-	e_get_keys,
-	e_get_client_cert,
-	e_get_client_private_device_cert,
-	e_get_client_private_key,
-	e_get_mqtt_url,
-	e_get_device_name,
-	e_get_topic_path,
-	e_get_log_mode,
-	//-- sets
-	e_set_client_cert,
-	e_set_client_private_device_cert,
-	e_set_client_private_key,
-	e_set_mqtt_url,
-	e_set_device_name,
-	e_set_topic_path,
-	e_flush_full,
-	e_set_log_mode,
-	//-- other
-	e_reboot
-}eTypeCommands;
-
-typedef struct {
-	uint8_t command[COMMANDS_TEXT_MAX_LEN];
-	eTypeCommands type;
-}sCommandItem;
-
 static const sCommandItem c_commands[COMMANDS_LIST_MAX_LEN] = {
 		//-- gets
 		{{"get -keys"}, e_get_keys},
@@ -73,6 +42,7 @@ static const sCommandItem c_commands[COMMANDS_LIST_MAX_LEN] = {
 		{{"get -device name"}, e_get_device_name},
 		{{"get -topic path"}, e_get_topic_path},
 		{{"get -log mode"}, e_get_log_mode},
+		{{"get -firmware fpga"}, e_get_firmware_fpga},
 		//-- sets
 		{{"set -key client cert"}, e_set_client_cert},
 		{{"set -key client private device cert"}, e_set_client_private_device_cert},
@@ -82,7 +52,8 @@ static const sCommandItem c_commands[COMMANDS_LIST_MAX_LEN] = {
 		{{"set -topic path"}, e_set_topic_path},
 		{{"flush full"}, e_flush_full},
 		{{"set -log mode"}, e_set_log_mode},
-		{{"reboot"}, e_reboot}
+		{{"reboot"}, e_reboot},
+		{{"set -firmware fpga"}, e_set_firmware_fpga},
 };
 
 static const uint8_t command_not_found_caption[] = "command not found\r\n";
@@ -208,6 +179,11 @@ static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
 				sprintf((char*)tempbuf, "log mode:\r\n%d\r\n", logModePrintUsb);
 			} break;
 
+			case e_get_firmware_fpga: { // TODO: get firmware fpga?
+				tempbuf = buffTx;
+				sprintf((char*)tempbuf, "get firmware fpga:\r\nNA\r\n");
+			} break;
+
 			//--
 			//-- sets
 			//--
@@ -308,6 +284,10 @@ static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
 						c_commands[index].command,
 						execute_res ? command_options_executed_caption: command_options_execut_error_caption
 				);
+			} break;
+
+			case e_set_firmware_fpga: {
+
 			} break;
 
 			case e_reboot:
