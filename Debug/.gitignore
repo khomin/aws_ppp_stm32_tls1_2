@@ -9,3 +9,7 @@
 /lib/
 /AWS/
 /Common/
+/stm32f429_amazon.elf
+/stm32f429_amazon.hex
+/stm32f429_amazon.list
+/stm32f429_amazon.map
