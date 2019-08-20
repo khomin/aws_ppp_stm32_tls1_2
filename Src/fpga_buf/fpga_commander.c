@@ -77,7 +77,7 @@ void fpgaTask(void *argument) {
 						putFpgaReocordToUsb(&fpgaData);
 						memset((void*)&fpgaData, 0, sizeof(fpgaData));
 					} else {
-						printToUsb((char*)caption_out_of_memory, strlen((char*)caption_out_of_memory));
+						printToUsbLite((char*)caption_out_of_memory, strlen((char*)caption_out_of_memory));
 						DBGLog("FPGA: putFpgaRecord error");
 					}
 				}

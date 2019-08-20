@@ -236,9 +236,16 @@ int subscribe_publish_sensor_values(void) {
 						DBGLog("MTTT: sent: %lu, total size: %lu", sentCounter, p->sdramData->len);
 
 						sprintf(caption_temp_buff, caption_display_mqtt_send_data, sentCounter, p->sdramData->len);
-
-						printToUsb(caption_temp_buff, strlen(caption_temp_buff));
 						setDisplayStatus(caption_temp_buff);
+
+						if(!getLogUsbModeIsOff()) {
+							if(getLogUsbModeIsShort()) {
+								printToUsbLite(caption_temp_buff, strlen(caption_temp_buff));
+							}
+							if(getLogUsbModeIsDetail()) {
+								printToUsbDetail(paramsQOS1.payload, paramsQOS1.payloadLen);
+							}
+						}
 
 						if (rc == AWS_SUCCESS) {
 							DBGLog("Published");

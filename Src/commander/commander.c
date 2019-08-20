@@ -30,7 +30,7 @@ static uint8_t buffTx[COMMANDER_MAX_BUFF_SIZE];
 static uint16_t buxTxLen = 0;
 static bool usbIsActive = false;
 static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len);
-static bool logModePrintUsb = false;
+static uint8_t logModePrintUsb = false;
 
 #define COMMANDS_LIST_MAX_LEN				17
 #define COMMANDS_TEXT_MAX_LEN				50
@@ -88,6 +88,8 @@ static const sCommandItem c_commands[COMMANDS_LIST_MAX_LEN] = {
 static const uint8_t command_not_found_caption[] = "command not found\r\n";
 static const uint8_t command_options_executed_caption[] = "executed\r\n";
 static const uint8_t command_options_execut_error_caption[] = "execut error or bad argument\r\n";
+
+static uint8_t usbPrintBuf[1024 + 10] = {0};
 
 static uint16_t findLenOffset(uint8_t * pdata, uint8_t firstChar);
 static bool prepareDataCertificate(uint8_t * commandHeader, uint8_t *p, uint8_t * temp_buf, uint16_t maxLen);
@@ -325,22 +327,62 @@ static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
 	return tempbuf;
 }
 
-void printToUsb(char * pdata, uint16_t len) {
-	if(logModePrintUsb) {
-		CDC_Transmit_FS(pdata, len);
+
+bool getLogUsbModeIsOff() {
+	return logModePrintUsb == 0;
+}
+
+bool getLogUsbModeIsShort() {
+	return logModePrintUsb == 1;
+}
+
+bool getLogUsbModeIsDetail() {
+	return logModePrintUsb == 2;
+}
+
+void printToUsbLite(char * pdata, uint16_t len) {
+	CDC_Transmit_FS((uint8_t*)pdata, len);
+	vTaskDelay(500/portTICK_PERIOD_MS);
+}
+
+void printToUsbDetail(char * pdata, uint16_t len) {
+	memset(usbPrintBuf, 0, sizeof(usbPrintBuf));
+	sprintf((char*)usbPrintBuf, "\r\nPRINT FPGA: data [len:%lu]\r\n", len);
+	CDC_Transmit_FS((uint8_t*)usbPrintBuf, strlen(usbPrintBuf));
+	vTaskDelay(500/portTICK_PERIOD_MS);
+
+	uint32_t sentCounter = 0;
+	uint32_t offsetCounter = 0;
+	do {
+		if((len - sentCounter) > 1024) {
+			offsetCounter = 1024;
+		} else {
+			offsetCounter = (len - sentCounter);
+		}
+
+		CDC_Transmit_FS((uint8_t*)pdata + sentCounter, offsetCounter);
 		vTaskDelay(500/portTICK_PERIOD_MS);
-	}
+
+		sentCounter += offsetCounter;
+	} while(sentCounter < len);
+
+	memset(usbPrintBuf, 0, sizeof(usbPrintBuf));
+	sprintf((char*)usbPrintBuf, "\r\nPRINT FPGA: end\r\n");
+	CDC_Transmit_FS(usbPrintBuf, strlen(usbPrintBuf));
+	vTaskDelay(500/portTICK_PERIOD_MS);
 }
 
 void putFpgaReocordToUsb(sFpgaData * pfpgaData) {
-	static uint8_t printBuf[32] = {0};
-	if(logModePrintUsb) {
-		xSemaphoreTake(usbLock, 500/portTICK_PERIOD_MS);
-		sprintf((char*)printBuf, "\r\nFPGA: new data [len:%lu]\r\n", pfpgaData->sdramData->len);
-		CDC_Transmit_FS(printBuf, strlen((char*)printBuf));
-		vTaskDelay(1000/portTICK_PERIOD_MS);
-		xSemaphoreGive(usbLock);
+	if(!getLogUsbModeIsOff()) {
+		if(getLogUsbModeIsShort()) {
+			sprintf((char*)usbPrintBuf, "\r\nFPGA: new data [len:%lu]\r\n", pfpgaData->sdramData->len);
+			printToUsbLite(usbPrintBuf, strlen(usbPrintBuf));
+		}
+		if(getLogUsbModeIsDetail()) {
+			printToUsbDetail(pfpgaData->sdramData->data, pfpgaData->sdramData->len);
+		}
 	}
+	xSemaphoreGive(usbLock);
 }
 
 bool prepareDataCertificate(uint8_t * commandHeader, uint8_t *p, uint8_t * temp_buf, uint16_t maxLen) {

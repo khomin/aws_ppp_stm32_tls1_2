@@ -14,7 +14,13 @@
 void commanderInit();
 void commanderAppendData(uint8_t * data, uint16_t len);
 
-void printToUsb(char * pdata, uint16_t len);
+void printToUsbLite(char * pdata, uint16_t len);
+void printToUsbDetail(char * pdata, uint16_t len);
+
 void putFpgaReocordToUsb(sFpgaData * pfpgaData);
+
+bool getLogUsbModeIsOff();
+bool getLogUsbModeIsShort();
+bool getLogUsbModeIsDetail();
 
 #endif /* COMMANDER_COMMANDER_H_ */
