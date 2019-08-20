@@ -64,13 +64,32 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define FPGA_CS_LINE_Pin GPIO_PIN_4
-#define FPGA_CS_LINE_GPIO_Port GPIOE
+#define FLASH_EXTERN_CS_Pin GPIO_PIN_4
+#define FLASH_EXTERN_CS_GPIO_Port GPIOE
+#define FLASH_EXTERN_SCK_Pin GPIO_PIN_2
+#define FLASH_EXTERN_SCK_GPIO_Port GPIOE
+#define SD_CARD_CLK_Pin GPIO_PIN_12
+#define SD_CARD_CLK_GPIO_Port GPIOC
+#define FLASH_EXTERN_MISO_Pin GPIO_PIN_5
+#define FLASH_EXTERN_MISO_GPIO_Port GPIOE
+#define FLASH_EXTERN_MOSI_Pin GPIO_PIN_6
+#define FLASH_EXTERN_MOSI_GPIO_Port GPIOE
+#define SD_CARD_D3_Pin GPIO_PIN_11
+#define SD_CARD_D3_GPIO_Port GPIOC
+#define SD_CARD_D2_Pin GPIO_PIN_10
+#define SD_CARD_D2_GPIO_Port GPIOC
 #define FPGA_REST_Pin GPIO_PIN_2
 #define FPGA_REST_GPIO_Port GPIOI
+#define SD_CARD_CMD_Pin GPIO_PIN_2
+#define SD_CARD_CMD_GPIO_Port GPIOD
+#define FPGA_CS_Pin GPIO_PIN_15
+#define FPGA_CS_GPIO_Port GPIOC
+#define SD_CARD_D1_Pin GPIO_PIN_9
+#define SD_CARD_D1_GPIO_Port GPIOC
+#define SD_CARD_DO_Pin GPIO_PIN_8
+#define SD_CARD_DO_GPIO_Port GPIOC
 #define USER_BUTTON_Pin GPIO_PIN_7
 #define USER_BUTTON_GPIO_Port GPIOC
-#define USER_BUTTON_EXTI_IRQn EXTI9_5_IRQn
 #define GSM_STATUS_Pin GPIO_PIN_7
 #define GSM_STATUS_GPIO_Port GPIOG
 #define GSM_NETLIGHT_Pin GPIO_PIN_6

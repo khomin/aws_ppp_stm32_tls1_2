@@ -18,72 +18,21 @@
 #include "usbd_cdc_if.h"
 #include "settings/settings.h"
 #include "cloud.h"
+#include "fatfs.h"
 
 #define COMMANDER_MAX_BUFF_SIZE				2128
 
 static void commanderTask(void * arg);
 xSemaphoreHandle usbLock;
 
-static uint8_t buffRx[COMMANDER_MAX_BUFF_SIZE];
+static uint8_t* buffRx;
 static uint16_t buffRxLen = 0;
 static uint8_t buffTx[COMMANDER_MAX_BUFF_SIZE];
-static uint16_t buxTxLen = 0;
+//static uint16_t buxTxLen = 0;
 static bool usbIsActive = false;
 static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len);
 static uint8_t logModePrintUsb = false;
-
-#define COMMANDS_LIST_MAX_LEN				17
-#define COMMANDS_TEXT_MAX_LEN				50
-
-typedef enum {
-	//-- gets
-	e_get_keys,
-	e_get_client_cert,
-	e_get_client_private_device_cert,
-	e_get_client_private_key,
-	e_get_mqtt_url,
-	e_get_device_name,
-	e_get_topic_path,
-	e_get_log_mode,
-	//-- sets
-	e_set_client_cert,
-	e_set_client_private_device_cert,
-	e_set_client_private_key,
-	e_set_mqtt_url,
-	e_set_device_name,
-	e_set_topic_path,
-	e_flush_full,
-	e_set_log_mode,
-	//-- other
-	e_reboot
-}eTypeCommands;
-
-typedef struct {
-	uint8_t command[COMMANDS_TEXT_MAX_LEN];
-	eTypeCommands type;
-}sCommandItem;
-
-static const sCommandItem c_commands[COMMANDS_LIST_MAX_LEN] = {
-		//-- gets
-		{{"get -keys"}, e_get_keys},
-		{{"get -key client cert"}, e_get_client_cert},
-		{{"get -key client private device cert"}, e_get_client_private_device_cert},
-		{{"get -key client private key"}, e_get_client_private_key},
-		{{"get -mqtt url"}, e_get_mqtt_url},
-		{{"get -device name"}, e_get_device_name},
-		{{"get -topic path"}, e_get_topic_path},
-		{{"get -log mode"}, e_get_log_mode},
-		//-- sets
-		{{"set -key client cert"}, e_set_client_cert},
-		{{"set -key client private device cert"}, e_set_client_private_device_cert},
-		{{"set -key client private key"}, e_set_client_private_key},
-		{{"set -mqtt url"}, e_set_mqtt_url},
-		{{"set -device name"}, e_set_device_name},
-		{{"set -topic path"}, e_set_topic_path},
-		{{"flush full"}, e_flush_full},
-		{{"set -log mode"}, e_set_log_mode},
-		{{"reboot"}, e_reboot}
-};
+static FIL fileDescriptor;
 
 static const uint8_t command_not_found_caption[] = "command not found\r\n";
 static const uint8_t command_options_executed_caption[] = "executed\r\n";
@@ -91,9 +40,9 @@ static const uint8_t command_options_execut_error_caption[] = "execut error or b
 
 static uint8_t usbPrintBuf[1024 + 10] = {0};
 
-static uint16_t findLenOffset(uint8_t * pdata, uint8_t firstChar);
 static bool prepareDataCertificate(uint8_t * commandHeader, uint8_t *p, uint8_t * temp_buf, uint16_t maxLen);
 static bool prepareDataOneArgument(uint8_t * commandHeader, uint8_t *p, uint8_t * temp_buf, uint16_t maxLen);
+static bool prepareDataFirmwareFpga(uint8_t *data, uint16_t len);
 
 void commanderInit() {
 	usbLock = xSemaphoreCreateMutex();
@@ -101,16 +50,18 @@ void commanderInit() {
 }
 
 void commanderTask(void * arg) {
+	buffRx = getCommandBuf();
+
 	for(;;) {
 		if(usbIsActive) {
 			usbIsActive = false;
 			vTaskDelay(100/portTICK_PERIOD_MS);
 			if(!usbIsActive) {
 				uint8_t* command_res = handleCommandData(buffRx, buffRxLen);
-				memset(buffRx, 0, sizeof(buffRx));
-				buffRxLen = 0;
 				if(command_res != NULL) {
 					DBGLog("command: result [%s]", command_res);
+					memset(buffRx, 0, getCommandBufLen());
+					buffRxLen = 0;
 					xSemaphoreTake(usbLock, 500/portTICK_PERIOD_MS);
 					CDC_Transmit_FS(command_res, strlen((char*)command_res));
 					xSemaphoreGive(usbLock);
@@ -118,6 +69,13 @@ void commanderTask(void * arg) {
 					vTaskDelay(100/portTICK_PERIOD_MS);
 				} else {
 					DBGLog("command: result is null");
+
+					if(buffRxLen > 100) {
+						DBGLog("command: is firmware");
+						prepareDataFirmwareFpga(buffRx, buffRxLen);
+					}
+					memset(buffRx, 0, getCommandBufLen());
+					buffRxLen = 0;
 				}
 			}
 		}
@@ -208,6 +166,11 @@ static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
 			case e_get_log_mode: {
 				tempbuf = buffTx;
 				sprintf((char*)tempbuf, "log mode:\r\n%d\r\n", logModePrintUsb);
+			} break;
+
+			case e_get_firmware_fpga: {	// TODO: get firmware?
+				tempbuf = buffTx;
+				sprintf((char*)tempbuf, "firmware fpga:\r\n%s\r\n", "unspecified");
 			} break;
 
 			//--
@@ -312,21 +275,31 @@ static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len) {
 				);
 			} break;
 
-			case e_reboot:
+			case e_reboot: {
 				tempbuf = buffTx;
 				NVIC_SystemReset();
 				break;
 			}
-		}
-	}
 
-	if(tempbuf == NULL) {
-		tempbuf = (uint8_t*)command_not_found_caption;
+			case e_set_firmware_fpga: {
+				tempbuf = buffTx;
+				p = strstr((char*)pdata, (char*)c_commands[index].command);
+				bool execute_res = false;
+				sprintf((char*)tempbuf, "%s:\r\n%s\r\n",
+						c_commands[index].command,
+						execute_res ? command_options_executed_caption: command_options_execut_error_caption
+				);
+			} break;
+			}
+
+			if(tempbuf == NULL) {
+				tempbuf = (uint8_t*)command_not_found_caption;
+			}
+		}
 	}
 
 	return tempbuf;
 }
-
 
 bool getLogUsbModeIsOff() {
 	return logModePrintUsb == 0;
@@ -450,25 +423,78 @@ bool prepareDataOneArgument(uint8_t * commandHeader, uint8_t *p, uint8_t * temp_
 	return res;
 }
 
+bool prepareDataFirmwareFpga(uint8_t *data, uint16_t len) {
+	bool res = false;
+	if((data != NULL) && (len != 0)) {
+		FRESULT fResult;
+		UINT writeResultBytes = 0;
+		/* reset fpga down */
+		HAL_GPIO_WritePin(FPGA_REST_GPIO_Port, FPGA_REST_Pin, GPIO_PIN_RESET);
+
+		/* write to flash */
+		fResult = f_open(&fileDescriptor, "./fpga.bin", FA_WRITE | FA_CREATE_ALWAYS);
+		if(fResult == FR_OK) {
+			DBGLog("Firmware FPGA: f_open OK");
+			fResult = f_write(&fileDescriptor, data, len, &writeResultBytes);
+			if(len == writeResultBytes) {
+				DBGLog("Firmware FPGA: write success");
+			} else {
+				DBGLog("Firmware FPGA: write ERROR\r\nNeed write %i, written %i", len, writeResultBytes);
+			}
+		} else {
+			DBGErr("Firmware FPGA: f_open ERROR");
+		}
+		/* reset mcu up */
+		HAL_GPIO_WritePin(FPGA_REST_GPIO_Port, FPGA_REST_Pin, GPIO_PIN_SET);
+		res = true;
+	}
+	return res;
+}
+
+//bool handlerWriteFile(sFrameOutDataToPc *dataToPc, sFrameInputDataOfPc *dataOfPc)
+//{
+//	FRESULT fResult;
+//	UINT resultBytes = 0;
+//	// если первый пакет - стираем или создаем файл
+//	if(dataOfPc->variant.file.numPacket == NULL) {
+//		fResult = f_open(&usbFileDescriptor, dataOfPc->variant.file.path, FA_WRITE | FA_CREATE_ALWAYS);
+//		DBGInfo("handlerWriteFile==0: path=%s", dataOfPc->variant.file.path);
+//	}
+//	fResult = f_write(&usbFileDescriptor, dataOfPc->variant.file.dataBuff, dataOfPc->variant.file.sizePacket, &resultBytes);
+//	DBGInfo("handlerWriteFile: pack_count=%d size=%d", \
+//			dataOfPc->variant.file.sizePacket,  \
+//			dataOfPc->variant.file.sizeRecorded);
+//
+//	DBGInfo("handlerWriteFile: [%s] %d\n", dataOfPc->variant.file.dataBuff, dataOfPc->variant.file.sizePacket);
+//
+//	// запускаем таймер таймаута
+//	xTimerStart(usbTimeoutWriteFile, 0);
+//	// если все ок и дошли до конца файла
+//	if((fResult == FR_OK) && (resultBytes == dataOfPc->variant.file.sizePacket)) {
+//		if(dataOfPc->variant.file.sizeRecorded == dataOfPc->variant.file.fileFullSize) { // если записали весь файл тогда закрываем и сбрасываем таймер
+//			DBGInfo("handlerWriteFile: pack_count=end %d", dataOfPc->variant.file.sizePacket);
+//			xTimerStop(usbTimeoutWriteFile, 0);
+//			// и закрываем файл
+//			f_close(&usbFileDescriptor);
+//		}
+//		dataToPc->variant.file.result = true;
+//		return true;
+//	} else {
+//		dataToPc->variant.file.result = false;
+//		return false;
+//	}
+//}
+
 
 void commanderAppendData(uint8_t * data, uint16_t len) {
 	xSemaphoreTakeFromISR(usbLock, 0);
 	usbIsActive = true;
-	if((buffRxLen + len) < sizeof(buffRx)) {
-		memcpy(&buffRx[buffRxLen], data, len);
+	if((buffRxLen + len) < getCommandBufLen()) {
+		memcpy(getCommandBufLen + buffRxLen, data, len);
 		buffRxLen += len;
 	} else {
 		DBGErr("commander: append override buf!");
 	}
 
 	xSemaphoreGive(usbLock);
-}
-
-uint16_t findLenOffset(uint8_t * pdata, uint8_t firstChar) {
-	for(uint16_t index=0; pdata[index] != NULL; index++) {
-		if(pdata[index] == firstChar) {
-			return index;
-		}
-	}
-	return NULL;
 }
