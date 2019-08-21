@@ -23,11 +23,13 @@ void mt25Q_init() {
 		uint8_t devid_cmd[1] = { 0x9F };
 		uint8_t devid_res[5];
 
-		/* select switcher flash */
-//		HAL_GPIO_WritePin(FPGA_CS_GPIO_Port, FPGA_CS_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(FPGA_CS_GPIO_Port, FPGA_CS_Pin, GPIO_PIN_RESET);
+		/* reset fpga */
+		HAL_GPIO_WritePin(FPGA_REST_GPIO_Port, FPGA_REST_Pin, GPIO_PIN_RESET);	// down PI2
 
-		HAL_GPIO_WritePin(FLASH_EXTERN_CS_GPIO_Port, FLASH_EXTERN_CS_Pin, GPIO_PIN_RESET);
+		/* select switcher flash */
+		HAL_GPIO_WritePin(FPGA_CS_GPIO_Port, FPGA_CS_Pin, GPIO_PIN_SET);	// up PC15
+
+		HAL_GPIO_WritePin(FLASH_EXTERN_CS_GPIO_Port, FLASH_EXTERN_CS_Pin, GPIO_PIN_RESET); // down cs PE4
 		res1 = HAL_SPI_Transmit(&hspi4, devid_cmd, sizeof(devid_cmd), HAL_MAX_DELAY);
 		res2 = HAL_SPI_Receive(&hspi4, devid_res, sizeof(devid_res), HAL_MAX_DELAY);
 		HAL_GPIO_WritePin(FLASH_EXTERN_CS_GPIO_Port, FLASH_EXTERN_CS_Pin, GPIO_PIN_SET);
