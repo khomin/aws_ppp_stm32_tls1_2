@@ -18,7 +18,7 @@
 #include "usbd_cdc_if.h"
 #include "settings/settings.h"
 #include "cloud.h"
-#include "fatfs.h"
+#include "../firmwareUpdate/mt25q.h"
 
 #define COMMANDER_MAX_BUFF_SIZE				2128
 
@@ -32,7 +32,6 @@ static uint8_t buffTx[COMMANDER_MAX_BUFF_SIZE];
 static bool usbIsActive = false;
 static uint8_t* handleCommandData(uint8_t * pdata, uint16_t len);
 static uint8_t logModePrintUsb = false;
-static FIL fileDescriptor;
 
 static const uint8_t command_not_found_caption[] = "command not found\r\n";
 static const uint8_t command_options_executed_caption[] = "executed\r\n";
@@ -51,6 +50,8 @@ void commanderInit() {
 
 void commanderTask(void * arg) {
 	buffRx = getCommandBuf();
+
+	mt25Q_init();
 
 	for(;;) {
 		if(usbIsActive) {
@@ -426,27 +427,27 @@ bool prepareDataOneArgument(uint8_t * commandHeader, uint8_t *p, uint8_t * temp_
 bool prepareDataFirmwareFpga(uint8_t *data, uint16_t len) {
 	bool res = false;
 	if((data != NULL) && (len != 0)) {
-		FRESULT fResult;
-		UINT writeResultBytes = 0;
-		/* reset fpga down */
-		HAL_GPIO_WritePin(FPGA_REST_GPIO_Port, FPGA_REST_Pin, GPIO_PIN_RESET);
-
-		/* write to flash */
-		fResult = f_open(&fileDescriptor, "./fpga.bin", FA_WRITE | FA_CREATE_ALWAYS);
-		if(fResult == FR_OK) {
-			DBGLog("Firmware FPGA: f_open OK");
-			fResult = f_write(&fileDescriptor, data, len, &writeResultBytes);
-			if(len == writeResultBytes) {
-				DBGLog("Firmware FPGA: write success");
-			} else {
-				DBGLog("Firmware FPGA: write ERROR\r\nNeed write %i, written %i", len, writeResultBytes);
-			}
-		} else {
-			DBGErr("Firmware FPGA: f_open ERROR");
-		}
-		/* reset mcu up */
-		HAL_GPIO_WritePin(FPGA_REST_GPIO_Port, FPGA_REST_Pin, GPIO_PIN_SET);
-		res = true;
+//		FRESULT fResult;
+//		UINT writeResultBytes = 0;
+//		/* reset fpga down */
+//		HAL_GPIO_WritePin(FPGA_REST_GPIO_Port, FPGA_REST_Pin, GPIO_PIN_RESET);
+//
+//		/* write to flash */
+//		fResult = f_open(&fileDescriptor, "./fpga.bin", FA_WRITE | FA_CREATE_ALWAYS);
+//		if(fResult == FR_OK) {
+//			DBGLog("Firmware FPGA: f_open OK");
+//			fResult = f_write(&fileDescriptor, data, len, &writeResultBytes);
+//			if(len == writeResultBytes) {
+//				DBGLog("Firmware FPGA: write success");
+//			} else {
+//				DBGLog("Firmware FPGA: write ERROR\r\nNeed write %i, written %i", len, writeResultBytes);
+//			}
+//		} else {
+//			DBGErr("Firmware FPGA: f_open ERROR");
+//		}
+//		/* reset mcu up */
+//		HAL_GPIO_WritePin(FPGA_REST_GPIO_Port, FPGA_REST_Pin, GPIO_PIN_SET);
+//		res = true;
 	}
 	return res;
 }
