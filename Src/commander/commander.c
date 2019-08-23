@@ -51,7 +51,7 @@ void commanderInit() {
 void commanderTask(void * arg) {
 	buffRx = getCommandBuf();
 
-	mt25Q_init();
+//	mt25Q_init();
 
 	for(;;) {
 		if(usbIsActive) {

@@ -44,6 +44,14 @@ void fpgaTask(void *argument) {
 
 	fpgaDataQueue = xQueueCreate(32, sizeof(sFpgaData));
 
+	/* reset fpga up */
+	HAL_GPIO_WritePin(FPGA_REST_GPIO_Port, FPGA_REST_Pin, GPIO_PIN_SET);
+	vTaskDelay(1500/portTICK_PERIOD_MS);
+
+	/* select switcher flash as fpga */
+	HAL_GPIO_WritePin(FPGA_CS_GPIO_Port, FPGA_CS_Pin, GPIO_PIN_RESET);
+
+	/* start receive uart */
 	HAL_UART_Receive_IT(&huart2, &rxByte, 1);
 
 #if	TEST_FPGA
@@ -79,8 +87,7 @@ void fpgaTask(void *argument) {
 				DBGLog("fpgaData: rxData: %lu", fpgaData.sdramData->len);
 				sprintf(caption_temp_buff, caption_display_fpga_rx_data, fpgaData.sdramData->len);
 				setDisplayStatus(caption_temp_buff);
-			} else {
-				if(fpgaData.sdramData != NULL) {
+				if(!isActiveUart) {
 					if(fpgaData.sdramData->len > FPGA_MIN_DATA_SIZE) {
 						DBGLog("FPGA: new data, size %lu", fpgaData.sdramData->len);
 						//-- put to queue
@@ -93,8 +100,9 @@ void fpgaTask(void *argument) {
 						}
 					}
 				}
-				initiateNewFpgaData();
 			}
+
+			initiateNewFpgaData();
 		}
 
 		vTaskDelay(1000/portTICK_RATE_MS);
@@ -112,9 +120,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 }
 
 void initiateNewFpgaData() {
-	HAL_GPIO_WritePin(FPGA_CS_GPIO_Port, FPGA_CS_Pin, GPIO_PIN_SET);
+	//	HAL_GPIO_WritePin(FPGA_CS_GPIO_Port, FPGA_CS_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);
 	vTaskDelay(100/portTICK_RATE_MS);
-	HAL_GPIO_WritePin(FPGA_CS_GPIO_Port, FPGA_CS_Pin, GPIO_PIN_RESET);
+	//	HAL_GPIO_WritePin(FPGA_CS_GPIO_Port, FPGA_CS_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_RESET);
 	vTaskDelay(100/portTICK_RATE_MS);
 }
 
@@ -220,7 +230,7 @@ void fpgaRxUartHandler(UART_HandleTypeDef *huart) {
 				fpgaData.sdramData->len = 0;
 			}
 		} else {
-			DBGErr("FPGA: buffer == null ERROR");
+			//DBGErr("FPGA: buffer == null ERROR");
 		}
 	}
 	HAL_UART_Receive_IT(huart, &rxByte, 1);
