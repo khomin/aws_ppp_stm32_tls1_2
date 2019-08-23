@@ -196,16 +196,14 @@ int subscribe_publish_sensor_values(void) {
 		/* Max time the yield function will wait for read messages */
 		rc = aws_iot_mqtt_yield(&client, 1000);
 
-		if(NETWORK_ATTEMPTING_RECONNECT == rc)
-		{
+		if(NETWORK_ATTEMPTING_RECONNECT == rc) {
 			/* Delay to let the client reconnect */
-			HAL_Delay(1000);
+			vTaskDelay(1000/portTICK_PERIOD_MS);
 			msg_info("Attempting to reconnect\n");
 			/* If the client is attempting to reconnect we will skip the rest of the loop */
 			continue;
 		}
-		if(NETWORK_RECONNECTED == rc)
-		{
+		if(NETWORK_RECONNECTED == rc) {
 			msg_info("Reconnected.\n");
 		}
 
