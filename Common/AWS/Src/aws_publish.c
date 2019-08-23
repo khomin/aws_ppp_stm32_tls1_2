@@ -194,7 +194,7 @@ int subscribe_publish_sensor_values(void) {
 			&& loop_is_normal)
 	{
 		/* Max time the yield function will wait for read messages */
-		rc = aws_iot_mqtt_yield(&client, 100);
+		rc = aws_iot_mqtt_yield(&client, 1000);
 
 		if(NETWORK_ATTEMPTING_RECONNECT == rc)
 		{

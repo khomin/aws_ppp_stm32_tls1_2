@@ -61,28 +61,40 @@ void fpgaTask(void *argument) {
 		//		testFillData();
 		//		printfTestFillData();
 #endif
-		if(isActiveUart) {
-			vTaskDelay(100/portTICK_RATE_MS);
-			isActiveUart = false;
-			vTaskDelay(100/portTICK_RATE_MS);
-			DBGLog("fpgaData: rxData: %lu", fpgaData.sdramData->len);
-			sprintf(caption_temp_buff, caption_display_fpga_rx_data, fpgaData.sdramData->len);
-			setDisplayStatus(caption_temp_buff);
-		} else {
-			if(fpgaData.sdramData != NULL) {
-				if(fpgaData.sdramData->len > FPGA_MIN_DATA_SIZE) {
-					DBGLog("FPGA: new data, size %lu", fpgaData.sdramData->len);
-					//-- put to queue
-					if(putFpgaRecord(&fpgaData)) {
-						putFpgaReocordToUsb(&fpgaData);
-						memset((void*)&fpgaData, 0, sizeof(fpgaData));
-					} else {
-						printToUsbLite((char*)caption_out_of_memory, strlen((char*)caption_out_of_memory));
-						DBGLog("FPGA: putFpgaRecord error");
+
+		// prepare buffer pull
+		if(fpgaData.sdramData == NULL) {
+			fpgaData.sdramData = createNewSdramBuff();
+			if(fpgaData.sdramData == NULL) {
+				DBGErr("FPGA: buf == null");
+				while(1) {}
+			}
+		}
+
+		if(fpgaData.sdramData != NULL) {
+			if(isActiveUart) {
+				vTaskDelay(100/portTICK_RATE_MS);
+				isActiveUart = false;
+				vTaskDelay(100/portTICK_RATE_MS);
+				DBGLog("fpgaData: rxData: %lu", fpgaData.sdramData->len);
+				sprintf(caption_temp_buff, caption_display_fpga_rx_data, fpgaData.sdramData->len);
+				setDisplayStatus(caption_temp_buff);
+			} else {
+				if(fpgaData.sdramData != NULL) {
+					if(fpgaData.sdramData->len > FPGA_MIN_DATA_SIZE) {
+						DBGLog("FPGA: new data, size %lu", fpgaData.sdramData->len);
+						//-- put to queue
+						if(putFpgaRecord(&fpgaData)) {
+							putFpgaReocordToUsb(&fpgaData);
+							memset((void*)&fpgaData, 0, sizeof(fpgaData));
+						} else {
+							printToUsbLite((char*)caption_out_of_memory, strlen((char*)caption_out_of_memory));
+							DBGLog("FPGA: putFpgaRecord error");
+						}
 					}
 				}
+				initiateNewFpgaData();
 			}
-			initiateNewFpgaData();
 		}
 
 		vTaskDelay(1000/portTICK_RATE_MS);
@@ -199,19 +211,16 @@ void fpgaRxUartHandler(UART_HandleTypeDef *huart) {
 	if(huart->Instance->SR & USART_SR_IDLE) {
 		DBGLog("FPGA: buffer ready");
 	} else {
-		if(fpgaData.sdramData == NULL) {
-			fpgaData.sdramData = createNewSdramBuff();
-			if(fpgaData.sdramData == NULL) {
-				DBGErr("FPGA: buf == null");
-				return;
+		if(fpgaData.sdramData != NULL) {
+			if(fpgaData.sdramData->len < FPGA_BUFFER_RECORD_MAX_SIZE) {
+				*((uint8_t*)fpgaData.sdramData->data + fpgaData.sdramData->len) = rxByte;
+				fpgaData.sdramData->len++;
+			} else {
+				DBGErr("FPGA: buffer overflow");
+				fpgaData.sdramData->len = 0;
 			}
-		}
-		if(fpgaData.sdramData->len < FPGA_BUFFER_RECORD_MAX_SIZE) {
-			*((uint8_t*)fpgaData.sdramData->data + fpgaData.sdramData->len) = rxByte;
-			fpgaData.sdramData->len++;
 		} else {
-			DBGErr("FPGA: buffer overflow");
-			fpgaData.sdramData->len = 0;
+			DBGErr("FPGA: buffer == null ERROR");
 		}
 	}
 	HAL_UART_Receive_IT(huart, &rxByte, 1);

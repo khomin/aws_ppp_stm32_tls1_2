@@ -70,11 +70,10 @@ void commanderTask(void * arg) {
 					vTaskDelay(100/portTICK_PERIOD_MS);
 				} else {
 					DBGLog("command: result is null");
-
-					if(buffRxLen > 100) {
-						DBGLog("command: is firmware");
-						prepareDataFirmwareFpga(buffRx, buffRxLen);
-					}
+//					if(buffRxLen > 100) {
+//						DBGLog("command: is firmware");
+//						prepareDataFirmwareFpga(buffRx, buffRxLen);
+//					}
 					memset(buffRx, 0, getCommandBufLen());
 					buffRxLen = 0;
 				}
